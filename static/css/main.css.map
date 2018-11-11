@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAAA,WAAS;EACP,MAAM,EAAE,KAAK;;ACAf,IAAK;EACH,OAAO,EAAE,IAAI;EACb,UAAU,EAAE,KAAK;EACjB,cAAc,EAAE,MAAM;;AAGxB,IAAK;EACH,IAAI,EAAE,QAAQ",
+"mappings": "AAAA,KAAK;EACH,UAAU,EAAE,EAAE;;AAEhB,WAAS;EACP,MAAM,EAAE,KAAK;;ACHf,IAAK;EACH,OAAO,EAAE,IAAI;EACb,UAAU,EAAE,KAAK;EACjB,cAAc,EAAE,MAAM;;AAGxB,IAAK;EACH,IAAI,EAAE,QAAQ",
 "sources": ["../sass/_input_main.scss","../sass/_footer.scss"],
 "names": [],
 "file": "main.css"
