@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,WAAS;EACP,MAAM,EAAE,KAAK;;ACAf,IAAK;EACH,OAAO,EAAE,IAAI;EACb,UAAU,EAAE,KAAK;EACjB,cAAc,EAAE,MAAM;;AAGxB,IAAK;EACH,IAAI,EAAE,QAAQ",
+"sources": ["../sass/_input_main.scss","../sass/_footer.scss"],
+"names": [],
+"file": "main.css"
+}

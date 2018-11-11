@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommender System - Master Thesis</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../static/materialize-src/css/materialize.css" type="text/css"/>
+    <link rel="stylesheet" href="../static/css/main.css" type="text/css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../static/materialize-src/js/bin/materialize.js"></script>
+
+</head>
+<body>
+
+<div class="row" id="navbar">
+    <div class="col s12">
+        <ul id="tabs-swipe-demo" class="tabs">
+            <li class="tab col s3"><a class="active" href="#swipe-input">Input</a></li>
+            <li class="tab col s3"><a href="#swipe-process">Process</a></li>
+            <li class="tab col s3"><a href="#swipe-results">Result</a></li>
+            <li class="tab col s3"><a href="#swipe-download">Download</a></li>
+        </ul>
+
+    </div>
+</div>
+<div class="container">
+    <div class="row" id="main">
+        <div id="swipe-input" class="col s12">
+            <div class="row">
+                <div class="col s6">
+                    {% include "input_main_input.html" %}
+                </div>
+                <div class="col s6">
+                    {% include "input_main_descriptive.html" %}
+                </div>
+            </div>
+        </div>
+        <div id="swipe-process" class="col s12" >
+            {% include "process_main.html" %}
+        </div>
+        <div id="swipe-results" class="col s12">
+            {% include "results_main_output.html" %}
+            {% include "results_main_chart.html" %}
+        </div>
+        <div id="swipe-download" class="col s12">
+             {% include "download_main.html" %}
+        </div>
+    </div>
+</div>
+{% include "footer.html" %}
+
+<script src="../static/js/materialize_inits.js"></script>
+</body>
+</html>
