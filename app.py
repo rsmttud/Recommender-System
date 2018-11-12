@@ -1,10 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 
 @app.route('/', methods=["GET", "POST"])
-def hello_world():
+def main():
+    if request.method == "POST":
+        problem_title = "" if "title" not in request.form else request.form['title']
+        problem_short_desc = "" if "short_description" not in request.form else request.form['short_description']
+        problem_long_desc = "" if "long_description" not in request.form else request.form['long_description']
+
+        return render_template("index.html", params={
+            "title": problem_title,
+            "short": problem_short_desc,
+            "long": problem_long_desc
+        })
     return render_template("index.html")
 
 

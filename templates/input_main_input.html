@@ -2,21 +2,24 @@
 <div class="divider"></div>
 <br/>
 <div class="row">
-    <div class="container">
-        <div class="input-field col s12">
-            <input id="title" type="text" class="validate">
-            <label for="title">Title</label>
-        </div>
-        <div class="input-field col s12">
-            <textarea id="short_description" class="materialize-textarea"></textarea>
-            <label for="short_description">Short description</label>
-        </div>
-        <div class="input-field col s12">
-            <textarea id="long_description" class="materialize-textarea"></textarea>
-            <label for="long_description">Long description</label>
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-            <i class="material-icons right">send</i>
-        </button>
+    <div class="container" id="input_main_input_container">
+        <form method="post" action="">
+            <div class="input-field col s12">
+                <input id="title" type="text" class="validate" name="title">
+                <label for="title">Title</label>
+            </div>
+            <div class="input-field col s12">
+                <textarea id="short_description" class="materialize-textarea" name="short_description"></textarea>
+                <label for="short_description">Short description</label>
+            </div>
+            <div class="input-field col s12">
+                <textarea id="long_description" class="materialize-textarea" name="long_description"></textarea>
+                <label for="long_description">Long description</label>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+        <p>{{ params["title"] }} {{ params['short'] }} {{ params['long'] }}</p>
     </div>
 </div>
