@@ -20,6 +20,8 @@
                 <i class="material-icons right">send</i>
             </button>
         </form>
-        <p>{{ params["title"] }} {{ params['short'] }} {{ params['long'] }}</p>
+        {% if params %}
+            <p>{{ params["title"] }} {{ params['short'] }} {{ params['long'] }}</p>
+        {% endif %}
     </div>
 </div>
