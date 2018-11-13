@@ -17,6 +17,7 @@ class Prediction:
         self.classes = classes
         self.values = values
 
+    #TODO Wording
     def get_max_class(self):
         max_num = max(self.values)
         return self.classes[self.values.index(max_num)]
