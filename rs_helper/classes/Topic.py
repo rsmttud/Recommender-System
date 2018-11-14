@@ -63,11 +63,8 @@ class Topic:
             normed_keyword_set.append(keyword)
         self.keyword_set = normed_keyword_set
 
-    def add_keyword(self, keyword, rank: float, algorithm: str = None) -> None:
-        if algorithm is not None:
-            self.keyword_set.append(Keyword(keyword, rank, algorithm))
-        else:
-            self.keyword_set.append(Keyword(keyword, rank, algorithm))
+    def add_keyword(self, keyword, rank: float, algorithm: str) -> None:
+        self.keyword_set.append(Keyword(keyword, rank, algorithm))
 
     def get_keywords(self, duplicates=True) -> list:
         if duplicates:
