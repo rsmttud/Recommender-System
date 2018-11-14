@@ -32,4 +32,4 @@ class RecommendationFacade:
     def __merge_predictions(self, predictions: list) -> Prediction:
         if not isinstance(predictions[0], Prediction):
             raise ValueError("Parameter predictions must be of type List(Prediction)")
-        return Prediction()
+        return Prediction(["dummy"], ["dummy"])
