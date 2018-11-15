@@ -1,66 +1,101 @@
 from rs_helper.classes import Prediction
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, recall_score, classification_report, accuracy_score
+import numpy as np
 from typing import *
+import datetime
+import os
 
 
 class SystemEvaluation:
     """
-    This class is to evaluate the overall system and it's predicting power
+    The purpose of the class is to evaluate the overall system and it's predicting power
     """
 
-    def __init__(self, predictions: list, labels: list):
+    def __init__(self, predictions: List[Prediction], labels: list):
+        """
+
+        :param predictions: A List of prediction objects
+        :param labels: A list containing the ground-truth labels
+        """
         if not isinstance(predictions[0], Prediction):
             raise ValueError("The parameter predictions need to be of type Prediction")
         self.predictions = predictions
         self.labels = labels
+        self.y_pred = None
 
-        self.tn = 0
-        self.fp = 0
-        self.fn = 0
-        self.tp = 0
+        self.confusion_matrix = None
 
-        self.positives = self.tn + self.tp
-        self.negatives = self.fp + self.fn
+        self.positives = 0
+        self.negatives = 0
 
         self.__init_metrics()
+        self.__calculate_positives_and_negatives()
 
-    # TODO I would use sklearn confusion matrix and use.ravel to get all tn,tp,.. Easier for us, more Eval.
-    def calculate_positives_and_negatives(self) -> Tuple[int, int]:
+    def __calculate_positives_and_negatives(self) -> None:
         """
-        This method counts all positive and negative predictions
-        :return: tuple(int, int)
+        Method return calculates all positives and negative classifications
+        :return:
         """
         pos, neg = 0, 0
         for p, l in zip(self.predictions, self.labels):
-            pos += 1 if p.get_max_class() == l else 0
-            neg += 1 if p.get_max_class() != l else 0
+            pos += 1 if p.get_class_with_max_confidence() == l else 0
+            neg += 1 if p.get_class_with_max_confidence() != l else 0
         self.positives = pos
         self.negatives = neg
-        return pos, neg
 
-    def __init_metrics(self):
-        self.tn, self.fp, self.fn, self.tp = confusion_matrix(y_true=self.labels, y_pred=self.predictions).ravel()
+    def __init_metrics(self) -> None:
+        """
+        Initializes some attributes of the class
+        :return:
+        """
+        self.y_pred = [x.get_class_with_max_confidence() for x in self.predictions]
+        self.confusion_matrix = confusion_matrix(y_true=self.labels, y_pred=self.y_pred)
 
-    def calculate_recall(self):
-        return self.tp / (self.tp + self.fn)
+        # self.tn, self.fp, self.fn, self.tp = self.confusion_matrix.ravel()
 
-    def calculate_true_negative_rate(self):
-        return self.tn / (self.tn + self.fp)
+    def calculate_accuracy_score(self) -> float:
+        """
+        Calculates the accuracy according to sklearn.metrics.accuracy_score
+        :return: normalized accuracy score
+        """
+        return accuracy_score(self.labels, self.y_pred)
 
-    def calculate_precision(self):
-        return (self.tp / (self.tp + self.fp))
+    def calculate_recall(self) -> float:
+        """
+        Calculates the recall given by the class attribute self.predictions and self.labels.
+        Uses the sklean.metrics.recall_score method
+        :return: recall as float
+        """
+        return recall_score(self.labels, self.y_pred, average="micro")
 
-    def calculate_accuracy(self):
-        return (self.tp + self.tn) / (self.positives + self.negatives)
-
-    def get_confusion_matrix(self, labels: List[str] = None):
+    def get_confusion_matrix(self, labels: List[str] = None) -> np.ndarray:
+        """
+        Returns an sklearn.metrics confusion matrix
+        :param labels: the ground truth labels stored in a list
+        :return: numpy array
+        """
         if labels:
             return confusion_matrix(y_true=self.labels, y_pred=self.predictions, labels=labels)
         return confusion_matrix(y_true=self.labels, y_pred=self.predictions)
 
     def save_evaluation(self) -> bool:
         """
-        Method to save all evaluation results for future comparison
+        Method to save all evaluation results for future comparison. Results are saved to the eval folder
         :return: boolean
         """
-        pass
+        try:
+            date = str(datetime.datetime.today().strftime('%d-%m-%y_%H:%M:%S'))
+            dir = "eval"
+            str_1 = "# Evaluation of {} \n".format(date)
+            str_2 = "## Classification report: \n"
+            class_report = classification_report(y_true=self.labels, y_pred=self.y_pred)
+
+            file_name = os.path.join(dir, date + "_" + "eval.md")
+
+            file = open(file_name, "w")
+            file.write(str_1 + str_2 + class_report)
+            file.close()
+
+            return True
+        except:
+            return False
