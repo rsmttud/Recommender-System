@@ -17,7 +17,10 @@ class Prediction:
         self.classes = classes
         self.values = values
 
-    #TODO Wording
-    def get_max_class(self):
+    def get_class_with_max_confidence(self) -> str:
+        """
+        Returns the prediction with the highest confidence
+        :return: the class name as string
+        """
         max_num = max(self.values)
-        return self.classes[self.values.index(max_num)]
+        return str(self.classes[self.values.index(max_num)])
