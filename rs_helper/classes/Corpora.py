@@ -25,7 +25,13 @@ class Corpora:
         self.__count_words()
         self.__delete_multiple_spaces()
 
-    def __read_text(self):
+    def __read_text(self) -> None:
+        """
+        The methods reads text files and stores them into the data class attribute. Depending on the given path in
+        the constructor it distinguishes between directories or a single file. In case of an directory all txt files are
+        stored in the data attribute.
+        :return: None
+        """
         # Reading all txt from a dict
         if os.path.isdir(self.path):
             for txt in [x for x in os.listdir(self.path) if x.endswith((".txt", ".TXT", ".Txt"))]:
@@ -44,10 +50,6 @@ class Corpora:
 
     def __count_words(self, include_duplicates=True) -> None:
         self.n_words = len(self.data.split())
-
-    def __count_sentences(self) -> None:
-        # TODO: Using a Sentence Tokenizer and Count? Is a waste of computational power just for a number.
-        pass
 
     def __delete_multiple_spaces(self) -> None:
         self.data = re.sub(' +', ' ', self.data)

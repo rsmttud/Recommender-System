@@ -6,25 +6,20 @@ import pickle
 import numpy as np
 
 
-
+# TODO implement the facade
 class RecommendationFacade:
+    """
+    A facade which contains of single functions for each classification pipeline.
+    """
 
-    def __init__(self, path_to_file: str):
-        corpora = Corpora(path=path_to_file)
+    def __init__(self, path_to_files: str):
+        self.corpora = Corpora(path=path_to_files)
 
     def run(self, lda: bool = False, key_ex: bool = False, doc2vec: bool = False, classification: bool = False):
-        """
-        Function should manage the starting of pipelines according to input
-        :param lda: boolean to start or not start LDA pipeline
-        :param key_ex: boolean to start or not start Keyword Extraction pipeline
-        :param doc2vec: boolean to start or not start Doc2Vec pipeline
-        :param classification: boolean to start or not start ML Classification pipeline
-        :return: Object of type Prediction (merged prediction of all pipelines)
-        """
+        result_scores = []
         if lda:
-            self.__lda_pipeline()
-        if key_ex:
-            self.__key_ex_pipeline()
+            result_scores = self.__lda_pipeline()
+        return result_scores
 
     def __lda_pipeline(self):
         model = pickle.load(open("models/LDA/LdaModel_ntopics_3_freq.bin", "rb"))
@@ -43,4 +38,6 @@ class RecommendationFacade:
     def __merge_predictions(self, predictions: list) -> Prediction:
         if not isinstance(predictions[0], Prediction):
             raise ValueError("Parameter predictions must be of type List(Prediction)")
-        return Prediction(["dummy"], ["dummy"])
+        pass
+        # return Prediction()
+    """
