@@ -23,3 +23,10 @@ def save_txt(title:str, short_desc:str, long_desc:str = None):
         with open(path_long, "w") as file:
             file.write(long_desc)
             file.close()
+
+
+def find_nth(string, substring, n):
+    if n == 1:
+        return string.find(substring)
+    else:
+        return string.find(substring, find_nth(string, substring, n - 1) + 1)
