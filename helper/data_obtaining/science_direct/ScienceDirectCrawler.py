@@ -40,9 +40,11 @@ class ScienceDirectCrawler(Crawler):
     def crawl(self):
         """
         :return: void
-        General handler of crawling.
+        General handler of crawling
         """
         result = self.__exec_request(self.url)
+        if result == "failed":
+            raise InterruptedError("The server responded with status code: {}".format(self._status_code))
         self.__save_relevants_in_results(result, total=True)
         self.total_nums = self.results["total_results"]
         pbar = tqdm(total=self.total_nums / 100) if self.to_be_num > self.total_nums else tqdm(total=self.to_be_num/100)
@@ -54,6 +56,10 @@ class ScienceDirectCrawler(Crawler):
                     if el['@ref'] == 'next':
                         next_url = el['@href']
                         result = self.__exec_request(next_url)
+                        if result == "failed":
+                            print("Invalid request. Server responded with Statuscode 400 while crawling. "
+                                  "The found articles will be saved further on...")
+                            break
                         self.__save_relevants_in_results(result)
                         pbar.update(1)
                         if len(self.results["documents"]) == self.to_be_num:
@@ -231,18 +237,22 @@ if __name__ == "__main__":
                "Title-Abstr-Key%28Sequence+Analysis+AND+data%29+AND+Title%28Sequence%29",
                "Title-Abstr-Key%28Sequence+Analytics+AND+data%29+AND+Title%28Sequence%29",
                "Title-Abstr-Key%28Association+rule+AND+data%29+AND+Title%28Association%29",
-               "Title-Abstr-Key%28Association+rule+mining+is%29+AND+Title%28Association%29"]
+               "Title-Abstr-Key%28Association+rule+mining+is%29+AND+Title%28Association%29",
+               "Title-Abstr-Key%28Sequential+Pattern%29",
+               "Title-Abstr-Key%28Frequent+Pattern%29",
+               "Title-Abstr-Key%28Regression+is%29+AND+Title%28Prediction%29",
+               "Title-Abstr-Key%28Regression+AND+data%29+AND+Title%28Prediction%29"]
     """
-    queries = ["Title-Abstr-Key%28Sequential+Pattern%29",
-               "Title-Abstr-Key%28Frequent+Pattern%29"]
-    dirs = ["sequential pattern", "frequent pattern"]
+    queries = ["Title-Abstr-Key%28Regression+is%29+AND+Title%28Prediction%29",
+               "Title-Abstr-Key%28Regression+AND+data%29+AND+Title%28Prediction%29"]
+    dirs = ["regression is", "regression"]
 
     for q, d in zip(queries, dirs):
         print(q)
         crawler = ScienceDirectCrawler(query=q,
                                        to_be_num=6000,
                                        out_dir="out/{}/".format(d))
-        crawler.run()
+        crawler.crawl()
         crawler.save_to_file()
         df = crawler.save_to_dataframe()
         crawler.pickle_dataframe(df, d)
