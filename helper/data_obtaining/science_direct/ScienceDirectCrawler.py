@@ -6,7 +6,6 @@ from tqdm import tqdm
 from helper_functions import find_nth
 
 
-# TODO: Seperate date in day, month, year
 class ScienceDirectCrawler:
 
     def __init__(self, query: str, out_dir: str, to_be_num: int = 1000):
@@ -56,7 +55,6 @@ class ScienceDirectCrawler:
                 if len(self.results) == self.to_be_num:
                     break
         self.__get_articles()
-        # self.get_abstracts()
 
     def __get_articles(self):
         """
@@ -68,8 +66,6 @@ class ScienceDirectCrawler:
             eid = doc["eid"]
             eid_url = self.base_article_url+eid
             eid_response = self.__exec_request(eid_url)
-            # print(eid_response)
-            # print(eid_response['abstracts-retrieval-response']['item']['bibrecord']['head']['abstracts'])
             if eid_response is not "failed":
                 if isinstance(eid_response['full-text-retrieval-response']['originalText'], str):
                     idx = find_nth(eid_response['full-text-retrieval-response']['originalText'], "1 Introduction", 2)
@@ -154,17 +150,24 @@ class ScienceDirectCrawler:
         :return: DataFrame
         Saves the results to a pandas dataframe
         """
-        titles = list()
-        dates = list()
-        authors = list()
+        titles, years, months, days, authors = list(), list(), list(), list(), list()
         for doc in self.results:
+            date_parts = self.__split_date(doc['prism:coverDate'][0]['$'])
             titles.append(doc['dc:title'])
-            dates.append(doc['prism:coverDate'])
+            years.append(date_parts[0])
+            months.append(date_parts[1])
+            days.append(date_parts[2])
             authors.append(self.__convert_authors(doc['authors']))
-        return pd.DataFrame({"title": titles, "dates": dates, "author": authors})
+        return pd.DataFrame({"title": titles, "years": years, "months": months, "days": days, "author": authors})
+
+    def __split_date(self, date: str):
+        parts = date.split("-")
+        return parts
 
 
 if __name__ == "__main__":
-    crawler = ScienceDirectCrawler(query="Title-Abstr-Key%28Clustering+AND+algorithm%29", to_be_num=1000, out_dir="out/")
+    crawler = ScienceDirectCrawler(query="Title-Abstr-Key%28Clustering+AND+algorithm%29", to_be_num=100, out_dir="out/")
     crawler.run()
-    crawler.save_to_file()
+    df = crawler.save_to_dataframe()
+    print(df)
+    # crawler.save_to_file()
