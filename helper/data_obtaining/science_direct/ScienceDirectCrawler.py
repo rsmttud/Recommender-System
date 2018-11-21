@@ -10,9 +10,9 @@ class ScienceDirectCrawler:
 
     def __init__(self, query: str, out_dir: str, to_be_num: int = 1000):
         """
-        :param query: Query that should be searched in science direct (https://dev.elsevier.com/tips/ScienceDirectSearchTips.htm)
-        :param out_dir: Directory where the resulting files should be stored
-        :param to_be_num: Amount of articles to get crawled (Needs to be x times 100).
+        :param query: String (Query that should be searched in science direct (https://dev.elsevier.com/tips/ScienceDirectSearchTips.htm))
+        :param out_dir: String (Directory where the resulting files should be stored)
+        :param to_be_num: int (Amount of articles to get crawled (Needs to be x times 100))
         """
         if to_be_num % 100 != 0:
             raise ValueError("Number of results must be 100*x")
@@ -58,8 +58,8 @@ class ScienceDirectCrawler:
 
     def __exec_request(self, URL):
         """
-        :param URL: URL to request
-        :return: dict with results
+        :param URL: String (URL to request)
+        :return: dict (Server response)
         This method actually makes the requests and handles the response of the server
         """
         headers = {
@@ -102,7 +102,7 @@ class ScienceDirectCrawler:
     def __get_articles(self):
         """
         :return: void
-         Makes calls to science direct to receive the article and abstracts based on the article eid number.
+        Makes calls to science direct to receive the article and abstracts based on the article eid number.
         """
         errors = 0
         for i, doc in enumerate(tqdm(self.results["documents"])):
@@ -124,7 +124,7 @@ class ScienceDirectCrawler:
 
     def __get_introduction_index(self, text: str) -> int:
         """
-        :param text: The text to be searched
+        :param text: String (The text to be searched)
         :return: int
         This method sould return the index of the SECOND occurrence of "1 Introduction" or "1. Introduction" or ...
         """
@@ -138,7 +138,7 @@ class ScienceDirectCrawler:
     def __convert_authors(self, author_dict: dict):
         """
         :param author_dict: dict
-        :return: String of authors
+        :return: String (The authors)
         Internal function to get the author names of an article
         """
         res = ""
