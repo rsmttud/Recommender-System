@@ -30,11 +30,12 @@ class Model(ABC):
         """
         pass
 
-    # TODO Documentation necessary
+
     @abstractmethod
     def normalize_result(self, prediction: Prediction) -> Prediction:
         """
-        To
+        To scale the confidence of the prediction between 0-1. This should guarantee that predictions from different
+        models are comparable to each other.
         :param prediction: a prediction made by a model in form of an prediction object
         :return: A prediction object with normalized results
         """
