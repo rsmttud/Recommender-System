@@ -4,6 +4,7 @@ import json
 import os
 from tqdm import tqdm
 from helper_functions import find_nth
+import re
 
 
 class ScienceDirectCrawler:
@@ -28,6 +29,7 @@ class ScienceDirectCrawler:
         self.config = self.__load_config()
         self.to_be_num = to_be_num
         self.results = dict()
+        self.results["documents"] = list()
         self.total_nums = 0
         self.num_res = 0
         self.out_dir = out_dir
@@ -38,8 +40,8 @@ class ScienceDirectCrawler:
         General handler of crawling.
         """
         result = self.__exec_request(self.url)
+        # self.save_response(result)
         self.__save_relevants_in_results(result, total=True)
-        self.num_res += len(self.results["documents"])
         self.total_nums = self.results["total_results"]
 
         if len(self.results["documents"]) != self.to_be_num:
@@ -47,14 +49,18 @@ class ScienceDirectCrawler:
                 for el in result['search-results']['link']:
                     if el['@ref'] == 'next':
                         next_url = el['@href']
-                        next_response = self.__exec_request(next_url)
-                        self.__save_relevants_in_results(next_response)
-                        print(len(self.results["documents"]))
+                        result = self.__exec_request(next_url)
+                        self.__save_relevants_in_results(result)
+                        # self.save_response(result)
                         if len(self.results["documents"]) == self.to_be_num:
                             break
                 if len(self.results["documents"]) == self.to_be_num:
                     break
-        self.__get_articles()
+
+    def save_response(self, res):
+        file = open("response_{}.json".format(self.num_res), "w")
+        file.write(str(res))
+        file.close()
 
     def __exec_request(self, URL):
         """
@@ -85,42 +91,46 @@ class ScienceDirectCrawler:
         :return: void
         This method stores the relevant information of the server response in the instance results variable
         """
-        self.results["documents"] = list()
-        [self.results["documents"].append(dict()) for _ in exec_result['search-results']['entry']]
+        current_idx = self.num_res
+        # print("Current index: {}".format(current_idx))
+        self.num_res += len(exec_result['search-results']['entry'])
+        # print("[Before saving in results dict] Number of current results: {}".format(self.num_res))
         if total:
             self.results["total_results"] = int(exec_result['search-results']['opensearch:totalResults'])
         for i, doc in enumerate(exec_result['search-results']['entry']):
             date_parts = self.__split_date(doc['prism:coverDate'][0]['$'])
-            self.results["documents"][i]["eid"] = doc['eid']
-            self.results["documents"][i]["title"] = doc["dc:title"]
-            self.results["documents"][i]["authors"] = self.__convert_authors(doc["authors"])
-            self.results["documents"][i]["date"] = doc['prism:coverDate'][0]['$']
-            self.results["documents"][i]["year"] = date_parts[0]
-            self.results["documents"][i]["month"] = date_parts[1]
-            self.results["documents"][i]["day"] = date_parts[2]
+            if "authors" in doc.keys():
+                authors = self.__convert_authors(doc["authors"])
+            else:
+                authors = ""
+            self.results["documents"].append(dict())
+            self.results["documents"][current_idx+i]["eid"] = doc['eid']
+            self.results["documents"][current_idx+i]["title"] = self.__prepare_title(doc["dc:title"])
+            self.results["documents"][current_idx+i]["authors"] = authors
+            self.results["documents"][current_idx+i]["date"] = doc['prism:coverDate'][0]['$']
+            self.results["documents"][current_idx+i]["year"] = date_parts[0]
+            self.results["documents"][current_idx+i]["month"] = date_parts[1]
+            self.results["documents"][current_idx+i]["day"] = date_parts[2]
 
-    def __get_articles(self):
+    def __get_article_and_abstract(self, eid: str):
         """
         :return: void
         Makes calls to science direct to receive the article and abstracts based on the article eid number.
         """
-        errors = 0
-        for i, doc in enumerate(tqdm(self.results["documents"])):
-            eid = doc["eid"]
-            eid_url = self.base_article_url+eid
-            eid_response = self.__exec_request(eid_url)
-            if eid_response is not "failed":
-                if isinstance(eid_response['full-text-retrieval-response']['originalText'], str):
-                    idx = self.__get_introduction_index(eid_response['full-text-retrieval-response']['originalText'])
-                    self.results["documents"][i]["article"] = eid_response['full-text-retrieval-response']['originalText'][idx:]
-                else:
-                    self.results["documents"][i]["article"] = False
-                self.results["documents"][i]["abstract"] = eid_response['full-text-retrieval-response']['coredata']['dc:description']
+        eid_url = self.base_article_url+eid
+        eid_response = self.__exec_request(eid_url)
+        text, abstr = False, False
+        if eid_response is not "failed":
+            if isinstance(eid_response['full-text-retrieval-response']['originalText'], str):
+                idx = self.__get_introduction_index(eid_response['full-text-retrieval-response']['originalText'])
+                text = eid_response['full-text-retrieval-response']['originalText'][idx:]
             else:
-                self.results["documents"][i]["article"] = False
-                self.results["documents"][i]["abstract"] = False
-                errors += 1
-        print("{} Documents could not be found!".format(errors))
+                text = False
+            if isinstance(eid_response['full-text-retrieval-response']['coredata']['dc:description'], str):
+                abstr = eid_response['full-text-retrieval-response']['coredata']['dc:description']
+            else:
+                abstr = False
+        return text, abstr
 
     def __get_introduction_index(self, text: str) -> int:
         """
@@ -143,7 +153,10 @@ class ScienceDirectCrawler:
         """
         res = ""
         for i, _ in enumerate(author_dict['author']):
-            res += author_dict['author'][i]["given-name"] + " " + author_dict['author'][i]["surname"] + ", "
+            if "given-name" in author_dict["author"][i].keys() and "surname" in author_dict["author"][i].keys():
+                res += author_dict['author'][i]["given-name"] + " " + author_dict['author'][i]["surname"] + ", "
+            else:
+                res += str(author_dict['author'][i])
         return res
 
     def __split_date(self, date: str):
@@ -160,6 +173,9 @@ class ScienceDirectCrawler:
         file.close()
         return config_file
 
+    def __prepare_title(self, input):
+        return re.sub(r"[^A-Za-z| ]+", '', input)[:130]
+
     def save_to_file(self):
         """
         :return: void
@@ -167,19 +183,21 @@ class ScienceDirectCrawler:
         """
         abs_errors = 0
         art_errors = 0
-        for doc in self.results["documents"]:
+        for i, doc in enumerate(tqdm(self.results["documents"])):
+            paper, abstract = self.__get_article_and_abstract(doc["eid"])
             file = open(self.out_dir + "[{}] {}.txt".format(doc["date"], doc["title"]), "w")
             file.write("{} - from Authors: {} \n".format(doc["title"], doc["authors"]))
-            if doc["abstract"]:
+            if abstract:
                 file.write("\n\n______ABSTRACT______\n")
-                file.write(doc["abstract"])
+                file.write(abstract)
             else:
                 abs_errors += 1
-            if doc["article"]:
+            if paper:
                 file.write("\n\n______ARTICLE______\n")
-                file.write(doc["article"])
+                file.write(paper)
             else:
                 art_errors += 1
+            file.close()
         print("Not saved/found: {} abstracts, {} articles".format(abs_errors, art_errors))
 
     def save_to_dataframe(self):
@@ -196,10 +214,60 @@ class ScienceDirectCrawler:
             authors.append(doc['authors'])
         return pd.DataFrame({"title": titles, "years": years, "months": months, "days": days, "author": authors})
 
+    """
+        def __get_articles(self):
+            errors = 0
+            for i, doc in enumerate(tqdm(self.results["documents"])):
+                eid = doc["eid"]
+                eid_url = self.base_article_url+eid
+                eid_response = self.__exec_request(eid_url)
+                if eid_response is not "failed":
+                    if isinstance(eid_response['full-text-retrieval-response']['originalText'], str):
+                        idx = self.__get_introduction_index(eid_response['full-text-retrieval-response']['originalText'])
+                        self.results["documents"][i]["article"] = eid_response['full-text-retrieval-response']['originalText'][idx:]
+                    else:
+                        self.results["documents"][i]["article"] = False
+                    self.results["documents"][i]["abstract"] = eid_response['full-text-retrieval-response']['coredata']['dc:description']
+                else:
+                    self.results["documents"][i]["article"] = False
+                    self.results["documents"][i]["abstract"] = False
+                    errors += 1
+            print("{} Documents could not be found!".format(errors))
+        """
+
+    """
+        def save_to_file_old(self):
+            print("[Before saving to files] Num of documents: {}".format(len(self.results["documents"])))
+            file_1 = open("results.json", "w")
+            file_1.write(str(self.results))
+            abs_errors = 0
+            art_errors = 0
+            for i, doc in enumerate(self.results["documents"]):
+                # paper, abstract = self.__get_article_and_abstract(doc["eid"])
+                file = open(self.out_dir + "[{}] {}.txt".format(doc["date"], doc["title"]), "w")
+                print(str(i) + " " + str(file) + " " + "[{}] {}.txt"
+                      .format(doc["date"], doc["title"]))
+                file.write("{} - from Authors: {} \n".format(doc["title"], doc["authors"]))
+                if doc["abstract"]:
+                    file.write("\n\n______ABSTRACT______\n")
+                    file.write(doc["abstract"])
+                else:
+                    abs_errors += 1
+                if doc["article"]:
+                    file.write("\n\n______ARTICLE______\n")
+                    file.write(doc["article"])
+                else:
+                    art_errors += 1
+            print("Not saved/found: {} abstracts, {} articles".format(abs_errors, art_errors))
+        """
+
 
 if __name__ == "__main__":
-    crawler = ScienceDirectCrawler(query="Title-Abstr-Key%28Clustering+AND+algorithm%29", to_be_num=100, out_dir="out/")
-    crawler.run()
-    df = crawler.save_to_dataframe()
-    print(df)
-    # rawler.save_to_file()
+    queries = ["Title-Abstr-Key%28Clustering+AND+algorithm%29", "Title-Abstr-Key%28Classification+AND+algorithm%29"]
+    dirs = ["clustering", "classification"]
+    for q, d in zip(queries, dirs):
+        crawler = ScienceDirectCrawler(query=q,
+                                       to_be_num=2000,
+                                       out_dir="out/{}/".format(d))
+        crawler.run()
+        crawler.save_to_file()
