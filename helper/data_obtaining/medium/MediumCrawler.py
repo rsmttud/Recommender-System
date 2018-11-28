@@ -5,18 +5,20 @@ import re
 from selenium import webdriver
 import time
 from langdetect import detect
+from rs_helper.classes.Crawler import Crawler
 
 
-class MediumCrawler:
+class MediumCrawler(Crawler):
 
-    def __init__(self, url: str, query: str, number_of_scrollings):
+    def __init__(self, out_path: str, query: str, number_of_scrollings):
         """
         :param url: String (URL to start from)
         :param query: String (Search term for medium)
         :param number_of_scrollings: int (Number of Scrollings to be done on medium.com)
         Crawler for medium articles. Chromedriver required!
         """
-        self.url = url
+        super().__init__(out_path=out_path)
+        self.url = "https://medium.com/search?q={}".format(query)
         projec_root = os.path.abspath(os.path.dirname(__file__))
         driver_bin = os.path.join(projec_root, "chromedriver")
 
@@ -77,12 +79,8 @@ class MediumCrawler:
         Method to perform the crawl and extract links and texts from scrolled website.
         Reults will be saved in out/ directory.
         """
-
-        if not os.path.exists("out/"):
-            os.mkdir("out/")
-
-        if not os.path.exists("out/{}".format(self.algorithm)):
-            os.mkdir("out/{}".format(self.algorithm))
+        if not os.path.exists(self.out_path):
+            os.mkdir(self.out_path)
 
         counter_pdf = 1
         post_link_list: list = list()
@@ -122,9 +120,9 @@ class MediumCrawler:
                                     r = re.compile(regex)
                                     findings = r.findall(heading)
 
-                                    file = open("out/{}/{}_{}.txt".format(self.algorithm, counter_pdf,
-                                                                          " ".join(findings).replace("  ",
-                                                                                                     " ").strip()),
+                                    file = open(self.out_path+"/{}_{}.txt".format(self.algorithm, counter_pdf,
+                                                                                  " ".join(findings).replace("  ",
+                                                                                                             " ").strip()),
                                                 "w+")
                                     file.write(text)
                                     print("File {} saved!".format(counter_pdf))
@@ -138,6 +136,7 @@ if __name__ == "__main__":
     algorithms = ["Market Basket Analysis"]
     for i in algorithms:
         i = i.replace(" ", "%20")
-        crawler = MediumCrawler(url="https://medium.com/search?q={}".format(i), number_of_scrollings="inf",
-                                query=i)
+        crawler = MediumCrawler(number_of_scrollings="inf",
+                                query=i,
+                                out_path="out/{}/".format(i))
         crawler.crawl_medium_posts()
