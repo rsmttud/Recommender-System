@@ -8,3 +8,4 @@ from rs_helper.classes.KeywordExtractor import KeywordExtractor
 from rs_helper.classes.Topic import Topic
 from rs_helper.classes.Keyword import Keyword
 from rs_helper.classes.TranslationAugmentor import TranslationAugmentator
+from rs_helper.classes.Crawler import Crawler

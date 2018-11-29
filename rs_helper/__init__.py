@@ -9,3 +9,4 @@ from rs_helper.classes import KeywordExtractor
 from rs_helper.classes import Topic
 from rs_helper.classes import Keyword
 from rs_helper.classes import TranslationAugmentator
+from rs_helper.classes import Crawler
