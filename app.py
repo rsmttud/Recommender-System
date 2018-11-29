@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from helper_functions import save_txt
+from rs_helper.classes import RecommendationFacade
 
 app = Flask(__name__)
 
@@ -10,12 +11,13 @@ def main():
         problem_short_desc = "" if "short_description" not in request.form else request.form['short_description']
         problem_long_desc = "" if "long_description" not in request.form else request.form['long_description']
 
-        save_txt(problem_title, problem_short_desc, problem_long_desc)
+        dir_name = save_txt(problem_title, problem_short_desc, problem_long_desc)
+
+        facade = RecommendationFacade(path_to_files=dir_name)
+        scores = facade.run(lda=True)
 
         return render_template("index.html", params={
-            "title": problem_title,
-            "short": problem_short_desc,
-            "long": problem_long_desc
+            "result": scores
         })
 
     return render_template("index.html")
