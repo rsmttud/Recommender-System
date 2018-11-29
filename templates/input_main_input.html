@@ -20,5 +20,14 @@
                 <i class="material-icons right">send</i>
             </button>
         </form>
+        {% if params %}
+            <p>Results per sentence:</p>
+            {% for i in range(3) %}
+                <p>Topic {{i}}:</p>
+                {% for scores in params["result"] %}
+                    <ol>{{ scores[i] }}</ol>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
