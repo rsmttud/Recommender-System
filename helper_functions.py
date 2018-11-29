@@ -2,7 +2,7 @@ import os
 import time
 
 
-def save_txt(title:str, short_desc:str, long_desc:str = None):
+def save_txt(title: str, short_desc: str, long_desc: str = None):
     """
     Functions saves the corresponding short and long description to the data/input folder. The long_desc is optional
     :param title: The title of the problem description
@@ -11,18 +11,24 @@ def save_txt(title:str, short_desc:str, long_desc:str = None):
     :return:
     """
     print(time.time())
-    file_name = title + "_" +str(int(time.time()))
-    path_short = os.path.join("data/input/short_desc", file_name + ".txt")
+    dir_name = "data/input/" + title + "_" + str(int(time.time()))
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
+    file_name = title + "_" + str(int(time.time()))
+    path_short = os.path.join(dir_name, "short_" + file_name + ".txt")
 
     with open(path_short, "w") as file:
         file.write(short_desc)
         file.close()
 
+    path_long = ""
     if long_desc:
-        path_long = os.path.join("data/input/long_desc", file_name + ".txt")
+        path_long = os.path.join(dir_name, "long_" + file_name + ".txt")
         with open(path_long, "w") as file:
             file.write(long_desc)
             file.close()
+
+    return dir_name
 
 
 def find_nth(string, substring, n):
@@ -52,7 +58,7 @@ def generate_dataset_of_files(files: list, class_name: str):
         if content not in complete:
             complete.append(content)
     if not os.path.exists("data/datasets/{}".format(class_name)):
-        os.mkdir("data/{}".format(class_name))
+        os.mkdir("data/datasets/{}".format(class_name))
     out_file = open("data/datasets/{}/{}.txt".format(class_name, class_name), "w")
     out_file.write(" ".join(complete))
     out_file.close()
