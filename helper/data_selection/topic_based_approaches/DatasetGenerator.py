@@ -10,18 +10,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class DatasetGenerator:
 
-    def __init__(self, path_to_files: str, search_term: str, class_name: str, save_name: str):
+    def __init__(self, path_to_files: str, search_terms: list, class_name: str, save_name: str):
         if not os.path.exists(path_to_files):
             raise ValueError("No such file or directory")
         self.path = path_to_files
         self.class_name = class_name
         self.result_sentences = list()
-        self.search_term = search_term
+        self.search_terms = search_terms
         self.save_name = save_name
 
     def run(self):
         sentences = self.find_sentences()
-        topics = pickle.load(open("manual_topics_for_embedding.pkl", "rb"))
+        topics = pickle.load(open("manual_topics_for_embedding_2.pkl", "rb"))
+        print(topics.keys())
         all_words = self.get_corpora(topics, sentences)
         clustering_topic = list(topics[self.class_name])
         clustering_vector = self.vectorize(clustering_topic, all_words)
@@ -50,12 +51,12 @@ class DatasetGenerator:
         return vector
 
     def get_corpora(self, topics, sents):
+        print("Getting Copora:")
         all = list()
         for key in topics:
             for w in topics[key]:
                 if w not in all:
                     all.append(w)
-        print("Getting words of sentences:")
         for s in tqdm(sents):
             ws = word_tokenize(s)
             for w in ws:
@@ -71,8 +72,9 @@ class DatasetGenerator:
                 sentences = sent_tokenize(data)
                 for s in sentences:
                     s = re.sub('[^A-Za-z ]+', '', s)
-                    if s.lower().find(self.search_term) != -1:
-                        sents.append(s.lower())
+                    for needle in self.search_terms:
+                        if s.lower().find(needle) != -1 and s.lower() not in sents:
+                            sents.append(s.lower())
         return sents
 
     def save_to_dataframe(self):
@@ -81,16 +83,18 @@ class DatasetGenerator:
         return df
 
     def save_to_txt(self):
-        file = open(self.save_name + "_sentences.txt", "w")
+        file = open("out/"+self.save_name + "_sentences.txt", "w")
         for s in self.result_sentences:
             file.write(s + "\n")
         file.close()
 
 
 if __name__ == "__main__":
-    generator = DatasetGenerator(path_to_files="../../data_obtaining/science_direct/out/sequence analysis",
-                                 search_term="sequence analysis is",
-                                 class_name="sequence_analysis",
-                                 save_name="sequence_analysis")
+    generator = DatasetGenerator(path_to_files="../../data_obtaining/science_direct/out/assoc rule mining is",
+                                 search_terms=["association is", "association analysis is", "association rule mining aims",
+                                               "association rule mining is", "association rule mining defined",
+                                               "association rules are", "association analysis"],
+                                 class_name="sequential_pattern_mining",
+                                 save_name="assoc_rule_mining_is")
     generator.run()
 
