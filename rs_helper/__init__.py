@@ -10,3 +10,5 @@ from rs_helper.classes import Topic
 from rs_helper.classes import Keyword
 from rs_helper.classes import TranslationAugmentator
 from rs_helper.classes import Crawler
+from rs_helper.classes import TFIDF
+from rs_helper.classes import TFIGM
