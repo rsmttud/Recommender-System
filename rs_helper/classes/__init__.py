@@ -9,3 +9,6 @@ from rs_helper.classes.Topic import Topic
 from rs_helper.classes.Keyword import Keyword
 from rs_helper.classes.TranslationAugmentor import TranslationAugmentator
 from rs_helper.classes.Crawler import Crawler
+from rs_helper.classes.TFIDF import TFIDF
+from rs_helper.classes.TFIGM import TFIGM
+
