@@ -1,0 +1,21 @@
+Scaling relations of observed galaxy cluster properties are useful tools for
+ constraining cosmological parameters as well as cluster formation histories.
+ One of the key cosmological parameters, sigma8, is constrained using observed
+ clusters of galaxies, although current estimates of sigma8 from the scaling
+ relations of dynamically relaxed galaxy clusters are limited by the large
+ scatter in the observed cluster mass-temperature (M-T) relation. With a sample
+ of eight strong lensing clusters at 0.3 < z <0.8, we find that the observed
+ cluster concentration-mass relation can be used to reduce the M-T scatter by a
+ factor of 6. Typically only relaxed clusters are used to estimate sigma8, but
+ combining the cluster concentration-mass relation with the M-T relation enables
+ the inclusion of unrelaxed clusters as well. Thus, the resultant gains in the
+ accuracy of sigma8 measurements from clusters are twofold: the errors on sigma8
+ are reduced and the cluster sample size is increased. Therefore, the statistics
+ on sigma8 determination from clusters are greatly improved by the inclusion of
+ unrelaxed clusters. Exploring cluster scaling relations further, we find that
+ the correlation between brightest cluster galaxy (BCG) luminosity and cluster
+ mass offers insight into the assembly histories of clusters. We find
+ preliminary evidence for a steeper BCG luminosity - cluster mass relation for
+ strong lensing clusters than the general cluster population, hinting that
+ strong lensing clusters may have had more active merging histories.
+ 

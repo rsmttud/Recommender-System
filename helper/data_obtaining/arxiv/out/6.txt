@@ -1,0 +1,4 @@
+We give an introduction to the theory of cluster categories and cluster
+ tilted algebras. We include some background on the theory of cluster algebras,
+ and discuss the interplay with cluster categories and cluster tilted algebras.
+ 

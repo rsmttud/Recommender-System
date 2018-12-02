@@ -1,0 +1,9 @@
+Fuzzy clustering is a famous unsupervised learning method used to collecting
+ similar data elements within cluster according to some similarity measurement.
+ But, clustering algorithms suffer from some drawbacks. Among the main weakness
+ including, selecting the initial cluster centres and the appropriate clusters
+ number is normally unknown. These weaknesses are considered the most
+ challenging tasks in clustering algorithms. This paper introduces a
+ comprehensive review of metahueristic search to solve fuzzy clustering
+ algorithms problems.
+ 
