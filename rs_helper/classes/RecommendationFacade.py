@@ -3,12 +3,14 @@ from rs_helper.classes import Vectorizer
 from rs_helper.classes import Prediction
 from rs_helper.classes import Preprocessor
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
+import pickle
+import numpy as np
 
 
 class RecommendationFacade:
 
-    def __init__(self, path_to_file: str):
-        self.corpora = Corpora(path=path_to_file)
+    def __init__(self, path_to_files: str):
+        self.corpora = Corpora(path=path_to_files)
 
     def run(self, lda: bool = False, key_ex: bool = False, doc2vec: bool = False, classification: bool = False):
         """
@@ -27,6 +29,16 @@ class RecommendationFacade:
             return self.__classification_embedding()
 
     def __lda_pipeline(self):
+        model = pickle.load(open("models/LDA/LdaModel_ntopics_3_freq_sd_arxiv.bin", "rb"))
+        vectorizer = pickle.load(open("models/LDA/vectorizer.bin", "rb"))
+        preprocessor = Preprocessor(self.corpora.data)
+        docs = preprocessor.lemmatize(remove_stops=True, remove_punct_and_nums=True)
+        scores_per_sentence = list()
+        for doc in docs:
+            input_sentence = vectorizer.transform([" ".join(doc)])
+            topic_scores = model.transform(input_sentence)
+            scores_per_sentence.append(list(np.array(topic_scores).flatten()))
+        return scores_per_sentence
         pass
 
     def __classification_embedding(self):
