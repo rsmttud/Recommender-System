@@ -22,7 +22,7 @@ class RecommendationFacade:
         return result_scores
 
     def __lda_pipeline(self):
-        model = pickle.load(open("models/LDA/LdaModel_ntopics_3_freq.bin", "rb"))
+        model = pickle.load(open("models/LDA/LdaModel_ntopics_3_freq_sd_arxiv.bin", "rb"))
         vectorizer = pickle.load(open("models/LDA/vectorizer.bin", "rb"))
         preprocessor = Preprocessor(self.corpora.data)
         docs = preprocessor.lemmatize(remove_stops=True, remove_punct_and_nums=True)
