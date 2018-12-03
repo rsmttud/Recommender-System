@@ -2,9 +2,9 @@ import os
 import time
 
 
-def save_txt(title:str, short_desc:str, long_desc:str = None):
+def save_txt_from_interface(title:str, short_desc:str, long_desc:str = None):
     """
-    Functions saves the corresponding short and long description to the data/input folder. The long_desc is optional
+    Functions saves the corresponding short and long description from the frontend to the data/input folder. The long_desc is optional
     :param title: The title of the problem description
     :param short_desc: A short description in form of an string
     :param long_desc: A long description in form of an string
