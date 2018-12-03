@@ -3,3 +3,8 @@
 notes.md
 playground.py
 test.txt
+/dir_*
+/dataset*
+*.DS_Store
+*/__pychache__
+__pychache__/*
