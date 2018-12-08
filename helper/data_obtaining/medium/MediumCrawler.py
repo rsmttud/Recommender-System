@@ -133,7 +133,8 @@ class MediumCrawler(Crawler):
 
 if __name__ == "__main__":
     print("NOTE: Chrome window should stay active when scrolling to ensure functionality.")
-    algorithms = ["Market Basket Analysis"]
+    algorithms = ["Frequent Pattern Mining", "Frequent Pattern", "Sequential Analytics",
+                  "Clustering", "Classification", "Regression", "Association rule", "Sequence Analytics"]
     for i in algorithms:
         i = i.replace(" ", "%20")
         crawler = MediumCrawler(number_of_scrollings="inf",
