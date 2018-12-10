@@ -1,0 +1,20 @@
+{
+  "labels": [
+    {
+      "name": "clustering",
+      "id": 0
+    },
+     {
+      "name": "association",
+      "id": 1
+    },
+     {
+      "name": "regression",
+      "id": 2
+    },
+     {
+      "name": "classification",
+      "id": 3
+    }
+  ]
+}
