@@ -17,9 +17,10 @@ def main():
         file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
         prediction = []
 
+        # TODO adjust for LDA
         if problem_method == "classification":
             path = os.path.join("data/input/long_desc", file_name + ".txt")
-            facade = RecommendationFacade(path_to_file=path)
+            facade = RecommendationFacade(path_to_files=path)
             result = facade.run(classification=True)
             prediction = zip(result.classes, result.values)
 
