@@ -1,7 +1,6 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 import pickle
-import os
-
+import pandas as pd
 
 class Crawler(ABC):
 
@@ -10,13 +9,16 @@ class Crawler(ABC):
         self.class_name = self.__class__.__name__
         pass
 
-    def crawl(self):
+    @abstractmethod
+    def crawl(self) -> None:
         pass
 
+    @abstractmethod
     def save_to_file(self):
         pass
 
-    def save_to_dataframe(self):
+    @abstractmethod
+    def save_to_dataframe(self) -> pd.DataFrame:
         pass
 
     def pickle_dataframe(self, df, dir):
