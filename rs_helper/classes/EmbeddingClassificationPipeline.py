@@ -36,7 +36,7 @@ class EmbeddingClassificationPipeline(Model):
             n_classes=4,
             optimizer=tf.train.AdagradOptimizer(learning_rate=0.001))
 
-    def __normalize_result(self, prediction: Prediction) -> Prediction:
+    def normalize_result(self, prediction: Prediction) -> Prediction:
         pass
 
     def __text_to_input_func(self, text):

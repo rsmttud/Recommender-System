@@ -28,6 +28,7 @@ class RecommendationFacade:
         if classification:
             return self.__classification_embedding()
 
+    # TODO return Prediction Object
     def __lda_pipeline(self):
         model = pickle.load(open("models/LDA/LdaModel_ntopics_3_freq_sd_arxiv.bin", "rb"))
         vectorizer = pickle.load(open("models/LDA/vectorizer.bin", "rb"))
@@ -41,8 +42,8 @@ class RecommendationFacade:
         return scores_per_sentence
         pass
 
-    def __classification_embedding(self):
-        path_classifier = "models/trained_models/daniel_0712/dnn_0712"
+    def __classification_embedding(self) -> Prediction:
+        path_classifier = "/Users/Daniel/PycharmProjects/Recommender-System/models/classifier/daniel_0712/dnn_0712"
         path_embedding = "models/trained_models/daniel_0712/USE_DAN/use_081218"
         model = EmbeddingClassificationPipeline(path_to_embedding_model=path_embedding, path_to_model=path_classifier)
         model.initialize()

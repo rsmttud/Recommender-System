@@ -33,7 +33,7 @@ class Model(ABC):
         pass
 
     @abstractmethod
-    def __normalize_result(self, prediction: Prediction) -> Prediction:
+    def normalize_result(self, prediction: Prediction) -> Prediction:
         """
         To scale the confidence of the prediction between 0-1. This should guarantee that predictions from different
         models are comparable to each other.
