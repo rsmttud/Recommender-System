@@ -37,7 +37,7 @@ class ScienceDirectCrawler(Crawler):
         self.num_res = 0
         self.out_dir = out_dir
 
-    def run(self):
+    def crawl(self):
         """
         :return: void
         General handler of crawling.
