@@ -1,0 +1,5 @@
+clustering_I have different machine types and want to find similar error structures based on recent error history. Thereby, the error should be grouped in different categories or groups which are as dissimilar as possible.
+prediction_In terms of a new product introduction, the price of a product should be predicted based on different characteristics like the size, equipment features or the buying power of the area.
+prediction_The analysis should evauate the relationship between the weather and the amount of sold ice cream. More specific, it should be examined how much the temperature influences the renvenue of the organization.
+clustering_Clustering is unsupervised and helps grouping similar objects.
+prediction_I want to predict the stock prices for a new product.
