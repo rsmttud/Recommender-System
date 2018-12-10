@@ -11,19 +11,35 @@ import shutil
 
 class DatasetGenerator:
 
-    def __init__(self, path_to_files: str, search_terms: list, class_name: str, save_name: str, seperate_save: bool = False):
+    def __init__(self, path_to_files: str, out_path: str,
+                 search_terms: list, class_name: str, save_name: str,
+                 seperate_save: bool = False, save_num_start: int = 0):
+        """
+        :param path_to_files: String - Directory where files are stored
+        :param out_path: String - Directory where the resulting sentences should be stored
+        :param search_terms: List(String) - List of terms that should be searched for in the documents
+        :param class_name: Stirng - Class name used for getting topic from pickled topics
+        :param save_name: Stirng - Name of the saved files (_<num>.txt gets appended)
+        :param seperate_save: Bool - Set if sentences should be stored in one or seperate files
+        :param save_num_start: Int - Number from which the saved files numeration should start (See save_name)
+        DatasetGenerator takes all files of a directory and searches for sentences that contain specific keywords/
+        keyphrases. These will be compared with the topic of the class (Cosine similarity). The top 25% similar
+        sentences will be stored in the out_dir.
+        """
         if not os.path.exists(path_to_files):
             raise ValueError("No such file or directory")
         self.path = path_to_files
         self.class_name = class_name
         self.result_sentences = list()
         self.search_terms = search_terms
+        self.out_path = out_path
         self.save_name = save_name
         self.seperate = seperate_save
+        self.save_start = save_num_start
 
     def run(self):
         sentences = self.find_sentences()
-        topics = pickle.load(open("manual_topics_for_embedding_2.pkl", "rb"))
+        topics = pickle.load(open("data/manual_topics_for_embedding.pkl", "rb"))
         all_words = self.get_corpora(topics, sentences)
         topic = list(topics[self.class_name])
         topic_vector = self.vectorize(topic, all_words)
@@ -37,6 +53,7 @@ class DatasetGenerator:
             self.result_sentences.append(sentences[idx])
 
     def calculate_similarities(self, basis: list, sentences: list, vector):
+        print("Calc Sims:")
         sims = dict()
         for i, s in enumerate(tqdm(sentences)):
             vec = self.vectorize(word_tokenize(s), basis)
@@ -58,7 +75,7 @@ class DatasetGenerator:
             for w in topics[key]:
                 if w not in all:
                     all.append(w)
-        for s in tqdm(sents):
+        for s in sents:
             ws = word_tokenize(s)
             for w in ws:
                 if w not in all:
@@ -66,6 +83,7 @@ class DatasetGenerator:
         return list(set(all))
 
     def find_sentences(self):
+        print("Findinf sentences:")
         sents = list()
         for t in tqdm(os.listdir(self.path)):
             if t.endswith(".txt"):
@@ -88,15 +106,15 @@ class DatasetGenerator:
 
     def save_to_txt(self, seperate: bool = False):
         if not seperate:
-            file = open("out/"+self.save_name + "_sentences.txt", "w")
+            file = open(os.path.join(self.out_path, self.save_name + "_sentences.txt"), "w")
             for s in self.result_sentences:
                 file.write(s + "\n")
             file.close()
         else:
-            if not os.path.exists("out/"+self.class_name+"/"):
-                os.mkdir("out/"+self.class_name+"/")
+            if not os.path.exists(os.path.join(self.out_path, self.class_name)):
+                os.mkdir(os.path.join(self.out_path, self.class_name))
             for i, s in enumerate(self.result_sentences):
-                file = open("out/"+self.class_name+"/"+self.save_name+"_{}.txt".format(i), "w")
+                file = open(os.path.join(self.out_path, self.save_name+"_{}.txt".format(self.save_start+i+1)), "w")
                 file.write(s)
                 file.close()
 
@@ -116,30 +134,3 @@ class DatasetGenerator:
                 if file.endswith("txt"):
                     if file not in os.listdir(label_dir):
                         shutil.copyfile(os.path.join(sub_path, file), os.path.join(label_dir, file))
-
-
-if __name__ == "__main__":
-    search_terms_for_patterns = ["frequent pattern mining is", "pattern analysis is", "frequent pattern mining aims",
-                                 "frequent pattern is", "frequent pattern mining defined",
-                                 "frequent patterns are", "pattern analysis", "sequential patterns are",
-                                 "sequential pattern mining is", "sequential pattern mining defined",
-                                 "pattern mining aims", "pattern mining is", "association rules are",
-                                 "association rule mining is", "association rule mining aims"]
-
-    search_terms_for_prediction = ["prediction aims", "prediction is", "classification is", "classification aims",
-                                   "classification defined", "classification defines", "regression is", "regression aims",
-                                   "regression defined", "regression defines", "regression analysis is", "classification analysis is",
-                                   "classification analysis aims", "regression analysis aims"]
-
-    search_terms_for_clustering = ["clustering is", "clustering defined", "clustering defines", "clustering aims",
-                                   "cluster analysis is", "cluster analysis aims", "cluster analysis defined",
-                                   "cluster analysis defines"]
-
-    generator = DatasetGenerator(path_to_files="../../data_obtaining/arxiv/out/frequent_pattern",
-                                 search_terms=search_terms_for_patterns,
-                                 class_name="sequential_pattern_mining",
-                                 save_name="frequent_pattern_mining_arxiv",
-                                 seperate_save=True)
-    generator.run()
-    # generator.merge_crawl_results(super_dir="../../data_obtaining/science_direct/out/")
-
