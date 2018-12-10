@@ -4,17 +4,13 @@
       "name": "clustering",
       "id": 0
     },
-     {
+    {
       "name": "pattern_mining",
       "id": 1
     },
-     {
-      "name": "regression",
+    {
+      "name": "prediction",
       "id": 2
-    },
-     {
-      "name": "classification",
-      "id": 3
     }
   ]
 }
