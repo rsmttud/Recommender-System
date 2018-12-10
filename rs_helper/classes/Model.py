@@ -32,7 +32,6 @@ class Model(ABC):
         """
         pass
 
-    # TODO class should be private or in the prediction class
     @abstractmethod
     def __normalize_result(self, prediction: Prediction) -> Prediction:
         """
