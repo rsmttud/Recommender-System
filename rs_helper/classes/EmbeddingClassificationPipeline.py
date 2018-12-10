@@ -3,8 +3,6 @@ from rs_helper.classes.Model import Model
 import tensorflow as tf
 import tensorflow_hub as tf_hub
 import pandas as pd
-from typing import *
-import numpy as np
 import os
 
 
@@ -19,6 +17,7 @@ class EmbeddingClassificationPipeline(Model):
         self.estimator = None
 
     def initialize(self) -> None:
+        # TODO
         os.environ["TFHUB_CACHE_DIR"] = '/tfhub'
         tf.logging.set_verbosity(tf.logging.ERROR)
 
@@ -33,11 +32,11 @@ class EmbeddingClassificationPipeline(Model):
         self.estimator = tf.estimator.DNNClassifier(
             hidden_units=[500, 100],
             feature_columns=[embedded_text_feature_column],
-            warm_start_from="/Users/Daniel/PycharmProjects/Recommender-System/models/trained_models/daniel_0712/dnn_0712",
-            n_classes=self.num_classes,
+            warm_start_from=self.path_to_classifier,
+            n_classes=4,
             optimizer=tf.train.AdagradOptimizer(learning_rate=0.001))
 
-    def normalize_result(self, prediction: Prediction) -> Prediction:
+    def __normalize_result(self, prediction: Prediction) -> Prediction:
         pass
 
     def __text_to_input_func(self, text):
