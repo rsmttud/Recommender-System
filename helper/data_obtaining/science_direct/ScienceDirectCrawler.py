@@ -40,7 +40,7 @@ class ScienceDirectCrawler(Crawler):
     def crawl(self):
         """
         :return: void
-        General handler of crawling.
+        General handler of crawling
         """
         result = self.__exec_request(self.url)
         if result == "failed":
