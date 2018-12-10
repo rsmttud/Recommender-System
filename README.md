@@ -21,3 +21,8 @@ To edit your flask configuration go to:
 7. Activate the Debug mode (Autoreload after changes - only for py files as i noticed.)
 8. Run the Application with the flask configuration (On the top left corner where the symbols for run, debug, etc. are)
 
+## Selective Merge using PyCharm
+1. Go to Version Control Tab
+2. Go to Log
+3. Search for the commit you want to merge into your branch and right-click __chery-pick__
+4. Commit
