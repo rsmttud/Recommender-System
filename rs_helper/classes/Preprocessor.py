@@ -42,7 +42,3 @@ class Preprocessor:
     def to_text(self) -> list:
         return [el.lower_ for el in self.doc]
 
-    def preprocess(self, text: str, lowercase: bool = True, remove_punct_and_nums: bool = True,
-                   lemmatize: bool = True, remove_stopwords: bool = True):
-        if lowercase:
-            text = text.lower()
