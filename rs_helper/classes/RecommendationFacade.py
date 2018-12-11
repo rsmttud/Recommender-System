@@ -43,8 +43,8 @@ class RecommendationFacade:
         pass
 
     def __classification_embedding(self) -> Prediction:
-        path_classifier = "/Users/Daniel/PycharmProjects/Recommender-System/models/classifier/daniel_0712/dnn_0712"
-        path_embedding = "models/trained_models/daniel_0712/USE_DAN/use_081218"
+        path_classifier = "./models/classifier/daniel_0712/dnn_0712"
+        path_embedding = "models/trained_models/daniel_0712/USE_DAN/use_081218" # Still useless
         model = EmbeddingClassificationPipeline(path_to_embedding_model=path_embedding, path_to_model=path_classifier)
         model.initialize()
         prediction = model.predict(self.corpora.data)
