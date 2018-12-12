@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from helper_functions import save_txt_from_interface
-from rs_helper import RecommendationFacade
-from rs_helper import LabelMap
+from rs_helper.classes import RecommendationFacade
+from rs_helper.classes import LabelMap
 import os
 
 app = Flask(__name__)
@@ -17,12 +17,16 @@ def main():
 
         file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
         prediction = []
-        # TODO adjust for LDA
+        path = os.path.join("data/input/long_desc", file_name + ".txt")
+        facade = RecommendationFacade(path_to_files=path)
+
         if problem_method == "classification":
-            path = os.path.join("data/input/long_desc", file_name + ".txt")
-            facade = RecommendationFacade(path_to_files=path)
             result = facade.run(classification=True)
             label_map = LabelMap(path_to_json="models/label_maps/4_classes.json")
+            prediction = zip([label_map.get_name(label_id=x) for x in result.classes], result.values)
+        elif problem_method == "lda":
+            result = facade.run(lda=True)
+            label_map = LabelMap(path_to_json="models/label_maps/lda_3_topics.json")
             prediction = zip([label_map.get_name(label_id=x) for x in result.classes], result.values)
 
         return render_template("index.html", prediction=prediction)
