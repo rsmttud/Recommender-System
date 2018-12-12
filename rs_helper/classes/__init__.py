@@ -12,7 +12,10 @@ from rs_helper.classes.Crawler import Crawler
 from rs_helper.classes.TFIDF import TFIDF
 from rs_helper.classes.TFIGM import TFIGM
 from rs_helper.classes.RAKEExtractor import RAKEExtractor
+from rs_helper.classes.Model import Model
+from rs_helper.classes.ArxivCrawler import ArxivCrawler
 from rs_helper.classes.RAKEExtractor import RAKEExtractor
 from rs_helper.classes.LabelMap import LabelMap
 #from rs_helper.classes.TranslationAugmentor import TranslationAugmentator
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
+from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocation
