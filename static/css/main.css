@@ -1,8 +1,15 @@
 #main {
-  margin-top: 3%; }
+  margin-top: 3%;
+  /*min-height: 100vh;*/ }
 
-#main > div {
-  height: 500px; }
+#nav-main-wrapper {
+  min-height: 100vh; }
+
+#input-main-descriptive-placeholder {
+  background-color: dimgrey; }
+
+#main-row {
+  min-height: inherit; }
 
 body {
   display: flex;
