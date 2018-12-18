@@ -1,0 +1,1 @@
+Empirical collected data should be used to predict a the right sample size for our testing environment.

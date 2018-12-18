@@ -1,0 +1,2 @@
+Our company has a variety of different costumers.
+Based on the costumer types as well of their revenues, different costumer groups should be found.
