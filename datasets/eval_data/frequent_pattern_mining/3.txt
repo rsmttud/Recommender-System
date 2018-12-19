@@ -1,0 +1,1 @@
+Based on our costumer data we want to extract interesting patterns in their consumer behavior.

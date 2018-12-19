@@ -1,0 +1,2 @@
+ In this competition, you will use a more realistic acoustic data set. You are provided 3 subsets: a training set with 35 speakers' data, a development/tuning set with 6 speakers' data with phonetic labels, and a test set of 6 speakers' data without labels.
+ Your task is to group similar acoustic sounds into groups.
