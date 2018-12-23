@@ -19,6 +19,7 @@ class RecommendationFacade:
         :param key_ex: boolean to start or not start Keyword Extraction pipeline
         :param doc2vec: boolean to start or not start Doc2Vec pipeline
         :param classification: boolean to start or not start ML Classification pipeline
+        :param svc_classification: boolean to start or not start ML SVC Classification pipeline
         :return: Object of type Prediction (merged prediction of all pipelines)
         """
         if lda:
