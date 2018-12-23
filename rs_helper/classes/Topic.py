@@ -27,7 +27,7 @@ class Topic:
                 if x.keyword in a_keyword_names and x.keyword in b_keyword_names:
                     topic_set.add_keyword(x.keyword,
                                           x.rank + self.get_keyword_rank(other, x.keyword),
-                                          x.algorithm + self.get_keyword_algorithm(other, x.keyword))
+                                          x.algorithm + " " + self.get_keyword_algorithm(other, x.keyword))
                 else:
                     topic_set.add_keyword(x.keyword, x.rank, x.algorithm)
         return topic_set
