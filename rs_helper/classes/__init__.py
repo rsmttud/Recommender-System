@@ -15,6 +15,7 @@ from rs_helper.classes.RAKEExtractor import RAKEExtractor
 from rs_helper.classes.Model import Model
 from rs_helper.classes.ArxivCrawler import ArxivCrawler
 from rs_helper.classes.RAKEExtractor import RAKEExtractor
+from rs_helper.classes.TopicRank import TopicRank
 from rs_helper.classes.LabelMap import LabelMap
 from rs_helper.classes.SVC import SVC
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
