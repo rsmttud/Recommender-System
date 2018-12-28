@@ -1,0 +1,40 @@
+from rs_helper.classes.KeywordExtractor import KeywordExtractor
+from rs_helper.classes import Topic
+import string
+from nltk.corpus import stopwords
+import pke
+
+
+class YAKE(KeywordExtractor):
+
+    def __init__(self, paths_to_files: list, labels: list, top_n: int, threshold: float = 0.8):
+        super().__init__()
+        self.paths = paths_to_files
+        self.pos = {'NOUN', 'PROPN', 'ADJ'}
+        self.stoplist = list(string.punctuation)
+        self.stoplist += stopwords.words('english')
+        self.threshold = threshold
+        self.candidates = None
+        self.labels = labels
+        self.top_n = top_n
+
+    def extract_keywords(self, *kwargs):
+        result = {}
+        candidates = list()
+        for i, p in enumerate(self.paths):
+            yake = pke.unsupervised.YAKE()
+            yake.load_document(input=p, language="en", normalization=None)
+            yake.candidate_selection(n=1, stoplist=self.stoplist)
+            yake.candidate_weighting(window=5, stoplist=self.stoplist, use_stems=False)
+            yake_keyphrases = yake.get_n_best(n=self.top_n, threshold=self.threshold)
+            candidates.append(yake.candidates)
+            topic = self.__generate_topic(yake_keyphrases, self.labels[i])
+            result.update({self.labels[i]: topic})
+        self.candidates = candidates
+        return result
+
+    def __generate_topic(self, token_rank_dict, label: str):
+        topic = Topic(class_name=label)
+        for w, v in token_rank_dict:
+            topic.add_keyword(keyword=w.split(" "), rank=v, algorithm=self.class_name)
+        return topic
