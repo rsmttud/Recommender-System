@@ -7,5 +7,5 @@ class Vectorizer(ABC):
         pass
 
     @abstractmethod
-    def vectorize(self, mode: str) -> list:
+    def vectorize(self, **kwargs) -> list:
         pass
