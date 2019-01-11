@@ -1,4 +1,4 @@
-#import RAKE
+import RAKE
 import os
 from nltk.corpus import stopwords
 from rs_helper.classes import KeywordExtractor

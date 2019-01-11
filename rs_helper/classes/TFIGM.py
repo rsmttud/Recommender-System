@@ -69,7 +69,8 @@ class TFIGM(KeywordExtractor):
     def extract_keywords(self) -> dict:
         results = dict()
         vocab = self.__get_vocab()
-
+        import pickle
+        pickle.dump(reduce(operator.concat, vocab), open("data/topics/tfigm_vocab.vocab", "wb"))
         for i, doc in enumerate(vocab):
             word_tfigm_dict = dict()
             for token in tqdm(doc):
