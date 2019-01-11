@@ -7,7 +7,7 @@ class Keyword:
         :param rank: float
         :param algorithm: String
         """
-        self.keyword = keyword
+        self.keyword = keyword if isinstance(keyword, list) else [keyword]
         self.rank = rank
         self.algorithm = algorithm
 
