@@ -2,7 +2,9 @@ from rs_helper.classes import Corpora
 from rs_helper.classes import Prediction
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
 from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocation
+from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
 from rs_helper.classes.SVC import SVC
+import pickle
 
 
 class RecommendationFacade:
@@ -25,7 +27,7 @@ class RecommendationFacade:
         if lda:
             return self.__lda_pipeline()
         if key_ex:
-            self.__key_ex_pipeline()
+            return self.__key_ex_pipeline()
         if classification:
             return self.__classification_embedding()
         if svc_classification:
@@ -56,7 +58,12 @@ class RecommendationFacade:
         return prediction
 
     def __key_ex_pipeline(self):
-        pass
+        path_topics = "data/topics/"
+        path_vocab = "data/topics/vocab_2.vocab"
+        model = KeywordExtractionPipeline(path_to_model=path_topics, path_to_vocab=path_vocab)
+        model.initialize()
+        prediction = model.predict(self.corpora.data)
+        return prediction
 
     def __merge_predictions(self, predictions: list) -> Prediction:
         if not isinstance(predictions[0], Prediction):
