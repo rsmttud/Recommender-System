@@ -62,6 +62,10 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
         for index, class_id in enumerate(result.classes):
             # The float type casting is necessary, because json.dumps doesnt support np.float32
             prediction.update({label_map.get_name(class_id): float(result.values[index])})
+    elif pipeline_method == "key_ex":
+        result = facade.run(key_ex=True)
+        for index, class_id in enumerate(result.classes):
+            prediction.update({class_id: float(result.values[index])})
     else:
         prediction.update({"NoMethod": "Implemented"})
 
