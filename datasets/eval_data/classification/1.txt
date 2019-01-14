@@ -1,2 +1,0 @@
-The project describes the problem of recognizing objects in images.
-The main objective is to detect different car brands in one picture.

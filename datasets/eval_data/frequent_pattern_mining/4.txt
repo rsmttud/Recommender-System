@@ -1,1 +1,0 @@
-we want to analyze retail basket or transaction data, and are intended to identify strong rules discovered in transaction data using data of our costumers.
