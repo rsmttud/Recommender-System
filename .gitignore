@@ -5,8 +5,6 @@
 /static/materialize-src/css/materialize.css
 /static/materialize-src/css/materialize.css.map
 /data/definitions
-/notebooks
-/notebooks/.*
 notes.md
 playground*
 test.txt
