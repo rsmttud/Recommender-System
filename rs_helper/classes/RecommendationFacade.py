@@ -3,6 +3,7 @@ from rs_helper.classes import Prediction
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
 from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocation
 from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
+from rs_helper.classes.OneToOneGRU import OneToOneGRU
 from rs_helper.classes.SVC import SVC
 import pickle
 
@@ -14,7 +15,7 @@ class RecommendationFacade:
 
     def run(self, lda: bool = False, key_ex: bool = False,
             doc2vec: bool = False, classification: bool = False,
-            svc_classification: bool = False):
+            svc_classification: bool = False, gru_oto: bool = False):
         """
         Function should manage the starting of pipelines according to input
         :param lda: boolean to start or not start LDA pipeline
@@ -22,6 +23,7 @@ class RecommendationFacade:
         :param doc2vec: boolean to start or not start Doc2Vec pipeline
         :param classification: boolean to start or not start ML Classification pipeline
         :param svc_classification: boolean to start or not start ML SVC Classification pipeline
+        :param gru_oto: boolean to start the GRU One To One Classification pipeline
         :return: Object of type Prediction (merged prediction of all pipelines)
         """
         if lda:
@@ -32,6 +34,8 @@ class RecommendationFacade:
             return self.__classification_embedding()
         if svc_classification:
             return self.__svc_classification()
+        if gru_oto:
+            return self.__gru_oto_classification()
 
     def __lda_pipeline(self):
         path_model = "models/LDA/LdaModel_3_freq_clean.bin"
@@ -64,6 +68,17 @@ class RecommendationFacade:
         model.initialize()
         prediction = model.predict(self.corpora.data)
         return prediction
+
+    def __gru_oto_classification(self):
+        path_model = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_200_units_0.2_dropout_20_epochs.yaml"
+        path_weights = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_weights_200_units_0.2_dropout_20_epochs.h5"
+        path_encoder = "notebooks/model_trainings/FastText/models/ft_model_15000.pkl"
+        model = OneToOneGRU(path_to_model=path_model,
+                            path_to_weights=path_weights,
+                            path_to_encoder=path_encoder)
+        model.initialize()
+        predictions = model.predict(self.corpora.data)
+        return predictions
 
     def __merge_predictions(self, predictions: list) -> Prediction:
         if not isinstance(predictions[0], Prediction):

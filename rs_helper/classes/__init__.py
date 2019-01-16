@@ -24,3 +24,4 @@ from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassific
 from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocation
 from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
 from rs_helper.classes.OneHotEncoder import OneHotEncoder
+from rs_helper.classes.OneToOneGRU import OneToOneGRU
