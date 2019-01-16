@@ -1,5 +1,6 @@
 from typing import *
 
+
 class Prediction:
     """
     Class to store the final prediction of pipelines

@@ -10,6 +10,10 @@ class OneHotEncoder(Vectorizer):
         self.text = None
 
     def vectorize(self, **kwargs):
+        """
+        :param kwargs: Possible params: text: list(str)
+        :return:
+        """
         if "text" not in kwargs.keys():
             raise ValueError("Please provide a text that should be encoded")
         self.text = kwargs.get("text")
