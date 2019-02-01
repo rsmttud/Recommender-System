@@ -16,3 +16,6 @@ from rs_helper.classes.RAKEExtractor import RAKEExtractor
 from rs_helper.classes.LabelMap import LabelMap
 #from rs_helper.classes.TranslationAugmentor import TranslationAugmentator
 from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
+from rs_helper.classes.DAN import DAN
+from rs_helper.classes.Layers import *
+from rs_helper.classes.EmbeddingModel import *
