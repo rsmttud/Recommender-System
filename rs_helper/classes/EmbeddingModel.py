@@ -10,7 +10,7 @@ class EmbeddingModel(ABC):
         pass
 
     @abstractmethod
-    def __initialize_model(self, **kwargs):
+    def initialize_model(self, **kwargs) -> Any:
         pass
 
     @abstractmethod
@@ -19,17 +19,18 @@ class EmbeddingModel(ABC):
 
 
 # TODO Implement Abstract Behavior
-class FastText():
+class FastText(EmbeddingModel):
     """
     Loads the FastText model and get the Vectors.
     """
 
     def __init__(self, **kwargs):
         # super().__init__(**kwargs)
+        super().__init__(**kwargs)
         self.path = "/Users/Daniel/PycharmProjects/Recommender-System/notebooks/FastText/ft_model_15000.pkl"
-        self.__initialize_model()
+        self.initialize_model()
 
-    def __initialize_model(self, **kwargs):
+    def initialize_model(self, **kwargs):
         try:
             tf.logging.info("FastText Model is loading")
             self.model = pickle.load(open(self.path, "rb"))
