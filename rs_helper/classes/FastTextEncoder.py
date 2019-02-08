@@ -1,6 +1,7 @@
 from rs_helper.classes.Vectorizer import Vectorizer
 from gensim.models import FastText
 import pickle
+from joblib import load
 
 
 class FastTextEncoder(Vectorizer):
@@ -19,7 +20,7 @@ class FastTextEncoder(Vectorizer):
         self.initialize()
 
     def initialize(self):
-        model = pickle.load(open("notebooks/model_trainings/FastText/models/ft_model_15000.pkl", "rb"))
+        model = load("notebooks/model_trainings/FastText/models/FastText_abstracts.joblib")
         self.model = model
 
     def vectorize(self, **kwargs):
