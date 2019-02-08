@@ -23,7 +23,6 @@ class SimilarityEval:
         self.sim_data = sim_data
         self.valid_data = valid_data
         self.pearson_corr = None
-        self.spearman_corr = None
         self.ME = None
 
     def calculate_similarities(self):
@@ -55,12 +54,11 @@ class SimilarityEval:
 
     def correlation(self):
         """
-        :return: List(float)
+        :return: float
         Correlation between human similarities and model similarities
         """
         self.pearson_corr = self.sim_data["Human (mean)"].corr(self.sim_data["assigned_sim"], method="pearson")
-        self.spearman_corr = self.sim_data["Human (mean)"].corr(self.sim_data["assigned_sim"], method="spearman")
-        return [self.pearson_corr, self.spearman_corr]
+        return self.pearson_corr
 
     def save_to_config(self):
         """
@@ -74,7 +72,6 @@ class SimilarityEval:
 
         c_dict["mean_similarity_error"] = self.ME
         c_dict["similarity_correlation"] = self.pearson_corr
-        c_dict["similarity_spearman_correlation"] = self.spearman_corr
 
         with open(config_path, "w") as _json:
             json.dump(c_dict, _json)
