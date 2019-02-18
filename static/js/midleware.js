@@ -1,3 +1,4 @@
+//TODO long desc, short, desc should be delivered as well
 $("document").ready(function () {
     $("#submit-button").click(function () {
         $.ajax({
@@ -41,3 +42,27 @@ $("document").ready(function () {
         })
     });
 });
+
+//Returns String
+function createOutputJSON(long_desc, short_desc, dict_result_long, dict_result_short){
+    //Transforming to JSON
+    /*
+    {
+        short_desc: {
+            message:
+            classes:
+            probabilities:
+        }
+        long_desc: {
+            message:
+            classes:
+            probabilities:
+        }
+    }
+
+     */
+}
+//Save File
+function saveJSONString(file_name, json_string){
+    //Save incoming JSON String to file
+}
