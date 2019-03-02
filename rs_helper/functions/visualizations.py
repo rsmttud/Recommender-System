@@ -11,7 +11,7 @@ from nltk.tokenize import word_tokenize
 import numpy as np
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.colors
-
+from sklearn.metrics.pairwise import cosine_similarity
 
 # TODO Obsolete!
 def kd_plot(embedding_model: EmbeddingModel,
@@ -118,6 +118,23 @@ def scatter_plot(embedding_model: EmbeddingModel,
     #plt.savefig(os.path.join("output_scatter/svg/", "{}.svg".format(str(ax_title))))
     return ax_1
 
+
+def similarity_matrix(messages: list, vectors: list, name: str = "similarity_matrix", save_path: str = "."):
+    similarity_matrix_data = cosine_similarity(vectors, vectors)
+    fig, ax = plt.subplots(figsize=(20, 20))
+    sns.set(font_scale=1.5)
+    heatmap = sns.heatmap(
+        similarity_matrix_data,
+        xticklabels=messages,
+        yticklabels=messages,
+        vmin=0,
+        vmax=1,
+        cmap="YlOrRd",
+        ax=ax)
+    heatmap.set_xticklabels(messages, rotation=90)
+    heatmap.set_title(name)
+    plt.savefig(os.path.join(save_path, name+".svg"))
+    plt.close()
 
 def confusion_matrix_plot(y_true: List[int], y_pred: List[int],title:str, labels=None, normalize=False):
     cm = confusion_matrix(y_true, y_pred)
