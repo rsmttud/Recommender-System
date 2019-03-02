@@ -31,7 +31,7 @@ $("document").ready(function () {
 
                 // Writing input in result page
                 let ul = $("<ul/>").appendTo($("#output-result-main"));
-                $.each(data, function (key, value) {
+                $.each(data, function(key, value){
                     $('<li/>')
                         .attr('role', 'menuitem')
                         .text(key + ": " + value)

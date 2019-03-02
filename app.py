@@ -66,6 +66,13 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
         result = facade.run(key_ex=True)
         for index, class_id in enumerate(result.classes):
             prediction.update({class_id: float(result.values[index])})
+    # TODO: Clarify how to work with sentence predictions. Multiple predictions need to be placed then!
+    elif pipeline_method == "one_to_one_gru_classification":
+        result = facade.run(gru_oto=True)
+        # Prediction per sentence
+        for pred in result:
+            for index, class_id in enumerate(pred.classes):
+                prediction.update({class_id: float(pred.values[index])})
     else:
         prediction.update({"NoMethod": "Implemented"})
 
