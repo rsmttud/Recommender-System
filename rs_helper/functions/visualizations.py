@@ -100,7 +100,7 @@ def scatter_plot(embedding_model: EmbeddingModel,
     return ax_1, df
 
 
-def similarity_matrix(messages: list, vectors: list, name: str, save_path: str = "."):
+def similarity_matrix(messages: list, vectors: list, name: str = "similarity_matrix", save_path: str = "."):
     similarity_matrix_data = cosine_similarity(vectors, vectors)
     fig, ax = plt.subplots(figsize=(20, 20))
     sns.set(font_scale=1.5)
@@ -114,5 +114,5 @@ def similarity_matrix(messages: list, vectors: list, name: str, save_path: str =
         ax=ax)
     heatmap.set_xticklabels(messages, rotation=90)
     heatmap.set_title(name)
-    plt.savefig(os.path.join(save_path, "similarity_matrix.svg"))
+    plt.savefig(os.path.join(save_path, name+".svg"))
     plt.close()
