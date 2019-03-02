@@ -25,3 +25,7 @@ from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocatio
 from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
 from rs_helper.classes.OneHotEncoder import OneHotEncoder
 from rs_helper.classes.OneToOneGRU import OneToOneGRU
+from rs_helper.classes.DAN import DAN
+from rs_helper.classes.EmbeddingModel import EmbeddingModel
+from rs_helper.classes.EmbeddingModel import FastTextWrapper
+from rs_helper.classes.Layers import *
