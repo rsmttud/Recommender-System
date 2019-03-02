@@ -1,6 +1,7 @@
 from rs_helper.classes.KeywordExtractor import KeywordExtractor
 from sklearn.feature_extraction.text import TfidfVectorizer
 from rs_helper.classes import Topic
+import pickle
 
 
 class TFIDF(KeywordExtractor):
@@ -15,6 +16,7 @@ class TFIDF(KeywordExtractor):
         vectorizer = TfidfVectorizer(lowercase=True, preprocessor=None, tokenizer=None,
                                      analyzer="word", stop_words=None, ngram_range=(1, 3))
         scores = vectorizer.fit_transform(self.docs)
+        # pickle.dump(vectorizer.get_feature_names(), open("data/topics/tfidf_vocab.vocab", "wb"))
         index_value = {i[1]: i[0] for i in vectorizer.vocabulary_.items()}
         result = dict()
         for i, row in enumerate(scores):
