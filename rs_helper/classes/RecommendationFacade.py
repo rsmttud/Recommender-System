@@ -63,8 +63,7 @@ class RecommendationFacade:
 
     def __key_ex_pipeline(self):
         path_topics = "data/topics/"
-        path_vocab = "data/topics/vocab_2.vocab"
-        model = KeywordExtractionPipeline(path_to_model=path_topics, path_to_vocab=path_vocab)
+        model = KeywordExtractionPipeline(path_to_topics=path_topics)
         model.initialize()
         prediction = model.predict(self.corpora.data)
         return prediction
