@@ -1,0 +1,1 @@
+As a grocery store we want to group our 1.3MM loyalty card costumers into 5 different groups, based on their buying behavior. It then adopted customized marketing strategies for each of these segments in order to target them more effectively.

@@ -1,0 +1,1 @@
+In terms of a new product introduction, the price of a product should be predicted based on different characteristics like the size, equipment features or the buying power of the area.

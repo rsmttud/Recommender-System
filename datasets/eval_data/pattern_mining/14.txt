@@ -1,0 +1,1 @@
+Based on the market basket of our costumers the current tasks aims to uncover associations between items. Those items should be offered the costumers as extra product.

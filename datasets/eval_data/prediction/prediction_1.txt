@@ -1,0 +1,1 @@
+As one part of their overall strategy for doing so, Microsoft is challenging the data science community to develop techniques to predict if a machine will soon be hit with malware. Using an unprecedented malware dataset to encourage open-source progress on effective techniques for predicting malware occurrences.

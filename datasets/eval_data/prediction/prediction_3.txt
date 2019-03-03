@@ -1,0 +1,1 @@
+In this competition, you’re challenged to analyze a Google Merchandise Store customer dataset to predict revenue per customer. 
