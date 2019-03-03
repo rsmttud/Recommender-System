@@ -1,8 +1,8 @@
 from rs_helper.classes.Keyword import Keyword
+from typing import *
 
 
 class Topic:
-
     def __init__(self, class_name: str):
         """
         :param class_name: String
@@ -38,31 +38,31 @@ class Topic:
     def __iter__(self):
         return iter(self.keyword_set)
 
-    def sort_by_rank(self):
+    def sort_by_rank(self) -> None:
         self.keyword_set.sort(key=lambda x: x.rank, reverse=True)
 
-    def norm_ranks(self):
+    def norm_ranks(self) -> None:
         maximum = max([x.rank for x in self.keyword_set])
         minimum = min([x.rank for x in self.keyword_set])
         normed_keyword_set = []
         for keyword in self.keyword_set:
             try:
-                keyword.rank = (keyword.rank-minimum) / (maximum-minimum)
+                keyword.rank = (keyword.rank - minimum) / (maximum - minimum)
             except ZeroDivisionError as e:
                 print(e)
             normed_keyword_set.append(keyword)
         self.keyword_set = normed_keyword_set
 
-    def add_keyword(self, keyword, rank: float, algorithm: str) -> None:
+    def add_keyword(self, keyword: Keyword, rank: float, algorithm: str) -> None:
         self.keyword_set.append(Keyword(keyword, rank, algorithm))
 
-    def get_keywords(self, duplicates=True) -> list:
+    def get_keywords(self, duplicates=True) -> List[Keyword]:
         if duplicates:
             return self.keyword_set
         else:
             return list(set(self.keyword_set))
 
-    def pretty_print(self, duplicates=True):
+    def pretty_print(self, duplicates=True) -> None:
         print("________TopicSet - {}________".format(self.class_name))
         if duplicates:
             for keyword in self.keyword_set:
@@ -71,11 +71,11 @@ class Topic:
             for keyword in set(self.keyword_set):
                 print(keyword.__str__())
 
-    def get_keyword_names(self):
+    def get_keyword_names(self) -> List[str]:
         return [x.keyword for x in self.keyword_set]
 
-    def get_keyword_rank(self, topic, key):
+    def get_keyword_rank(self, topic, key) -> List[int]:
         return next((x.rank for x in topic.keyword_set if x.keyword == key), None)
 
-    def get_keyword_algorithm(self, topic, key):
+    def get_keyword_algorithm(self, topic, key) -> List[str]:
         return next((x.algorithm for x in topic.keyword_set if x.keyword == key), None)
