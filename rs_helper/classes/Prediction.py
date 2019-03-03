@@ -20,6 +20,13 @@ class Prediction:
     def __repr__(self):
         return "{}: Classes: {}, Values: {}".format(type(self),self.classes, self.values)
 
+    def get_data_frame(self):
+        """
+        Returns prediction object as DataFrame
+        :return:
+        """
+        pass
+
     def get_class_with_max_confidence(self) -> str:
         """
         Returns the prediction with the highest confidence

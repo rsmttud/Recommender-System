@@ -10,6 +10,7 @@ from rs_helper.classes.EmbeddingModel import EmbeddingModel
 from rs_helper.classes.Layers import *
 
 
+# OPTIMIZED FOR GPU TRAINING!
 class DAN(EmbeddingModel):
     def __init__(self,
                  word_embedding_model: EmbeddingModel,
@@ -22,6 +23,7 @@ class DAN(EmbeddingModel):
         self.frozen_graph_path = frozen_graph_path
         self.config = {}
 
+    # TODO in extra script and pd.DataFrame Type hinting
     @staticmethod
     def __create_one_hot_encodings(labels):
         le = preprocessing.LabelEncoder()
@@ -42,7 +44,8 @@ class DAN(EmbeddingModel):
             tf.import_graph_def(graph_def, name="prefix")
         return graph
 
-    def __create_training_pipe(self, classes: int, classifier_shape: List[int], num_hidden_layer: int):
+    def __create_training_pipe(self, classes: int, classifier_shape: List[int], num_hidden_layer: int,
+                               classifier_act: Any):
         # Updating config dict
         self.config.update(
             {"classes": str(classes), "classifier_shape": str(classifier_shape), "hidden_layer": str(num_hidden_layer)})
@@ -51,19 +54,19 @@ class DAN(EmbeddingModel):
         y_true = tf.placeholder(dtype=tf.float64, shape=(None, classes), name="placeholder_y_true")
 
         # Composition Layer
-        average = average_layer(x_input)
+        # average = average_layer(x_input)
 
         # Dense Layers
-        dense_dan_layers = self.__create_dan_layer(average, num_hidden_layer=num_hidden_layer)
+        dense_dan_layers = self.__create_dan_layer(x_input, num_hidden_layer=num_hidden_layer)
         # self.last_dan_layer = dense_dan_layers[-1].name
 
         # Classifier
         # TODO Activation Function
-        classifier_layers = self.__create_classifier_layer(dense_dan_layers[-1], classifier_shape)
+        classifier_layers = self.__create_classifier_layer(dense_dan_layers[-1], classifier_shape, classifier_act)
 
         logits = tf.layers.dense(inputs=classifier_layers[-1],
                                  units=classes,
-                                 activation=tf.nn.tanh,
+                                 activation=classifier_act,
                                  use_bias=True,
                                  trainable=True,
                                  name="logits")
@@ -98,13 +101,15 @@ class DAN(EmbeddingModel):
             dense_layers.append(dense_layer)
         return dense_layers
 
-    def __create_classifier_layer(self, input_layer, classifier_shape: List[int]):
+    # TODO put this in a separate file
+    @staticmethod
+    def __create_classifier_layer(input_layer, classifier_shape: List[int], classifier_act):
         c_layers = []
         for i, neurons in enumerate(classifier_shape):
             if i == 0:
                 dense_layer = tf.layers.dense(inputs=input_layer,
                                               units=neurons,
-                                              activation=tf.nn.tanh,
+                                              activation=classifier_act,
                                               use_bias=True,
                                               trainable=True,
                                               name="cl_layer_{}".format(i))
@@ -112,7 +117,7 @@ class DAN(EmbeddingModel):
             else:
                 dense_layer = tf.layers.dense(inputs=c_layers[-1],
                                               units=neurons,
-                                              activation=tf.nn.tanh,
+                                              activation=classifier_act,
                                               use_bias=True,
                                               trainable=True,
                                               name="cl_layer_{}".format(i))
@@ -128,42 +133,64 @@ class DAN(EmbeddingModel):
               epoches: int = 1,
               classes: int = 3,
               num_hidden_layer: int = 3,
+              classifier_act=tf.nn.tanh,
+              batch_size: int = 1,
               wdrop_prob: float = 0.2
               ):
-        self.config.update({"epoches": str(epoches), "dropout": str(wdrop_prob),
+
+        self.config.update({"epoches": str(epoches),
+                            "dropout": str(wdrop_prob),
                             "path": os.path.abspath(os.path.join(save_path, model_name))})
+
+        # TODO don't use a DataFrame here
         # Bundle the Data together in a DataFrame
         df = pd.DataFrame.from_dict({"text": text, "labels": labels})
         # Create One-Hot-Encodings for Available Classes
         one_hot_encodings = self.__create_one_hot_encodings(df.drop(columns=["text"]))
 
-        # Check the Dir
+        # Check the if dir exist
         if not os.path.isdir(save_path):
             os.makedirs(save_path)
 
         # Get Training Pipe and Placeholder
-        train_pipe, x_input, y_true , dl= self.__create_training_pipe(classes=classes,
-                                                                  classifier_shape=classifier_shape,
-                                                                  num_hidden_layer=num_hidden_layer)
+        train_pipe, x_input, y_true, dl = self.__create_training_pipe(classes=classes,
+                                                                      classifier_shape=classifier_shape,
+                                                                      classifier_act=classifier_act,
+                                                                      num_hidden_layer=num_hidden_layer)
 
-        saver = tf.train.Saver()
-        init = tf.global_variables_initializer()
-        with tf.Session() as sess:
-            sess.run(init)
+        saver = tf.train.Saver()  # Saver object to store the checkpoints
+        # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9) # Activate this line if you want to use only a percentage of GPU memory
+
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True  # https://www.tensorflow.org/guide/using_gpu#allowing_gpu_memory_growth
+        with tf.Session(config=config) as sess:
+            sess.run(tf.global_variables_initializer())
             # merged_summary = tf.summary.merge_all()
             writer = tf.summary.FileWriter(save_path)
             writer.add_graph(sess.graph)
 
             for i in range(epoches):
-                for j, p in enumerate([word_tokenize(x) for x in text]):
-                    # Converting paragraphs to Embeddings
-                    embeddings = dropout_layer(self.embedding_model.inference(p), dropout_prob=wdrop_prob)
+                batches = Batches(x=text, y=one_hot_encodings, batch_size=batch_size)
 
-                    while embeddings.shape[0] == 0:
-                        embeddings = dropout_layer(self.embedding_model.inference(p), dropout_prob=wdrop_prob)
+                for batch in batches:
+                    X = batch[0]
+                    Y = batch[1]
 
-                    label = np.array(one_hot_encodings[j]).reshape(1, -1)
-                    train = sess.run(train_pipe, feed_dict={x_input: embeddings, y_true: label})
+                    averaged_embeddings_lst = []
+
+                    for paragraph in [word_tokenize(x) for x in X]:
+                        word_embeddings = dropout_layer(self.embedding_model.inference(paragraph), wdrop_prob)
+                        # Check if Dropout didn't kill every word
+                        while word_embeddings.shape[0] == 0:
+                            word_embeddings = dropout_layer(self.embedding_model.inference(paragraph),
+                                                            dropout_prob=wdrop_prob)
+                        # Average Layer
+                        averaged_word_embeddings = np.mean(word_embeddings, axis=0)
+                        averaged_embeddings_lst.append(averaged_word_embeddings)
+                    # start the training
+                    train = sess.run(train_pipe,
+                                     feed_dict={x_input: np.stack(averaged_embeddings_lst), y_true: np.stack(Y)})
+
             saver.save(sess, os.path.join(save_path, model_name + ".ckpt"))
 
             # Save graph definition
@@ -211,6 +238,33 @@ class DAN(EmbeddingModel):
             dan_embeddings = sess.run(y, feed_dict={x: embeddings})
             sess.close()
             return dan_embeddings
+
+    # TODO Implement a general method
+    def inference_batches(self, text: List[List[str]]) -> np.ndarray:
+        """
+        Method takes a list containing a list with tokenized words.
+        :param text: Tokenized String
+        :param layer_name: Name of last DAN Operation
+        :return: np.ndarray (Embedding)
+        """
+        if self.frozen_graph_path == "":
+            raise ValueError("Please set the path to the frozen graph.")
+
+        graph = self.initialize_model()
+
+        x = graph.get_tensor_by_name('prefix/placeholder_input:0')
+        y = graph.get_operations()[-1].name + ":0"
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True  # https://www.tensorflow.org/guide/using_gpu#allowing_gpu_memory_growth
+        with tf.Session(graph=graph, config=config) as sess:
+            embeddings_lst = []
+            for paragraph in text:
+                embeddings = self.embedding_model.inference(paragraph)
+                averaged_embeddings = np.mean(embeddings, axis=0).reshape(1, -1)
+                dan_embeddings = sess.run(y, feed_dict={x: averaged_embeddings})
+                embeddings_lst.append(dan_embeddings)
+            sess.close()
+            return embeddings_lst
 
     def save_config_json(self, config_path, **kwargs):
         for key, value in kwargs.items():

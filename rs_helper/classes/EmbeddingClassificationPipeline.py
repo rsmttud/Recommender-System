@@ -6,6 +6,7 @@ import pandas as pd
 import os
 
 
+### OBSOLETE NEED TO BE REMOVED
 class EmbeddingClassificationPipeline(Model):
 
     def __init__(self, path_to_model: str, path_to_embedding_model: str, num_classes=4):
