@@ -1,0 +1,1 @@
+The analysis should find groups of customers with similar behavior given a large database of customer data containing their properties and past buying records.

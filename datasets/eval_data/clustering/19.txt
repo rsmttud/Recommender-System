@@ -1,0 +1,1 @@
+Based on the activity data different employees we want to find similar groups of activity levels, to offer new fitness opportunities to our employees. 

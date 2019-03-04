@@ -1,0 +1,1 @@
+I want to predict the stock prices for a new product.

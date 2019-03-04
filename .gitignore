@@ -5,8 +5,7 @@
 /static/materialize-src/css/materialize.css
 /static/materialize-src/css/materialize.css.map
 /data/definitions
-/notebooks
-/notebooks/.*
+/datasets/final_datasets/*
 notes.md
 playground*
 test.txt
@@ -18,3 +17,6 @@ __pychache__/*
 !models/classifier/readme.md
 /models/embeddings/*
 !models/embeddings/readme.md
+models/DANs/*
+models/FastText/*
+models/LDA/*

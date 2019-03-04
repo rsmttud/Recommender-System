@@ -1,0 +1,1 @@
+Based on the communication data of our costumers, we want to find similar patterns in their communication behavior.

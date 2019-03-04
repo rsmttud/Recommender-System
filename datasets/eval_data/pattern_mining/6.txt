@@ -1,0 +1,1 @@
+The last two years the hospital collected health data about the diseases and medication of their patients. In the future new patterns should be extracted by machine learning algorithms, to identify promising new medication approaches. 

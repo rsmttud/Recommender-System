@@ -1,0 +1,1 @@
+We are a company specialized in implementing customized e-mail clients. We want to predict or classify if an incoming email is spam or not.

@@ -1,0 +1,1 @@
+The project should enable the busines to understand the hidden patterns inside historical purchasing transaction data. Thus helping in planning and launching new marketing campaigns.
