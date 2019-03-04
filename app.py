@@ -1,13 +1,13 @@
+import os
 from flask import Flask, render_template, request, json
 from helper_functions import save_txt_from_interface
-from rs_helper.classes import RecommendationFacade
-from rs_helper.classes import LabelMap
-import os
+from rs_helper.core import *
+from rs_helper.helper import *
 from typing import Dict
 
 app = Flask(__name__)
 
-
+# TODO definetly needs to be adjusted
 @app.route('/', methods=["GET"])
 def main():
     return render_template("index.html")
