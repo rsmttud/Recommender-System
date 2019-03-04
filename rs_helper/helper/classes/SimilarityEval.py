@@ -1,11 +1,10 @@
-from rs_helper.classes import *
-from rs_helper.functions import *
-import json
-from sklearn.metrics.pairwise import cosine_similarity
-import pandas as pd
-import numpy as np
-from nltk.tokenize import word_tokenize
 import os
+import json
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from nltk.tokenize import word_tokenize
+from rs_helper.core import *
+from rs_helper.helper import *
 
 
 class SimilarityEval:

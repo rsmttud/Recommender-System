@@ -1,6 +1,6 @@
-import random
 import tensorflow as tf
 import numpy as np
+from typing import List
 
 
 def dropout_layer(input_layer: np.ndarray, dropout_prob: float = 0.2):
@@ -17,14 +17,14 @@ def average_layer(placeholder: tf.Variable, name="average_layer"):
 
 class Batches:
 
-    def __init__(self, x, y, batch_size=8):
+    def __init__(self, x: List, y: List, batch_size=8):
         self.__x = x
         self.__y = y
         self.__data = self.__init_data()
         self.__batch_size = batch_size
         self.__current_state = 0
 
-    def __init_data(self):
+    def __init_data(self) -> np.ndarray:
         lst = list(zip(self.__x, self.__y))
         arr = np.array(lst)
         np.random.shuffle(arr)

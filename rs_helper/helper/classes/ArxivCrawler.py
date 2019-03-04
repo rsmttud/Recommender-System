@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 import xml.etree.ElementTree as etree
 import pandas as pd
-from rs_helper.classes.Crawler import Crawler
+from rs_helper.helper.classes.Crawler import Crawler
 import time
 
 
@@ -42,7 +42,7 @@ class ArxivCrawler(Crawler):
         x = re.sub('/', "-", x)
         return x
 
-    def save_to_file(self):
+    def save_to_file(self) -> None:
         """
         Function creates for every single entry a separate txt file filled with the abstract/summary
         :param xml_path: path to crawled arxiv conform xml file

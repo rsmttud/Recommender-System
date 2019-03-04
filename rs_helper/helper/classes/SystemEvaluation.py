@@ -1,9 +1,9 @@
-from rs_helper.classes import Prediction
-from sklearn.metrics import confusion_matrix, recall_score, classification_report, accuracy_score
 import numpy as np
-from typing import *
 import datetime
 import os
+from typing import List
+from rs_helper.core import Prediction
+from sklearn.metrics import confusion_matrix, recall_score, classification_report, accuracy_score
 
 
 class SystemEvaluation:

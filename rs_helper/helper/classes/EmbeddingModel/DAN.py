@@ -2,12 +2,11 @@ import os
 from typing import *
 import pandas as pd
 import json
-import tensorflow as tf
 from tensorflow.python.tools.freeze_graph import freeze_graph
 from sklearn import preprocessing
 from nltk.tokenize import word_tokenize
-from rs_helper.classes.EmbeddingModel import EmbeddingModel
-from rs_helper.classes.Layers import *
+from rs_helper.helper.classes.EmbeddingModel.EmbeddingModel import EmbeddingModel
+from rs_helper.helper.classes.tf_helper import *
 
 
 # OPTIMIZED FOR GPU TRAINING!
