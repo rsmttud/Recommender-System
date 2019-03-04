@@ -1,2 +1,2 @@
-from rs_helper.classes import *
-from rs_helper.functions import *
+from rs_helper.core import *
+from rs_helper.helper import *
