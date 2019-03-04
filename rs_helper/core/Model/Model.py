@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from rs_helper.classes import Prediction
-from typing import *
+from rs_helper.core.Prediction import Prediction
 
 
 class Model(ABC):

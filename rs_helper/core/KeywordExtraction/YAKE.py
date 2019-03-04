@@ -1,8 +1,9 @@
-from rs_helper.classes.KeywordExtractor import KeywordExtractor
-from rs_helper.classes import Topic
 import string
 from nltk.corpus import stopwords
 import pke
+from rs_helper.core.KeywordExtraction.KeywordExtractor import KeywordExtractor
+from rs_helper.core.Topic import Topic
+from rs_helper.core.Keyword import Keyword
 
 
 class YAKE(KeywordExtractor):
@@ -18,6 +19,7 @@ class YAKE(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
+    # TODO adjust to Keywords
     def extract_keywords(self, *kwargs):
         result = {}
         candidates = list()
@@ -28,12 +30,12 @@ class YAKE(KeywordExtractor):
             yake.candidate_weighting(window=5, stoplist=self.stoplist, use_stems=False)
             yake_keyphrases = yake.get_n_best(n=self.top_n, threshold=self.threshold)
             candidates.append(yake.candidates)
-            topic = self.__generate_topic(yake_keyphrases, self.labels[i])
+            topic = self.generate_topic(yake_keyphrases, self.labels[i])
             result.update({self.labels[i]: topic})
         self.candidates = candidates
         return result
 
-    def __generate_topic(self, token_rank_dict, label: str):
+    def generate_topic(self, token_rank_dict, label: str):
         topic = Topic(class_name=label)
         for w, v in token_rank_dict:
             topic.add_keyword(keyword=w.split(" "), rank=v, algorithm=self.class_name)

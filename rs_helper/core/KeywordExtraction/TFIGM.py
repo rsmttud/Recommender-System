@@ -1,10 +1,12 @@
-from rs_helper.classes.KeywordExtractor import KeywordExtractor
-from rs_helper.classes import Topic
 from nltk import bigrams, trigrams
 import math
 from tqdm import tqdm
 from functools import reduce
 import operator
+
+from rs_helper.core.KeywordExtraction.KeywordExtractor import KeywordExtractor
+from rs_helper.core.Topic import Topic
+from rs_helper.core import Keyword
 
 
 class TFIGM(KeywordExtractor):
@@ -66,10 +68,10 @@ class TFIGM(KeywordExtractor):
             del unique_tokens, bigram_tokens, trigram_tokens, all_tokens
         return vocab
 
-    def extract_keywords(self) -> dict:
+    # TODO apply to Keyword class
+    def extract_keywords(self):
         results = dict()
         vocab = self.__get_vocab()
-        import pickle
         # pickle.dump(reduce(operator.concat, vocab), open("data/topics/tfigm_vocab.vocab", "wb"))
         for i, doc in enumerate(vocab):
             word_tfigm_dict = dict()
@@ -83,12 +85,12 @@ class TFIGM(KeywordExtractor):
                 word_tfigm_dict[token] = tf_igm
             sorted_dict = sorted(word_tfigm_dict.items(), key=lambda x: x[1], reverse=True)
             # print(sorted_dict)
-            topic = self.__generate_topic(sorted_dict[:self.top_n],
-                                          label=self.labels[i])
+            topic = self.generate_topic(sorted_dict[:self.top_n],
+                                        label=self.labels[i])
             results.update({self.labels[i]: topic})
         return results
 
-    def __generate_topic(self, tdidf_values, label: str) -> Topic:
+    def generate_topic(self, tdidf_values, label: str) -> Topic:
         topic = Topic(class_name=label)
         for key, value in tdidf_values:
             topic.add_keyword(keyword=key, rank=value, algorithm=self.class_name)

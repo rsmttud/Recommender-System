@@ -1,11 +1,12 @@
-from typing import *
+from typing import List
 
 
 class Prediction:
     """
     Class to store the final prediction of pipelines
     """
-    def __init__(self, classes: List, values: List):
+
+    def __init__(self, classes: List[str], values: List[float]):
         """
         :param classes: List of all available classes (List(string))
         :param values: List of all values for all classes (List(float))
@@ -19,7 +20,7 @@ class Prediction:
         self.values = values
 
     def __repr__(self):
-        return "{}: Classes: {}, Values: {}".format(type(self),self.classes, self.values)
+        return "{}: Classes: {}, Values: {}".format(type(self), self.classes, self.values)
 
     def get_data_frame(self):
         """

@@ -1,11 +1,15 @@
-from rs_helper.classes import Corpora
-from rs_helper.classes import Prediction
-from rs_helper.classes.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
-from rs_helper.classes.LatentDirichletAllocation import LatentDirichletAllocation
-from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
-from rs_helper.classes.OneToOneGRU import OneToOneGRU
-from rs_helper.classes.SVC import SVC
-import pickle
+from rs_helper.core.Corpora import Corpora
+from rs_helper.core.Prediction import Prediction
+
+from rs_helper.core.Model.OneToOneGRU import OneToOneGRU
+from rs_helper.core.Model.SVC import SVC
+from rs_helper.core.Model.LatentDirichletAllocation import LatentDirichletAllocation
+
+from typing import List
+
+
+# from rs_helper.cor.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
+# from rs_helper.classes.KeywordExtractionPipeline import KeywordExtractionPipeline
 
 
 class RecommendationFacade:
@@ -37,6 +41,7 @@ class RecommendationFacade:
         if gru_oto:
             return self.__gru_oto_classification()
 
+    # TODO they probably all need an adjustment
     def __lda_pipeline(self):
         path_model = "models/LDA/LdaModel_3_freq_clean.bin"
         path_vectorizer = "models/LDA/vectorizer_3_freq_clean.bin"
@@ -46,12 +51,8 @@ class RecommendationFacade:
         return prediction
 
     def __classification_embedding(self) -> Prediction:
-        path_classifier = "./models/classifier/daniel_0712/dnn_0712"
-        path_embedding = "models/trained_models/daniel_0712/USE_DAN/use_081218"  # Still useless
-        model = EmbeddingClassificationPipeline(path_to_embedding_model=path_embedding, path_to_model=path_classifier)
-        model.initialize()
-        prediction = model.predict(self.corpora.data)
-        return prediction
+        # Pipelines don't exist anymore
+        pass
 
     def __svc_classification(self):
         path_classifier = "models/classifier/SVC/SVC_tfidf_clean_.pkl"
@@ -62,11 +63,15 @@ class RecommendationFacade:
         return prediction
 
     def __key_ex_pipeline(self):
+        pass
+        # Pipelines don't exist anymore
+        """
         path_topics = "data/topics/"
         model = KeywordExtractionPipeline(path_to_topics=path_topics)
         model.initialize()
         prediction = model.predict(self.corpora.data)
         return prediction
+        """
 
     def __gru_oto_classification(self):
         path_model = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_200_units_0.2_dropout_20_epochs.yaml"
@@ -79,7 +84,7 @@ class RecommendationFacade:
         predictions = model.predict(self.corpora.data)
         return predictions
 
-    def __merge_predictions(self, predictions: list) -> Prediction:
+    def __merge_predictions(self, predictions: List[Prediction]) -> Prediction:
         if not isinstance(predictions[0], Prediction):
             raise ValueError("Parameter predictions must be of type List(Prediction)")
         return Prediction(["dummy"], ["dummy"])

@@ -1,9 +1,10 @@
-from rs_helper.classes.Model import Model
-from rs_helper.classes.Prediction import Prediction
-from rs_helper.classes.Preprocessor import Preprocessor
 import pickle as pkl
 import operator
 from functools import reduce
+
+from rs_helper.core.Model import Model
+from rs_helper.core.Prediction import Prediction
+from rs_helper.core.Preprocessor import Preprocessor
 
 
 class LatentDirichletAllocation(Model):
@@ -24,6 +25,7 @@ class LatentDirichletAllocation(Model):
         pred = Prediction(classes=[i for i, _ in enumerate(scores)], values=list(scores))
         return pred
 
+    # TODO fix arguments in p.lemmatize
     def __prepare_data(self, text: str) -> list:
         p = Preprocessor(text)
         lemmatized = p.lemmatize(remove_punct_and_nums=True, remove_stops=True)

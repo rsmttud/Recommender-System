@@ -1,4 +1,4 @@
-from rs_helper.classes.Keyword import Keyword
+from rs_helper.core.Keyword import Keyword
 from typing import *
 
 

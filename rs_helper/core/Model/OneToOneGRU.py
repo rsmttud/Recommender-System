@@ -1,14 +1,13 @@
-from rs_helper.classes.Model import Model
-from rs_helper.classes.Prediction import Prediction
-from rs_helper.classes.FastTextEncoder import FastTextEncoder
-from rs_helper.classes.Preprocessor import Preprocessor
-from rs_helper.classes.LabelMap import LabelMap
+from rs_helper.core.Model.Model import Model
+from rs_helper.core.Prediction import Prediction
+#from rs_helper.classes.FastTextEncoder import FastTextEncoder
+from rs_helper.core.Preprocessor import Preprocessor
+from rs_helper.core.LabelMap import LabelMap
 from keras.models import model_from_yaml
-from functools import reduce
-import operator
 import numpy as np
 
 
+# Needs to be adjusted to FastTextWrapepr
 class OneToOneGRU(Model):
 
     def __init__(self, path_to_model: str, path_to_weights: str, path_to_encoder: str):
@@ -45,7 +44,7 @@ class OneToOneGRU(Model):
         print(tokens)
         ft = FastTextEncoder(documents=tokens, sentence_level=True)
         vectorized = ft.vectorize()
-        x = np.array(vectorized).reshape(len(vectorized), 1, 100)
+        x = np.array(vectorized).reshape(shape=(len(vectorized), 1, 100))
         return x
 
     def normalize_result(self, prediction: Prediction):

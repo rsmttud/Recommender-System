@@ -1,10 +1,10 @@
-from rs_helper.classes.Model import Model
-from rs_helper.classes.Prediction import Prediction
-from rs_helper.classes.LabelMap import LabelMap
+from rs_helper.core.Model.Model import Model
+from rs_helper.core.Prediction import Prediction
+from rs_helper.core.LabelMap import LabelMap
 import pickle
-import json
 
 
+# TODO needs an adjustment for Embeddings..
 class SVC(Model):
 
     def __init__(self, path_to_model: str, path_to_vectorizer: str):
