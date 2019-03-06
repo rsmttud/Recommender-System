@@ -1,1 +1,4 @@
-In this project, you are given a set of 100-dimensional points and you are asked to discover the hidden structure (if any) behind them. In order to do that, you will apply clustering algorithms like the ones we saw in class, and provide a label for each point. That label will be the coordinates of the representative of the cluster to which the point belongs. You will be evaluated based on the distance of your proposed label from the actual one.
+In this project, you are given a set of 100-dimensional data points from our machine log and you are asked to discover the hidden structure behind them.
+In order to do so, you need apply a mechanism which are automatically discover groups by finding similar points. In terms of the project similarity is defined by data points that produce similar log results. 
+
+
