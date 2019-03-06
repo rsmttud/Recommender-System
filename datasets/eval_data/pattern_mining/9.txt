@@ -1,1 +1,2 @@
-As emerging company in the energy sector we want to capture weak signals of potentially threatening events. Also, identify previously unidentified patterns, connections and their  corresponding events.
+As emerging company in the energy sector we want to capture weak signals of potentially threatening events. Also, identify previously unidentified patterns, connections and their corresponding events.
+Based on those unidentifed patterns we aimm to find associations between error event and other occuring events in our energy process pipeline.
