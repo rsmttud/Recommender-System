@@ -5,4 +5,3 @@ from rs_helper.helper.classes.SimilarityEval import SimilarityEval
 from rs_helper.helper.classes.SystemEvaluation import SystemEvaluation
 
 from rs_helper.helper.classes.tf_helper import *
-from rs_helper.helper.classes.EmbeddingModel import *

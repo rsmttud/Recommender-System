@@ -2,7 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from rs_helper.helper import EmbeddingModel, DAN, FastTextWrapper
+from rs_helper.core.distributed_models import EmbeddingModel, DAN
 from typing import *
 from nltk.tokenize import word_tokenize
 from sklearn.decomposition import PCA
@@ -138,7 +138,7 @@ def similarity_matrix(messages: list, vectors: list, name: str = "similarity_mat
     plt.close()
 
 
-def confusion_matrix_plot(y_true: List[int], y_pred: List[int], title: str, labels=None, normalize=False):
+def confusion_matrix_plot(y_true: List[int], y_pred: List[int], title: str, labels=None, normalize=False, save_path = None):
     cm = confusion_matrix(y_true, y_pred)
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -153,5 +153,8 @@ def confusion_matrix_plot(y_true: List[int], y_pred: List[int], title: str, labe
     heatmap_svm = sns.heatmap(cm, annot=True, xticklabels=labels, yticklabels=labels, ax=ax, cmap=cmap)
     plt.ylabel('Y_True')
     plt.xlabel('Y_Pred')
+
+    if save_path:
+        plt.savefig(save_path)
 
     return ax
