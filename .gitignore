@@ -20,3 +20,4 @@ __pychache__/*
 models/DANs/*
 models/FastText/*
 models/LDA/*
+playground*
