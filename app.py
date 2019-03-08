@@ -50,6 +50,7 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
         for index, class_id in enumerate(result.classes):
             # The float type casting is necessary, because json.dumps doesnt support np.float32
             prediction.update({label_map.get_name(class_id): float(result.values[index])})
+
     elif pipeline_method == "lda":
         result = facade.run(lda=True)
         label_map = LabelMap(path_to_json="models/label_maps/lda_3_topics.json")
