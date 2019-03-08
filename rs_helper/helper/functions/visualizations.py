@@ -2,7 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from rs_helper.helper import EmbeddingModel, DAN, FastTextWrapper
+from rs_helper.helper.classes.EmbeddingModel import EmbeddingModel, FastTextWrapper
+from rs_helper.helper.classes.EmbeddingModel.DAN import DAN
 from typing import *
 from nltk.tokenize import word_tokenize
 from sklearn.decomposition import PCA
@@ -134,7 +135,7 @@ def similarity_matrix(messages: list, vectors: list, name: str = "similarity_mat
         ax=ax)
     heatmap.set_xticklabels(messages, rotation=90)
     heatmap.set_title(name)
-    plt.savefig(os.path.join(save_path, name + ".svg"))
+    plt.savefig(os.path.join(save_path, name + ".svg"), bbox_inches="tight")
     plt.close()
 
 

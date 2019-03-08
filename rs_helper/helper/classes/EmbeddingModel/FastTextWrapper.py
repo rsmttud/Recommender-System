@@ -6,7 +6,7 @@ import json
 from joblib import load, dump
 from gensim.models import FastText
 from typing import List
-from rs_helper.helper.classes import EmbeddingModel
+from rs_helper.helper.classes.EmbeddingModel import EmbeddingModel
 
 
 class FastTextWrapper(EmbeddingModel):
