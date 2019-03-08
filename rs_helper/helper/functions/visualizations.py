@@ -2,9 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from rs_helper.core.distributed_models import EmbeddingModel, DAN
+
 from typing import *
-from nltk.tokenize import word_tokenize
 from sklearn.decomposition import PCA
 import matplotlib.patches as mpatches
 from nltk.tokenize import word_tokenize
@@ -12,7 +11,10 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.colors
 from sklearn.metrics.pairwise import cosine_similarity
+from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
+#from rs_helper.core.distributed_models.DAN import DAN
 
+# SOMETHING IS TOTALLY OFF WITH THE DAN CLASS
 
 # TODO Obsolete!
 def kd_plot(embedding_model: EmbeddingModel,

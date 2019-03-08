@@ -1,10 +1,11 @@
 from rs_helper.core.Corpora import Corpora
 from rs_helper.core.Prediction import Prediction
 
-from rs_helper.core.Model.OneToOneGRU import OneToOneGRU
-from rs_helper.core.Model.SVC import SVC
-from rs_helper.core.Model.LatentDirichletAllocation import LatentDirichletAllocation
-
+from rs_helper.core.model.OneToOneGRU import OneToOneGRU
+from rs_helper.core.model.LatentDirichletAllocation import LatentDirichletAllocation
+from rs_helper.core.distributed_models.DAN import DAN
+from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
+from rs_helper.core.model.SVCModel import SVCModel
 from typing import List
 
 
@@ -51,16 +52,25 @@ class RecommendationFacade:
         return prediction
 
     def __classification_embedding(self) -> Prediction:
-        # Pipelines don't exist anymore
-        pass
+        ft_model = FastTextWrapper("notebooks/ft_models/fasttext_12/model.joblib")
+        dan = DAN(ft_model, "models/DANs/1/frozen_graph.pb")
+        _svc = SVCModel("notebooks/testSVC.joblib", dan)
+        prediction = _svc.predict(self.corpora.data)
+        prediction.scale_log()
+        prediction.round_values()
+        #prediction.values = [x*100 for x in prediction.values]
+        return prediction
 
     def __svc_classification(self):
+        """
         path_classifier = "models/classifier/SVC/SVC_tfidf_clean_.pkl"
         path_vectorizer = "models/classifier/SVC/TFIDF_SVC_tfidf_clean_.pkl"
         model = SVC(path_to_model=path_classifier, path_to_vectorizer=path_vectorizer)
         model.initialize()
         prediction = model.predict(self.corpora.data)
-        return prediction
+        """
+
+        return None
 
     def __key_ex_pipeline(self):
         pass

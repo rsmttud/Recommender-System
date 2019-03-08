@@ -1,6 +1,8 @@
 from typing import List
+from math import log
 
 
+# TODO needs a review
 class Prediction:
     """
     Class to store the final prediction of pipelines
@@ -36,3 +38,14 @@ class Prediction:
         """
         max_num = max(self.values)
         return str(self.classes[self.values.index(max_num)])
+
+    def scale_log(self) -> None:
+        """
+        scales the probabilities logarithmic
+        :return: None
+        """
+        # Problem are probabilities below 1
+        self.values = [log(1.05 + x, 2) for x in self.values]
+
+    def round_values(self) -> None:
+        self.values = [round(x, 3) for x in self.values]

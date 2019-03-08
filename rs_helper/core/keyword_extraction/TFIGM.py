@@ -4,7 +4,7 @@ from tqdm import tqdm
 from functools import reduce
 import operator
 
-from rs_helper.core.KeywordExtraction.KeywordExtractor import KeywordExtractor
+from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from rs_helper.core.Topic import Topic
 from rs_helper.core import Keyword
 

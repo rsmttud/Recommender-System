@@ -6,6 +6,6 @@ from rs_helper.core.Preprocessor import Preprocessor
 from rs_helper.core.RecommendationFacade import RecommendationFacade
 from rs_helper.core.Topic import Topic
 
-from rs_helper.core.Model import *
-from rs_helper.core.KeywordExtraction import *
+from rs_helper.core.model import *
+from rs_helper.core.keyword_extraction import *
 from rs_helper.core.distributed_models import *

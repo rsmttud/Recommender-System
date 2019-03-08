@@ -1,4 +1,4 @@
-from rs_helper.core.KeywordExtraction.KeywordExtractor import KeywordExtractor
+from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from sklearn.feature_extraction.text import TfidfVectorizer
 from rs_helper.core.Topic import Topic
 

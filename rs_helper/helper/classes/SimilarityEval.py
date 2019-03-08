@@ -10,7 +10,7 @@ from rs_helper.helper import *
 class SimilarityEval:
     def __init__(self, path, sim_data, valid_data):
         """
-        :param path: path to FastText Model
+        :param path: path to FastText model
         :param sim_data: path to Similarity CSV
         :param valid_data: path to validation data
         Class to perform similarity evaluation

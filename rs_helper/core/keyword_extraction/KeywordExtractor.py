@@ -7,7 +7,7 @@ from rs_helper.core import Keyword
 
 class KeywordExtractor(ABC):
     """
-    An abstract class which serves as template to implement a new KeywordExtraction algorithm.
+    An abstract class which serves as template to implement a new keyword_extraction algorithm.
     """
 
     def __init__(self):

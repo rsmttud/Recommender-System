@@ -2,7 +2,7 @@ import pickle as pkl
 import operator
 from functools import reduce
 
-from rs_helper.core.Model import Model
+from rs_helper.core.model import Model
 from rs_helper.core.Prediction import Prediction
 from rs_helper.core.Preprocessor import Preprocessor
 

@@ -1,4 +1,4 @@
-from rs_helper.core.Model.Model import Model
+from rs_helper.core.model.Model import Model
 from rs_helper.core.Prediction import Prediction
 #from rs_helper.classes.FastTextEncoder import FastTextEncoder
 from rs_helper.core.Preprocessor import Preprocessor
@@ -18,7 +18,7 @@ class OneToOneGRU(Model):
         self.encoder_path = path_to_encoder
 
     def initialize(self):
-        # Model loading
+        # model loading
         yaml_file = open(self.model_path, "r")
         loaded_model_yaml = yaml_file.read()
         yaml_file.close()
