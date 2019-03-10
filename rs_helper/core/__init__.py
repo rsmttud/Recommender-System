@@ -5,6 +5,7 @@ from rs_helper.core.Prediction import Prediction
 from rs_helper.core.Preprocessor import Preprocessor
 from rs_helper.core.RecommendationFacade import RecommendationFacade
 from rs_helper.core.Topic import Topic
+from rs_helper.core.EntityExtractor import EntityExtractor
 
 from rs_helper.core.model import *
 from rs_helper.core.keyword_extraction import *
