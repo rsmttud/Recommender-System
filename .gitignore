@@ -17,7 +17,6 @@ __pychache__/*
 !models/classifier/readme.md
 /models/embeddings/*
 !models/embeddings/readme.md
-models/DANs/*
 models/FastText/*
 models/LDA/*
 playground*
