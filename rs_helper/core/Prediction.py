@@ -45,7 +45,7 @@ class Prediction:
         :return: None
         """
         # Problem are probabilities below 1
-        self.values = [log(1.05 + x, 2) for x in self.values]
+        self.values = [log(1.01 + x, 2) for x in self.values]
 
     def round_values(self) -> None:
         self.values = [round(x, 3) for x in self.values]
