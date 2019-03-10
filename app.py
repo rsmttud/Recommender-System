@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask, render_template, request, json
 from helper_functions import save_txt_from_interface
 from rs_helper.core import *
@@ -6,6 +7,7 @@ from rs_helper.helper import *
 from typing import Dict
 
 app = Flask(__name__)
+
 
 # TODO definetly needs to be adjusted
 @app.route('/', methods=["GET"])
@@ -15,7 +17,6 @@ def main():
 
 @app.route('/classify', methods=["POST"])
 def classify():
-    print("YUHUUU a POST")
     problem_title = "" if "title" not in request.form else request.form['title']
     problem_short_desc = "" if "short_description" not in request.form else request.form['short_description']
     problem_long_desc = "" if "long_description" not in request.form else request.form['long_description']
@@ -26,6 +27,23 @@ def classify():
 
     response = app.response_class(
         response=json.dumps(prediction),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+
+@app.route('/save_json', methods=["POST"])
+def save_json():
+    save_dir = "data/output"
+    file_name = str(time.time()) + ".json"
+    # Write Json
+    with open(os.path.join(save_dir, file_name), "w") as file:
+        json.dump(dict(request.form), file, indent=4)
+        file.close()
+
+    response = app.response_class(
+        response="True",
         status=200,
         mimetype='application/json'
     )
