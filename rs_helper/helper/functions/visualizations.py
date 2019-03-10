@@ -11,8 +11,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.colors
 from sklearn.metrics.pairwise import cosine_similarity
-from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
-#from rs_helper.core.distributed_models.DAN import DAN
+from rs_helper.core.distributed_models import EmbeddingModel
+from rs_helper.core.distributed_models import DAN
 
 # SOMETHING IS TOTALLY OFF WITH THE DAN CLASS
 
