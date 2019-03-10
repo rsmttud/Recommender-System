@@ -52,9 +52,9 @@ class RecommendationFacade:
         return prediction
 
     def __classification_embedding(self) -> Prediction:
-        ft_model = FastTextWrapper("notebooks/ft_models/fasttext_12/model.joblib")
+        ft_model = FastTextWrapper("models/FastText/1/model.joblib")
         dan = DAN(ft_model, "models/DANs/1/frozen_graph.pb")
-        _svc = SVCModel("notebooks/testSVC.joblib", dan)
+        _svc = SVCModel("models/SVC/1/model.joblib", dan)
         prediction = _svc.predict(self.corpora.data)
         prediction.scale_log()
         prediction.round_values()
