@@ -1,0 +1,1 @@
+{"name": "model_26", "units": 80, "dropout": 0.3, "optimizer": "adam", "epochs": 100, "test_accuracy": 98.17453250222617, "test_loss": 0.057747668487568016, "time": 3.6603231032689414, "validation_accuracy": 80.35714285714286}

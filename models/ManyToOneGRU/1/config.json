@@ -1,0 +1,1 @@
+{"name": "model_22", "units": 80, "dropout": 0.2, "optimizer": "adadelta", "epochs": 100, "test_accuracy": 99.42247889826744, "test_loss": 0.05726992251199301, "time": 6.833344439665477, "validation_accuracy": 89.28571428571429}
