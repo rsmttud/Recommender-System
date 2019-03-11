@@ -49,3 +49,6 @@ class Prediction:
 
     def round_values(self) -> None:
         self.values = [round(x, 3) for x in self.values]
+
+    def compress(self) -> list:
+        return list(zip(self.classes, self.values))
