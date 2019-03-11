@@ -29,6 +29,6 @@ class USE(EmbeddingModel):
         with tf.Session(config=session_conf) as session:
             session.run([tf.global_variables_initializer(), tf.tables_initializer()])
             with tf.device('/gpu:0'):
-                message_embeddings = session.run(self.model(words))
+                message_embeddings = session.run(self.tf_model(words))
 
             return message_embeddings
