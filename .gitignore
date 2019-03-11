@@ -20,3 +20,7 @@ __pychache__/*
 models/FastText/*
 models/LDA/*
 playground*
+create_topic_files.py
+generate_topics.py
+static/js/style.js
+sandbox*
