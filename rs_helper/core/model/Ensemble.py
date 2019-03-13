@@ -1,7 +1,5 @@
 from rs_helper.core.model import Model
 from rs_helper.core import Prediction
-from rs_helper.core import LabelMap
-import numpy as np
 
 
 class Ensemble(Model):
@@ -22,6 +20,11 @@ class Ensemble(Model):
         pass
 
     def predict(self, predictions: list) -> Prediction:
+        """
+        :param predictions: List(Prediction) - List of all predictions of the classifiers to merge
+        :return: Prediction
+        Method that actually performs the merge according to the weighted averaging approach.
+        """
         if type(predictions[0]) != Prediction:
             raise ValueError("x needs to be of type List(Prediction)")
 
