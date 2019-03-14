@@ -1,7 +1,7 @@
 from rs_helper.core.Corpora import Corpora
 from rs_helper.core.Prediction import Prediction
 
-from rs_helper.core.model.OneToOneGRU import OneToOneGRU
+from rs_helper.core.model.RNNTypedClassifier import RNNTypedClassifier
 from rs_helper.core.model.LatentDirichletAllocation import LatentDirichletAllocation
 from rs_helper.core.distributed_models.DAN import DAN
 from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
@@ -87,9 +87,9 @@ class RecommendationFacade:
         path_model = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_200_units_0.2_dropout_20_epochs.yaml"
         path_weights = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_weights_200_units_0.2_dropout_20_epochs.h5"
         path_encoder = "notebooks/model_trainings/FastText/models/ft_model_15000.pkl"
-        model = OneToOneGRU(path_to_model=path_model,
-                            path_to_weights=path_weights,
-                            path_to_encoder=path_encoder)
+        model = RNNTypedClassifier(path_to_model=path_model,
+                                   path_to_weights=path_weights,
+                                   path_to_encoder=path_encoder)
         model.initialize()
         predictions = model.predict(self.corpora.data)
         return predictions
