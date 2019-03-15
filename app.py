@@ -25,8 +25,11 @@ def classify():
     file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
     prediction = get_prediction(pipeline_method, file_name)
 
+    entity_extractor = EntityExtractor(problem_long_desc)
+    entities = entity_extractor.extract_entities()
+
     response = app.response_class(
-        response=json.dumps(prediction),
+        response=json.dumps({"forecast": prediction, "entities": entities}),
         status=200,
         mimetype='application/json'
     )
@@ -36,11 +39,12 @@ def classify():
 @app.route('/save_json', methods=["POST"])
 def save_json():
     save_dir = "data/output"
-    file_name = str(time.time()) + ".json"
+    file_name = str(int(time.time())) + ".json"
     # Write Json
-    with open(os.path.join(save_dir, file_name), "w") as file:
-        json.dump(dict(request.form), file, indent=4)
-        file.close()
+    print(type(request.json))
+    print(request.json)
+    with open(os.path.join(save_dir, file_name), "w", encoding="utf-8") as file:
+        json.dump(request.json, file, indent=4)
 
     response = app.response_class(
         response="True",
@@ -64,7 +68,7 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
 
     if pipeline_method == "classification":
         result = facade.run(classification=True)
-        label_map = LabelMap(path_to_json="models/label_maps/4_classes.json")
+        label_map = LabelMap(path_to_json="models/label_maps/3_classes.json")
         for index, class_id in enumerate(result.classes):
             # The float type casting is necessary, because json.dumps doesnt support np.float32
             prediction.update({label_map.get_name(class_id): float(result.values[index])})
