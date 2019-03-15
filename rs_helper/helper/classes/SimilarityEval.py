@@ -5,8 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
 from rs_helper.core import *
 from rs_helper.helper import *
-import pandas as pd
-from typing import *
 
 
 class SimilarityEval:
@@ -62,7 +60,7 @@ class SimilarityEval:
             self.sim_data)
         return self.ME
 
-    def correlation(self) -> List[Tuple[float, float]]:
+    def correlation(self) -> List[float, float]:
         """
         Correlation between human similarities and model similarities
         Spearman and Pearson correlation are calculated.

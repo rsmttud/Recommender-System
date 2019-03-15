@@ -17,7 +17,7 @@ class RecommendationFacade:
     """
     General Class to handle to predictions. Actual implementation of the Facade-Pattern.
     """
-    def __init__(self, path_to_files: str):
+    def __init__(self, path_to_files: str) -> None:
         """
         Constructor of Facade
 
@@ -123,4 +123,4 @@ class RecommendationFacade:
         """
         if not isinstance(predictions[0], Prediction):
             raise ValueError("Parameter predictions must be of type List(Prediction)")
-        return Prediction(["dummy"], ["dummy"])
+        return Prediction(["dummy"], [0.789])

@@ -2,6 +2,7 @@ from nltk.tag import pos_tag
 from nltk.tokenize import word_tokenize
 from nltk.tree import Tree
 from nltk import RegexpParser
+from typing import List
 import spacy
 
 
@@ -16,7 +17,7 @@ class EntityExtractor:
 
     and then sorted by (Position Index + Term frequency) / n_words
     """
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         """
         EntityExtractor object to extract analytics entities.
 
@@ -35,7 +36,7 @@ class EntityExtractor:
         self.nlp = spacy.load('en_core_web_sm')
         self.doc = self.nlp(self.text)
 
-    def __get_continuous_chunks(self, chunked):
+    def __get_continuous_chunks(self, chunked: Tree) -> List[str]:
         """
         Transforms a NLTK ParseTree to a list of chunks as strings
 
@@ -61,7 +62,7 @@ class EntityExtractor:
             continuous_chunk.append(" ".join(current_chunk))
         return continuous_chunk
 
-    def extract_entities(self):
+    def extract_entities(self) -> List[str]:
         """
         Generel handler - Methods extracts the chunks of a sentence by the pattern in self.pattern
 
@@ -75,7 +76,7 @@ class EntityExtractor:
         self.chunks = self.__score_chunks(chunks)
         return self.chunks
 
-    def __score_chunks(self, chunks):
+    def __score_chunks(self, chunks: List[str]) -> List[str]:
         """
         Method evaluates the supplied chunks by calculating their score with
         (Position Index + Term frequency) / n_words
@@ -91,11 +92,11 @@ class EntityExtractor:
             index = self.text.index(chunk)
             N = len(self.tokens)
             tf = self.text.count(chunk)
-            assigned.append((chunk, (index+tf)/N))  # Calulate the scoring mechanism
+            assigned.append((chunk, (index+tf)/N))  # Calculate the scoring mechanism
         sorted_chunks = sorted(assigned, key=lambda x: x[1], reverse=True)
         return [x[0] for x in sorted_chunks]
 
-    def __check_dependencies(self, chunks: list):
+    def __check_dependencies(self, chunks: List[str]) -> List[str]:
         """
         Method extends existing chunks by their potentially compount-related words
 

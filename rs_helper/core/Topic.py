@@ -3,7 +3,7 @@ from typing import *
 
 
 class Topic:
-    def __init__(self, class_name: str):
+    def __init__(self, class_name: str) -> None:
         """
         Keyword set is created automatically
 
@@ -65,7 +65,7 @@ class Topic:
             normed_keyword_set.append(keyword)
         self.keyword_set = normed_keyword_set
 
-    def add_keyword(self, keyword: list, rank: float, algorithm: str) -> None:
+    def add_keyword(self, keyword: List[str], rank: float, algorithm: str) -> None:
         """
         Add another keyword to the topic
 
@@ -135,7 +135,7 @@ class Topic:
         """
         return next((x.rank for x in topic.keyword_set if x.keyword == key), None)
 
-    def get_keyword_algorithm(self, topic, key) -> List[str]:
+    def get_keyword_algorithm(self, topic, key: str) -> List[str]:
         """
         Get the algorithm of a specific keyword
 
