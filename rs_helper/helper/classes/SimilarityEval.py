@@ -10,10 +10,14 @@ from rs_helper.helper import *
 class SimilarityEval:
     def __init__(self, path, sim_data, valid_data):
         """
-        :param path: path to FastText model
-        :param sim_data: path to Similarity CSV
-        :param valid_data: path to validation data
-        Class to perform similarity evaluation
+        Class to perform similarity evaluation in terms of intrinsic embedding evaluation
+
+        :param path: path to embedding model
+        :type path: str
+        :param sim_data: DataFrame of similarity data
+        :type sim_data: pd.DataFrame
+        :param valid_data: DataFrame of validation data
+        :type valid_data: pd.DataFrame
         """
         self.path = path
         self.base_path = os.path.dirname(path)
@@ -27,8 +31,10 @@ class SimilarityEval:
 
     def calculate_similarities(self):
         """
-        :return: List(float): List of similarity values
         Calculate similarities for word pairs in similiarity data
+
+        :return: List of similarity values
+        :rtype: list(float)
         """
         sims = list()
         for i, r in self.sim_data.iterrows():
@@ -45,8 +51,10 @@ class SimilarityEval:
 
     def mean_error(self):
         """
-        :return: float
         Calculate mean error of similarity judgements
+
+        :return: the mean error
+        :rtype: float
         """
         self.ME = sum(np.array(self.sim_data["Human (mean)"]) - np.array(self.sim_data["assigned_sim"])) / len(
             self.sim_data)
@@ -54,8 +62,11 @@ class SimilarityEval:
 
     def correlation(self):
         """
-        :return: List(float)
         Correlation between human similarities and model similarities
+        Spearman and Pearson correlation are calculated.
+
+        :return: The correlation values [Pearson, Spearman]
+        :rtype: list(float)
         """
         self.pearson_corr = self.sim_data["Human (mean)"].corr(self.sim_data["assigned_sim"], method="pearson")
         self.spearman_corr = self.sim_data["Human (mean)"].corr(self.sim_data["assigned_sim"], method="spearman")
@@ -63,8 +74,9 @@ class SimilarityEval:
 
     def save_to_config(self):
         """
-        :return: None
         Save similarity judgement values in config file
+
+        :return: None
         """
         config_path = os.path.join(self.base_path, "config.json")
 
@@ -80,8 +92,9 @@ class SimilarityEval:
 
     def plot_similarity(self):
         """
-        :return: None
         Create and save similarity matrix of valid data
+
+        :return: None
         """
         self.valid_data["vector"] = self.valid_data["text"].apply(
             lambda x: self.model.inference(word_tokenize(x), sentence_level=True))

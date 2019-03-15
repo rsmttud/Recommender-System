@@ -5,8 +5,12 @@ import os
 def read_data(_dir: str) -> pd.DataFrame:
     """
     Function which reads a dir with subdirs containing strings into an pd.DataFrame object
+
     :param _dir: Path to dir
-    :return: pd.DataFrame with [url, text, class] as columns
+    :type _dir: str
+
+    :return: DataFrame with [url, text, class] as columns
+    :rtype: pd.DataFrame
     """
     data = {}
     data["url"] = []

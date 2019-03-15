@@ -27,6 +27,16 @@ class LatentDirichletAllocation(Model):
 
     # TODO fix arguments in p.lemmatize
     def __prepare_data(self, text: str) -> list:
+        """
+        Preprocess the data by lemmatizing it, removing stopwords, punctuation and numbers
+
+        :param text: The text to process
+        :type text: str
+
+        :return: The preprocessed text
+        :rtype: list(str)
+        """
+
         p = Preprocessor(text)
         lemmatized = p.lemmatize(remove_punct_and_nums=True, remove_stops=True)
         return reduce(operator.concat, lemmatized)

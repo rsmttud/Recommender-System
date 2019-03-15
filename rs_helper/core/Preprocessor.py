@@ -9,6 +9,9 @@ from nltk.corpus import stopwords
 
 
 class LemmaTokenizer(object):
+    """
+    Class to perform lemmatization in preprocessing
+    """
     def __init__(self):
         self.wnl = WordNetLemmatizer()
 
@@ -17,8 +20,17 @@ class LemmaTokenizer(object):
 
 
 class Preprocessor:
-
+    """
+    Class to preprocess textual data
+    """
     def __init__(self, data: str):
+        """
+        Constructor of the Preprocessor class.
+        Sklean CountVectorizer will be initialized.
+
+        :param data: The data to preprocess
+        :type data: str
+        """
         self.data = [s for s in sent_tokenize(data)]
         self.vectorizer = CountVectorizer(stop_words=list(stopwords.words("english")),
                                           min_df=1, decode_error="ignore",
@@ -28,15 +40,41 @@ class Preprocessor:
         self.analyzer = self.vectorizer.build_analyzer()
 
     def lemmatize(self):
+        """
+        Lemmatize the text data. Results will be stored in class attribute data.
+
+        :return: None
+        """
         self.data = [self.analyzer(s) for s in self.data]
 
     def remove_puctuation(self):
+        """
+        Remove punctuation from data. Results will be stored in class attribute data.
+
+        :return: None
+        """
         self.data = [[x for x in s if x not in string.punctuation] for s in self.data]
 
     def remove_numbers(self):
+        """
+        Remove numbers from data. Results will be stored in class attribute data.
+
+        :return:
+        """
         self.data = [[x for x in s if re.match("[A-Za-z]+", x) is not None] for s in self.data]
 
     def transform(self, remove_nums: bool = True, remove_punct: bool = True):
+        """
+        General handler to transform textual data.
+
+        :param remove_nums: Remove numbers?
+        :type remove_nums: bool
+        :param remove_punct: Remove Punctuation?
+        :type remove_punct: bool
+
+        :return: preprocessed data
+        :rtype: list
+        """
         self.lemmatize()
         if remove_nums and not remove_punct:
             self.remove_numbers()

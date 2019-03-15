@@ -9,8 +9,13 @@ class Corpora:
 
     def __init__(self, path: str, label: str = None):
         """
+        General corpora class.
+
         :param path: The path to the directory where all the .txt are stored or an path to an txt-file
+        :type path: str
+
         :param label: A category to mark the text
+        :type label: str
         """
         if not isinstance(path, str):
             raise ValueError("Parameter path must be string.")
@@ -30,6 +35,7 @@ class Corpora:
         The methods reads text files and stores them into the data class attribute. Depending on the given path in
         the constructor it distinguishes between directories or a single file. In case of an directory all txt files are
         stored in the data attribute.
+
         :return: None
         """
         # Reading all txt from a dict
@@ -49,18 +55,34 @@ class Corpora:
                 self.data = file.read()
 
     def __count_words(self, include_duplicates=True) -> None:
+        """
+        Count the words across the corpus. Count will be stored in class attribute n_words
+
+        :param include_duplicates: Weather duplicated should be included in counting
+        :type include_duplicates: bool
+
+        :return: None
+        """
         self.n_words = len(self.data.split())
 
     def __delete_multiple_spaces(self) -> None:
+        """
+        Delete duplicated spaces from data.
+
+        :return: None
+        """
         self.data = re.sub(' +', ' ', self.data)
 
     def save(self, out_path: str) -> bool:
         """
         This method saves the supplied problem description to a .txt file
+
         :param out_path: full path to the out_file
-        :return: boolean
+        :type out_path: str
+
+        :return: Boolean if save worked
+        :rtype: bool
         """
-        # With Block is an Try/Except -Block - redundant
         try:
             file = open(out_path, "w")
             file.write(self.data)

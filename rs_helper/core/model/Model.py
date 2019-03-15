@@ -7,8 +7,14 @@ class Model(ABC):
     This abstract method is the parent class of all machine learning models used for predicting the class of
     a supplied problem description
     """
-
     def __init__(self, path_to_model: str):
+        """
+        This abstract method is the parent class of all machine learning models used for predicting the class of
+        a supplied problem description
+
+        :param path_to_model: Path to the model
+        :type path_to_model: str
+        """
         if not isinstance(path_to_model, str):
             raise ValueError("The parameter path_to_model must be of type string")
 
@@ -19,7 +25,8 @@ class Model(ABC):
     def initialize(self) -> None:
         """
         The method initialize the model and save it to the class variable model
-        :return:
+
+        :return: None
         """
         pass
 
@@ -27,7 +34,9 @@ class Model(ABC):
     def predict(self, text: str) -> Prediction:
         """
         Each model needs to be able to predict something
-        :return: prediction object
+
+        :return: the prediction
+        :rtype: Prediction
         """
         pass
 
@@ -36,7 +45,11 @@ class Model(ABC):
         """
         To scale the confidence of the prediction between 0-1. This should guarantee that predictions from different
         models are comparable to each other.
-        :param prediction: a prediction made by a model in form of an prediction object
+
+        :param prediction: A prediction made by a model in form of an prediction object
+        :type prediction: Prediction
+
         :return: A prediction object with normalized results
+        :rtype: Prediction
         """
         pass

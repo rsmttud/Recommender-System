@@ -17,7 +17,9 @@ class KeywordExtractor(ABC):
     def extract_keywords(self, *kwargs) -> List[Keyword]:
         """
         Method to create find all keywords and their ranks
-        :return: List[Keyword]
+
+        :return: A list of keywords
+        :rtype: list(str)
         """
         pass
 
@@ -25,6 +27,8 @@ class KeywordExtractor(ABC):
     def generate_topic(self, token_rank_dict, label: str) -> Topic:
         """
         Method to transfer the keywords found into a Topic object.
-        :return: Topic
+
+        :return: The topic object
+        :rtype: Topic
         """
         pass

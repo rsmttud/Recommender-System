@@ -15,7 +15,9 @@ class SystemEvaluation:
         """
 
         :param predictions: A List of prediction objects
+        :type predictions: list(Prediction)
         :param labels: A list containing the ground-truth labels
+        :type labels: list
         """
         if not isinstance(predictions[0], Prediction):
             raise ValueError("The parameter predictions need to be of type Prediction")
@@ -34,6 +36,7 @@ class SystemEvaluation:
     def __calculate_positives_and_negatives(self) -> None:
         """
         Method return calculates all positives and negative classifications
+
         :return:
         """
         pos, neg = 0, 0
@@ -46,6 +49,7 @@ class SystemEvaluation:
     def __init_metrics(self) -> None:
         """
         Initializes some attributes of the class
+
         :return:
         """
         self.y_pred = [x.get_class_with_max_confidence() for x in self.predictions]
@@ -56,7 +60,9 @@ class SystemEvaluation:
     def calculate_accuracy_score(self) -> float:
         """
         Calculates the accuracy according to sklearn.metrics.accuracy_score
+
         :return: normalized accuracy score
+        :rtype: float
         """
         return accuracy_score(self.labels, self.y_pred)
 
@@ -64,15 +70,21 @@ class SystemEvaluation:
         """
         Calculates the recall given by the class attribute self.predictions and self.labels.
         Uses the sklean.metrics.recall_score method
+
         :return: recall as float
+        :rtype: float
         """
         return recall_score(self.labels, self.y_pred, average="micro")
 
     def get_confusion_matrix(self, labels: List[str] = None) -> np.ndarray:
         """
         Returns an sklearn.metrics confusion matrix
-        :param labels: the ground truth labels stored in a list
-        :return: numpy array
+
+        :param labels: the ground truth labels
+        :type labels: list(str)
+
+        :return: Numpy array representing the confusion matrix
+        :rtype: np.ndarray
         """
         if labels:
             return confusion_matrix(y_true=self.labels, y_pred=self.predictions, labels=labels)
@@ -81,7 +93,9 @@ class SystemEvaluation:
     def save_evaluation(self) -> bool:
         """
         Method to save all evaluation results for future comparison. Results are saved to the eval folder
-        :return: boolean
+
+        :return: Status
+        :rtype: bool
         """
         try:
             date = str(datetime.datetime.today().strftime('%d-%m-%y_%H:%M:%S'))

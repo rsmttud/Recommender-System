@@ -31,13 +31,42 @@ class TFIGM(KeywordExtractor):
         self.lambda_value = 7
 
     def __compute_tf(self, word: str, document):
+        """
+        Computes the term frequency of a word in a given document
+
+        :param word: The word
+        :type word: str
+        :param document: The document
+        :type document: str
+
+        :return: The frequency of a word
+        :rtype: int
+        """
         return document.count(word)
 
     def __num_words(self, document: list):
+        """
+        Compute the length of a document
+
+        :param document: the tokenized document
+        :type document: list(str)
+
+        :return: The document length
+        :rtype: int
+        """
         self.num_words = len(document)
         return self.num_words
 
     def __compute_df(self, key: str):
+        """
+        Compute document frequency for a word
+
+        :param key: word
+        :type key: str
+
+        :return: The count of the word across corpus
+        :rtype: int
+        """
         count = 0
         for doc in self.joined_docs:
             if key in doc:
@@ -45,17 +74,55 @@ class TFIGM(KeywordExtractor):
         return count
 
     def __compute_idf(self, key: str):
+        """
+        Computes the inverse document frequency
+
+        :param key: word
+        :type key: str
+
+        :return: Inverse document frequency
+        :rtype: float
+        """
         count = self.__compute_df(key)
         return math.log((self.num_docs/count))
 
     def term_frequency(self, word: str, document: list) -> float:
+        """
+        Calculate the term frequency of a word
+
+        :param word: word
+        :type word: str
+        :param document: list of documents
+        :type document: list(str)
+
+        :return: the term frequency
+        :rtype: float
+        """
         return float(self.__compute_tf(word, document) / self.__num_words(document))
 
     def frequency_class_distribution(self, word: str, documents: list):
+        """
+        Compute the frequncy class distribution of a word.
+
+        :param word: word
+        :type word: str
+        :param documents: list of documents
+        :type documents: list(str)
+
+        :return: Sorted list of term frequencies over documents
+        :rtype: list(str)
+        """
+
         frequencies = [self.__compute_tf(word, d) for d in documents]
         return sorted(frequencies, reverse=True)
 
     def __get_vocab(self):
+        """
+        Generate basic vocab containing all uni-, bi- and trigrams of the documents.
+
+        :return: list of tokens
+        :rtype: list
+        """
         vocab = list()
         for doc in self.data:
             unique_tokens = list(set(doc))
@@ -68,7 +135,6 @@ class TFIGM(KeywordExtractor):
             del unique_tokens, bigram_tokens, trigram_tokens, all_tokens
         return vocab
 
-    # TODO apply to Keyword class
     def extract_keywords(self):
         results = dict()
         vocab = self.__get_vocab()

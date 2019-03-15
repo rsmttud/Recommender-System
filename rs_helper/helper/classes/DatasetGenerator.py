@@ -10,8 +10,24 @@ import shutil
 
 
 class DatasetGenerator:
-
+    """
+    Class to generate the cleaned data containing sentences that are similar to definitions
+    """
     def __init__(self, path_to_files: str, search_terms: list, class_name: str, save_name: str, seperate_save: bool = False):
+        """
+        Constructor of class
+
+        :param path_to_files: Path where all files are stored
+        :type path_to_files: str
+        :param search_terms: List of search terms to search in the data
+        :type search_terms: list(str)
+        :param class_name: The name of the class
+        :type class_name: str
+        :param save_name: Name to save the created files
+        :type save_name: str
+        :param seperate_save: Specify if sentences sould be saved seperately
+        :type seperate_save: bool (default=False)
+        """
         if not os.path.exists(path_to_files):
             raise ValueError("No such file or directory")
         self.path = path_to_files
@@ -22,6 +38,11 @@ class DatasetGenerator:
         self.seperate = seperate_save
 
     def run(self):
+        """
+        Runs the extraction
+
+        :return: None
+        """
         sentences = self.find_sentences()
         topics = pickle.load(open("manual_topics_for_embedding_2.pkl", "rb"))
         all_words = self.get_corpora(topics, sentences)
@@ -33,10 +54,33 @@ class DatasetGenerator:
         self.save_to_txt(seperate=self.seperate)
 
     def save_in_class(self, sentences: list, sim_list: list):
+        """
+        Saves the sentences in class attribute result_sentences
+
+        :param sentences: List of sentences to store
+        :type sentences: list(str)
+        :param sim_list: List of similarities to sort by
+        :type sim_list: list(float)
+
+        :return: None
+        """
         for idx, sim in sim_list:
             self.result_sentences.append(sentences[idx])
 
     def calculate_similarities(self, basis: list, sentences: list, vector):
+        """
+        Calculates all similarities between sentences and topic-vectors
+
+        :param basis: list of documents representing the corpus
+        :type basis: list(list(str))
+        :param sentences: List of sentences to compare
+        :type sentences: list(str)
+        :param vector: vector to compare against
+        :type vector: np.array
+
+        :return: dict of similarities
+        :rtype: dict
+        """
         sims = dict()
         for i, s in enumerate(tqdm(sentences)):
             vec = self.vectorize(word_tokenize(s), basis)
@@ -45,6 +89,17 @@ class DatasetGenerator:
         return sims
 
     def vectorize(self, words, basis):
+        """
+        Transform text in bag of words vector
+
+        :param words: text
+        :type words: list(str)
+        :param basis: Basis vocabulary
+        :type basis: list(str)
+
+        :return: Vector
+        :rtype: np.array
+        """
         def increase(vec, index):
             vec[index] += 1
         vector = np.zeros(len(basis))
@@ -52,6 +107,17 @@ class DatasetGenerator:
         return vector
 
     def get_corpora(self, topics, sents):
+        """
+        Get the whole corpora by merging topic keywords and sentence words
+
+        :param topics: topics
+        :type topics: dict(str: list(str))
+        :param sents: Sentences
+        :type sents: list(str)
+
+        :return: List of all unique words
+        :rtype: list(str)
+        """
         print("Getting Copora:")
         all = list()
         for key in topics:
@@ -66,6 +132,11 @@ class DatasetGenerator:
         return list(set(all))
 
     def find_sentences(self):
+        """
+        Filter sentences that contain search terms
+
+        :return: List(str)
+        """
         sents = list()
         for t in tqdm(os.listdir(self.path)):
             if t.endswith(".txt"):
@@ -82,11 +153,26 @@ class DatasetGenerator:
         return sents
 
     def save_to_dataframe(self):
+        """
+        Save the results to a pandas DataFrame
+
+        :return: the DataFrame
+        :rtype: pd.DataFrame
+        """
         df = pd.DataFrame({"sentence": self.result_sentences})
         df["class"] = self.class_name
         return df
 
     def save_to_txt(self, seperate: bool = False):
+        """
+        Save the results to .txt files.
+
+        :param seperate: Should each sentence be saved seperately?
+        :type seperate: bool
+
+        :return: None
+
+        """
         if not seperate:
             file = open("out/"+self.save_name + "_sentences.txt", "w")
             for s in self.result_sentences:
@@ -102,6 +188,14 @@ class DatasetGenerator:
 
     @staticmethod
     def merge_crawl_results(super_dir: str):
+        """
+        Method to merge all crawling results in class directories by copying the crawl documents to them.
+
+        :param super_dir: Super directory where class-subdirectories should be created
+        :type super_dir: str
+
+        :return: None
+        """
         merged_path = os.path.join(super_dir, "merged_datasets")
         if not os.path.exists(merged_path):
             os.mkdir(merged_path)

@@ -6,9 +6,11 @@ class Ensemble(Model):
 
     def __init__(self, weightening_scheme: list, n_classes: int = 3):
         """
-        :param weightening_scheme: List(float)
         Class to do weighted averaging based on different classifier predictions.
         Given three classes, every weight in list will be used for three elements of the prediction list.
+
+        :param weightening_scheme: The weightening schema. Every classifier needs to have a weight.
+        :type weightening_scheme: list(float)
         """
         super().__init__(path_to_model="")
         self.n_classes = n_classes
@@ -21,9 +23,13 @@ class Ensemble(Model):
 
     def predict(self, predictions: list) -> Prediction:
         """
-        :param predictions: List(Prediction) - List of all predictions of the classifiers to merge
-        :return: Prediction
-        Method that actually performs the merge according to the weighted averaging approach.
+        Perform the merge of predictions according to the weighted averaging approach.
+
+        :param predictions: List of all predictions of the classifiers to merge
+        :type predictions: list(Prediction)
+
+        :return: The merged prediction
+        :rtype: Prediction
         """
         if type(predictions[0]) != Prediction:
             raise ValueError("x needs to be of type List(Prediction)")
