@@ -7,6 +7,7 @@ from rs_helper.core.Prediction import Prediction
 from rs_helper.core.Preprocessor import Preprocessor
 
 
+# TODO UPDATE!!
 class LatentDirichletAllocation(Model):
 
     def __init__(self, path_to_model: str, path_to_vectorizer: str):
@@ -28,7 +29,7 @@ class LatentDirichletAllocation(Model):
     # TODO fix arguments in p.lemmatize
     def __prepare_data(self, text: str) -> list:
         p = Preprocessor(text)
-        lemmatized = p.lemmatize(remove_punct_and_nums=True, remove_stops=True)
+        lemmatized = p.lemmatize(remove_nums=True, remove_stopwords=True)
         return reduce(operator.concat, lemmatized)
 
     def normalize_result(self, prediction: Prediction):

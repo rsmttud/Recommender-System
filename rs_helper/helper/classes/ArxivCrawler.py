@@ -10,7 +10,7 @@ import time
 
 class ArxivCrawler(Crawler):
 
-    def __init__(self, out_dir: str, search_query: str, xml_dir: str, start=0, max_results=1000):
+    def __init__(self, out_dir: str, search_query: str, xml_dir: str, start=0, max_results=1000) -> None:
         """
 
         :param out_dir:
@@ -32,7 +32,7 @@ class ArxivCrawler(Crawler):
                            "ns1": "http://a9.com/-/spec/opensearch/1.1/",
                            "ns2": "http://arxiv.org/schemas/atom"}
 
-    def __slugify(self, value: str):
+    def __slugify(self, value: str) -> str:
         """
         Normalizes string, converts to lowercase, removes non-alpha characters,
         and converts spaces to hyphens.

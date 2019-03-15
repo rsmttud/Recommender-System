@@ -5,18 +5,23 @@ from nltk.tokenize import word_tokenize
 from rs_helper.core.LabelMap import LabelMap
 from keras.models import model_from_yaml
 import numpy as np
+from typing import List
 import os
 
 
 class RNNTypedClassifier(Model):
 
-    def __init__(self, path_to_model: str, architecture: str, embedding_type: str):
+    def __init__(self, path_to_model: str, architecture: str, embedding_type: str) -> None:
         """
         General class for RNNbased Architectures. Supported are One-to-One GRU / LSTMs and Many-to-One LSTM / GRUs
 
-        :param path_to_model: Str - Path to the model directory. Needs to contain model.yaml, weights.h5 and label_map.json
-        :param architecture: Str - "N:1" or "1:1" Architecture
-        :param embedding_type: Str - "DAN" or "FastText" Embeddings
+        :param path_to_model: Path to the model directory. Needs to contain model.yaml, weights.h5 and label_map.json
+        :type path_to_model: str
+        :param architecture: "N:1" or "1:1" Architecture
+        :type architecture: str
+        :param embedding_type: "DAN" or "FastText" Embeddings
+        :type embedding_type: str
+
         """
         if not os.path.isdir(path_to_model):
             raise NotADirectoryError("The specified path is not a directory")
@@ -40,7 +45,7 @@ class RNNTypedClassifier(Model):
         self.architecture = architecture
         self.embedding_type = embedding_type
 
-    def initialize(self):
+    def initialize(self) -> None:
         # model loading
         yaml_file = open(os.path.join(self.model_path, "model.yaml"), "r")
         loaded_model_yaml = yaml_file.read()
@@ -56,13 +61,34 @@ class RNNTypedClassifier(Model):
         pred = Prediction(values=list(y), classes=[lm.get_name(i) for i in range(len(y))])
         return pred
 
-    def __transform_input(self, text: str):
+    def __transform_input(self, text: str) -> np.ndarray:
+        """
+        Transform input to the shape (len(text), 1, 100) or (len(text), 100) depending on architecture.
+
+        :param text: The text to transform
+        :type text: str
+
+        :return: The input for classification
+        :rtype: np.ndarray
+        """
         tokens = word_tokenize(text)
         vectorized = self.__get_vetorized_text(tokens)
-        x = np.array(vectorized).reshape(shape=(len(vectorized), 1, 100))
-        return x    
+        if self.architecture == "1:1":
+            x = np.array(vectorized).reshape(shape=(len(vectorized), 1, 100))
+        else:
+            x = np.array(vectorized).reshape(shape=(len(vectorized), 100))
+        return x
 
-    def __get_vetorized_text(self, tokens: list):
+    def __get_vetorized_text(self, tokens: List[str]) -> np.ndarray:
+        """
+        Uses Embedding models to receive the vector representations
+
+        :param tokens: the tokens to transform in vectors
+        :type tokens: list(str)
+
+        :return: list of embeddings
+        :rtype: list(np.ndarray)
+        """
         _FT = FastTextWrapper(path="models/FastText/1/model.joblib")
         _DAN = None
         if self.embedding_type == "DAN":
@@ -72,8 +98,8 @@ class RNNTypedClassifier(Model):
             vectorized = _FT.inference(words=tokens, sentence_level=True) \
                 if self.embedding_type == "FastText" else _DAN.inference_batches([tokens])
         else:
-            vectorized = [_FT.inference(x) for x in tokens] \
-                if self.embedding_type == "FastText" else [_DAN.inference(x) for x in tokens]
+            vectorized = _FT.inference(tokens) \
+                if self.embedding_type == "FastText" else _DAN.inference(tokens)
         return vectorized
 
     def normalize_result(self, prediction: Prediction):

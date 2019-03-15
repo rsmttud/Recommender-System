@@ -2,6 +2,7 @@ from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from rs_helper.core.Topic import Topic
 import string
 from nltk.corpus import stopwords
+from typing import *
 import pke
 
 
@@ -17,7 +18,7 @@ class TopicRank(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
-    def extract_keywords(self, *kwargs):
+    def extract_keywords(self, *kwargs) -> Dict[str, Topic]:
         result = {}
         candidates = list()
         for i, p in enumerate(self.paths):
@@ -32,7 +33,7 @@ class TopicRank(KeywordExtractor):
         self.candidates = candidates
         return result
 
-    def generate_topic(self, token_rank_dict, label: str):
+    def generate_topic(self, token_rank_dict: List[Tuple[str, float]], label: str) -> Topic:
         topic = Topic(class_name=label)
         for w, v in token_rank_dict:
             topic.add_keyword(keyword=w.split(" "), rank=v, algorithm=self.class_name)

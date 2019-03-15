@@ -11,7 +11,7 @@ class SystemEvaluation:
     The purpose of the class is to evaluate the overall system and it's predicting power
     """
 
-    def __init__(self, predictions: List[Prediction], labels: list):
+    def __init__(self, predictions: List[Prediction], labels: list) -> None:
         """
 
         :param predictions: A List of prediction objects

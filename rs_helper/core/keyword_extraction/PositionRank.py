@@ -1,12 +1,13 @@
 from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from rs_helper.core.Topic import Topic
 from rs_helper.core.Keyword import Keyword
+from typing import *
 import pke
 
 
 class PositionRank(KeywordExtractor):
 
-    def __init__(self, paths_to_files: list, labels: list, top_n: int):
+    def __init__(self, paths_to_files: List[str], labels: List[str], top_n: int):
         super().__init__()
         self.paths = paths_to_files
         self.pos = {'NOUN', 'PROPN', 'ADJ'}
@@ -14,8 +15,7 @@ class PositionRank(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
-    # TODO need to be adjusted to Keyword Class
-    def extract_keywords(self, *kwargs):
+    def extract_keywords(self, *kwargs) -> Dict[str, Topic]:
         result = {}
         candidates = list()
         for i, p in enumerate(self.paths):
@@ -28,10 +28,9 @@ class PositionRank(KeywordExtractor):
             topic = self.generate_topic(position_rank_keyphrases, self.labels[i])
             result.update({self.labels[i]: topic})
         self.candidates = candidates
-        #keywords = Keyword()
         return result
 
-    def generate_topic(self, token_rank_dict, label: str):
+    def generate_topic(self, token_rank_dict: List[Tuple[str, float]], label: str) -> Topic:
         topic = Topic(class_name=label)
         for w, v in token_rank_dict:
             topic.add_keyword(keyword=w.split(" "), rank=v, algorithm=self.class_name)

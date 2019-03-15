@@ -33,7 +33,7 @@ class SVCModel(Model):
         classes = []
         values = []
 
-        for x,y in enumerate(probs[0]):
+        for x, y in enumerate(probs[0]):
             classes.append(x)
             values.append(y)
 

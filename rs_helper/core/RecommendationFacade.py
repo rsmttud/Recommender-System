@@ -14,8 +14,16 @@ from typing import List
 
 
 class RecommendationFacade:
+    """
+    General Class to handle to predictions. Actual implementation of the Facade-Pattern.
+    """
+    def __init__(self, path_to_files: str) -> None:
+        """
+        Constructor of Facade
 
-    def __init__(self, path_to_files: str):
+        :param path_to_files: Directory where all files are stored. They will be loaded in Corpora object
+        :type path_to_files: str
+        """
         self.corpora = Corpora(path=path_to_files)
 
     def run(self, lda: bool = False, key_ex: bool = False,
@@ -23,13 +31,22 @@ class RecommendationFacade:
             svc_classification: bool = False, gru_oto: bool = False):
         """
         Function should manage the starting of pipelines according to input
+
         :param lda: boolean to start or not start LDA pipeline
+        :type lda: bool
         :param key_ex: boolean to start or not start Keyword Extraction pipeline
+        :type key_ex: bool
         :param doc2vec: boolean to start or not start Doc2Vec pipeline
+        :type doc2vec: bool
         :param classification: boolean to start or not start ML Classification pipeline
+        :type classification: bool
         :param svc_classification: boolean to start or not start ML SVC Classification pipeline
+        :type svc_classification: bool
         :param gru_oto: boolean to start the GRU One To One Classification pipeline
-        :return: Object of type Prediction (merged prediction of all pipelines)
+        :type gru_oto: bool
+
+        :return: Merged prediction of all pipelines
+        :rtype: Prediction
         """
         if lda:
             return self.__lda_pipeline()
@@ -95,6 +112,15 @@ class RecommendationFacade:
         return predictions
 
     def __merge_predictions(self, predictions: List[Prediction]) -> Prediction:
+        """
+        Performs Ensemble Learning with Ensemble class
+
+        :param predictions: list of all predictions
+        :type predictions: list(Prediction)
+
+        :return: Final prediction
+        :rtype: Prediction
+        """
         if not isinstance(predictions[0], Prediction):
             raise ValueError("Parameter predictions must be of type List(Prediction)")
-        return Prediction(["dummy"], ["dummy"])
+        return Prediction(["dummy"], [0.789])

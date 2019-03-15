@@ -7,11 +7,29 @@ import pickle
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import shutil
+from typing import List, Dict, Any
 
 
 class DatasetGenerator:
+    """
+    Class to generate the cleaned data containing sentences that are similar to definitions
+    """
+    def __init__(self, path_to_files: str, search_terms: List[str],
+                 class_name: str, save_name: str, seperate_save: bool = False) -> None:
+        """
+        Constructor of class
 
-    def __init__(self, path_to_files: str, search_terms: list, class_name: str, save_name: str, seperate_save: bool = False):
+        :param path_to_files: Path where all files are stored
+        :type path_to_files: str
+        :param search_terms: List of search terms to search in the data
+        :type search_terms: list(str)
+        :param class_name: The name of the class
+        :type class_name: str
+        :param save_name: Name to save the created files
+        :type save_name: str
+        :param seperate_save: Specify if sentences sould be saved seperately
+        :type seperate_save: bool (default=False)
+        """
         if not os.path.exists(path_to_files):
             raise ValueError("No such file or directory")
         self.path = path_to_files
@@ -21,7 +39,12 @@ class DatasetGenerator:
         self.save_name = save_name
         self.seperate = seperate_save
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Runs the extraction
+
+        :return: None
+        """
         sentences = self.find_sentences()
         topics = pickle.load(open("manual_topics_for_embedding_2.pkl", "rb"))
         all_words = self.get_corpora(topics, sentences)
@@ -32,11 +55,35 @@ class DatasetGenerator:
         self.save_in_class(sentences, sim_list=similarities)
         self.save_to_txt(seperate=self.seperate)
 
-    def save_in_class(self, sentences: list, sim_list: list):
+    def save_in_class(self, sentences: List[str], sim_list: List[float]) -> None:
+        """
+        Saves the sentences in class attribute result_sentences
+
+        :param sentences: List of sentences to store
+        :type sentences: list(str)
+        :param sim_list: List of similarities to sort by
+        :type sim_list: list(float)
+
+        :return: None
+        """
         for idx, sim in sim_list:
             self.result_sentences.append(sentences[idx])
 
-    def calculate_similarities(self, basis: list, sentences: list, vector):
+    def calculate_similarities(self, basis: List[str], sentences: List[str],
+                               vector: np.ndarray) -> Dict[int, float]:
+        """
+        Calculates all similarities between sentences and topic-vectors
+
+        :param basis: list of documents representing the corpus
+        :type basis: list(str)
+        :param sentences: List of sentences to compare
+        :type sentences: list(str)
+        :param vector: vector to compare against
+        :type vector: np.array
+
+        :return: dict of similarities
+        :rtype: dict
+        """
         sims = dict()
         for i, s in enumerate(tqdm(sentences)):
             vec = self.vectorize(word_tokenize(s), basis)
@@ -44,14 +91,36 @@ class DatasetGenerator:
             sims.update({i: similarity[0][0]})
         return sims
 
-    def vectorize(self, words, basis):
+    def vectorize(self, words: List[str], basis: List[str]) -> np.ndarray:
+        """
+        Transform text in bag of words vector
+
+        :param words: text
+        :type words: list(str)
+        :param basis: Basis vocabulary
+        :type basis: list(list(str))
+
+        :return: Vector
+        :rtype: np.array
+        """
         def increase(vec, index):
             vec[index] += 1
         vector = np.zeros(len(basis))
         [increase(vector, i) for i, w in enumerate(basis) if w in words]
         return vector
 
-    def get_corpora(self, topics, sents):
+    def get_corpora(self, topics: Dict[str, List[str]], sents: List[str]) -> List[str]:
+        """
+        Get the whole corpora by merging topic keywords and sentence words
+
+        :param topics: topics
+        :type topics: dict(str: list(str))
+        :param sents: Sentences
+        :type sents: list(str)
+
+        :return: List of all unique words
+        :rtype: list(str)
+        """
         print("Getting Copora:")
         all = list()
         for key in topics:
@@ -65,7 +134,12 @@ class DatasetGenerator:
                     all.append(w)
         return list(set(all))
 
-    def find_sentences(self):
+    def find_sentences(self) -> List[str]:
+        """
+        Filter sentences that contain search terms
+
+        :return: List(str)
+        """
         sents = list()
         for t in tqdm(os.listdir(self.path)):
             if t.endswith(".txt"):
@@ -81,12 +155,27 @@ class DatasetGenerator:
                                 sents.append(s.lower())
         return sents
 
-    def save_to_dataframe(self):
+    def save_to_dataframe(self) -> pd.DataFrame:
+        """
+        Save the results to a pandas DataFrame
+
+        :return: the DataFrame
+        :rtype: pd.DataFrame
+        """
         df = pd.DataFrame({"sentence": self.result_sentences})
         df["class"] = self.class_name
         return df
 
-    def save_to_txt(self, seperate: bool = False):
+    def save_to_txt(self, seperate: bool = False) -> None:
+        """
+        Save the results to .txt files.
+
+        :param seperate: Should each sentence be saved seperately?
+        :type seperate: bool
+
+        :return: None
+
+        """
         if not seperate:
             file = open("out/"+self.save_name + "_sentences.txt", "w")
             for s in self.result_sentences:
@@ -101,7 +190,15 @@ class DatasetGenerator:
                 file.close()
 
     @staticmethod
-    def merge_crawl_results(super_dir: str):
+    def merge_crawl_results(super_dir: str) -> None:
+        """
+        Method to merge all crawling results in class directories by copying the crawl documents to them.
+
+        :param super_dir: Super directory where class-subdirectories should be created
+        :type super_dir: str
+
+        :return: None
+        """
         merged_path = os.path.join(super_dir, "merged_datasets")
         if not os.path.exists(merged_path):
             os.mkdir(merged_path)

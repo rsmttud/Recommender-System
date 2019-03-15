@@ -8,7 +8,7 @@ from rs_helper.helper import *
 
 
 class SimilarityEval:
-    def __init__(self, path, sim_data, valid_data):
+    def __init__(self, path: str, sim_data: pd.DataFrame, valid_data: pd.DataFrame) -> None:
         """
         :param path: path to FastText model
         :param sim_data: path to Similarity CSV
@@ -25,7 +25,7 @@ class SimilarityEval:
         self.spearman_corr = None
         self.ME = None
 
-    def calculate_similarities(self):
+    def calculate_similarities(self) -> List[float]:
         """
         :return: List(float): List of similarity values
         Calculate similarities for word pairs in similiarity data
@@ -43,7 +43,7 @@ class SimilarityEval:
         self.correlation()
         return sims
 
-    def mean_error(self):
+    def mean_error(self) -> float:
         """
         :return: float
         Calculate mean error of similarity judgements
@@ -52,7 +52,7 @@ class SimilarityEval:
             self.sim_data)
         return self.ME
 
-    def correlation(self):
+    def correlation(self) -> List[float, float]:
         """
         :return: List(float)
         Correlation between human similarities and model similarities
@@ -61,7 +61,7 @@ class SimilarityEval:
         self.spearman_corr = self.sim_data["Human (mean)"].corr(self.sim_data["assigned_sim"], method="spearman")
         return [self.pearson_corr, self.spearman_corr]
 
-    def save_to_config(self):
+    def save_to_config(self) -> None:
         """
         :return: None
         Save similarity judgement values in config file
@@ -78,7 +78,7 @@ class SimilarityEval:
         with open(config_path, "w") as _json:
             json.dump(c_dict, _json)
 
-    def plot_similarity(self):
+    def plot_similarity(self) -> None:
         """
         :return: None
         Create and save similarity matrix of valid data

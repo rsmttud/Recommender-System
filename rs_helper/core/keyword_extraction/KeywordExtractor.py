@@ -14,7 +14,7 @@ class KeywordExtractor(ABC):
         self.class_name = self.__class__.__name__
 
     @abstractmethod
-    def extract_keywords(self, *kwargs) -> List[Keyword]:
+    def extract_keywords(self, *kwargs) -> List[str]:
         """
         Method to create find all keywords and their ranks
         :return: List[Keyword]

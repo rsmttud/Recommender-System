@@ -3,7 +3,7 @@ from nltk.corpus import stopwords
 import pke
 from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from rs_helper.core.Topic import Topic
-from rs_helper.core.Keyword import Keyword
+from typing import *
 
 
 class YAKE(KeywordExtractor):
@@ -19,8 +19,7 @@ class YAKE(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
-    # TODO adjust to Keywords
-    def extract_keywords(self, *kwargs):
+    def extract_keywords(self, *kwargs) -> Dict[str, Topic]:
         result = {}
         candidates = list()
         for i, p in enumerate(self.paths):
@@ -35,7 +34,7 @@ class YAKE(KeywordExtractor):
         self.candidates = candidates
         return result
 
-    def generate_topic(self, token_rank_dict, label: str):
+    def generate_topic(self, token_rank_dict: List[Tuple[str, float]], label: str):
         topic = Topic(class_name=label)
         for w, v in token_rank_dict:
             topic.add_keyword(keyword=w.split(" "), rank=v, algorithm=self.class_name)
