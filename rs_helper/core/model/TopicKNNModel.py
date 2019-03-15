@@ -22,7 +22,7 @@ class TopicKNNModel(Model):
         :param embedding_model: The embedding model to generate the vector representations
         :type embedding_model: EmbeddingModel
         """
-        if not isinstance(embedding_model, DAN) or not isinstance(embedding_model, FastTextWrapper):
+        if not isinstance(embedding_model, DAN) or isinstance(embedding_model, FastTextWrapper):
             raise ValueError("Embedding model must be of type DAN or FastTextWrapper")
 
         super().__init__(path_to_topic)
@@ -64,7 +64,7 @@ class TopicKNNModel(Model):
             if isinstance(self.embedding_model, FastTextWrapper):
                 topic_embedding = self.embedding_model.inference(tokens, sentence_level=True)
             else:
-                topic_embedding = self.embedding_model.inference(tokens)
+                topic_embedding = self.embedding_model.inference(tokens)[0]
             return_dict[cl] = topic_embedding
         return return_dict
 
@@ -80,12 +80,15 @@ class TopicKNNModel(Model):
         """
         if self.vectors is None:
             raise IOError("Model needs to initialized first. Please call KNN.initialize() first.")
-        input_embedding = self.embedding_model.inference(word_tokenize(text)) if isinstance(self.embedding_model, DAN) \
-            else self.embedding_model.inference(word_tokenize(text), sentence_level=True)
+
+        input_embedding = self.embedding_model.inference(word_tokenize(text), sentence_level=True) \
+            if isinstance(self.embedding_model, FastTextWrapper) \
+            else self.embedding_model.inference(word_tokenize(text))[0]
+
         similarities = list()
         for cl in self.vectors:
             emb = self.vectors[cl]
-            similarities.append(cosine_similarity([input_embedding], [emb])[0])
+            similarities.append(cosine_similarity([input_embedding], [emb])[0][0])
         prediction = Prediction(classes=list(self.vectors.keys()), values=similarities)
         return prediction
 

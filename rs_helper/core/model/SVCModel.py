@@ -13,15 +13,18 @@ from typing import List
 
 class SVCModel(Model):
 
-    def __init__(self, path_to_model: str, embedding_model: EmbeddingModel, label_map = "models/label_maps/3_classes.json"):
+    def __init__(self, path_to_model: str,
+                 embedding_model: EmbeddingModel):
+
         super().__init__(path_to_model)
         self.model = None
         self.embedding_model = embedding_model
-        self.label_map = LabelMap(label_map)
+        self.label_map = None
         self.initialize()
 
     def initialize(self) -> None:
         self.model = load(self.path)
+        self.label_map = LabelMap(path_to_json=os.path.join(os.path.dirname(self.path), "label_map.json"))
 
     def predict(self, text: str) -> Prediction:
         if isinstance(self.embedding_model, FastTextWrapper):
@@ -30,12 +33,11 @@ class SVCModel(Model):
             embeddings = self.embedding_model.inference(word_tokenize(text))
 
         probs = self.model.predict_proba(embeddings)
-        lm = LabelMap(path_to_json=os.path.join(os.path.dirname(self.path), "label_map.json"))
         classes = []
         values = []
 
         for x, y in enumerate(probs[0]):
-            classes.append(lm.get_name(x))
+            classes.append(self.label_map.get_name(x))
             values.append(y)
 
         return Prediction(classes, values)
