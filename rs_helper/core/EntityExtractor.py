@@ -62,7 +62,7 @@ class EntityExtractor:
         (Position Index + Term frequency) / n_words
         """
         assigned = list()
-        print(chunks)
+        # print(chunks)
         for chunk in chunks:
             index = self.text.index(chunk)
             N = len(self.tokens)
