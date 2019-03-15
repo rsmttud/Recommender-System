@@ -8,9 +8,12 @@ class Keyword:
     """
     def __init__(self, keyword: List[str], rank: float, algorithm: str = None):
         """
-        :param keyword: List(String)
-        :param rank: float
-        :param algorithm: String
+        :param keyword: the tokenized keyword
+        :type keyword: list(string)
+        :param rank: the keywords rank
+        :type rank: float
+        :param algorithm: The algorithm that was used to extract the keyword
+        :type algorithm: str
         """
         self.keyword = keyword
         self.rank = rank

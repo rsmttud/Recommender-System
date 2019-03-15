@@ -7,15 +7,13 @@ import pickle
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import shutil
-from typing import List, Dict, Any
 
 
 class DatasetGenerator:
     """
     Class to generate the cleaned data containing sentences that are similar to definitions
     """
-    def __init__(self, path_to_files: str, search_terms: List[str],
-                 class_name: str, save_name: str, seperate_save: bool = False) -> None:
+    def __init__(self, path_to_files: str, search_terms: list, class_name: str, save_name: str, seperate_save: bool = False):
         """
         Constructor of class
 
@@ -39,7 +37,7 @@ class DatasetGenerator:
         self.save_name = save_name
         self.seperate = seperate_save
 
-    def run(self) -> None:
+    def run(self):
         """
         Runs the extraction
 
@@ -55,7 +53,7 @@ class DatasetGenerator:
         self.save_in_class(sentences, sim_list=similarities)
         self.save_to_txt(seperate=self.seperate)
 
-    def save_in_class(self, sentences: List[str], sim_list: List[float]) -> None:
+    def save_in_class(self, sentences: list, sim_list: list):
         """
         Saves the sentences in class attribute result_sentences
 
@@ -69,13 +67,12 @@ class DatasetGenerator:
         for idx, sim in sim_list:
             self.result_sentences.append(sentences[idx])
 
-    def calculate_similarities(self, basis: List[str], sentences: List[str],
-                               vector: np.ndarray) -> Dict[int, float]:
+    def calculate_similarities(self, basis: list, sentences: list, vector):
         """
         Calculates all similarities between sentences and topic-vectors
 
         :param basis: list of documents representing the corpus
-        :type basis: list(str)
+        :type basis: list(list(str))
         :param sentences: List of sentences to compare
         :type sentences: list(str)
         :param vector: vector to compare against
@@ -91,14 +88,14 @@ class DatasetGenerator:
             sims.update({i: similarity[0][0]})
         return sims
 
-    def vectorize(self, words: List[str], basis: List[str]) -> np.ndarray:
+    def vectorize(self, words, basis):
         """
         Transform text in bag of words vector
 
         :param words: text
         :type words: list(str)
         :param basis: Basis vocabulary
-        :type basis: list(list(str))
+        :type basis: list(str)
 
         :return: Vector
         :rtype: np.array
@@ -109,7 +106,7 @@ class DatasetGenerator:
         [increase(vector, i) for i, w in enumerate(basis) if w in words]
         return vector
 
-    def get_corpora(self, topics: Dict[str, List[str]], sents: List[str]) -> List[str]:
+    def get_corpora(self, topics, sents):
         """
         Get the whole corpora by merging topic keywords and sentence words
 
@@ -134,7 +131,7 @@ class DatasetGenerator:
                     all.append(w)
         return list(set(all))
 
-    def find_sentences(self) -> List[str]:
+    def find_sentences(self):
         """
         Filter sentences that contain search terms
 
@@ -155,7 +152,7 @@ class DatasetGenerator:
                                 sents.append(s.lower())
         return sents
 
-    def save_to_dataframe(self) -> pd.DataFrame:
+    def save_to_dataframe(self):
         """
         Save the results to a pandas DataFrame
 
@@ -166,7 +163,7 @@ class DatasetGenerator:
         df["class"] = self.class_name
         return df
 
-    def save_to_txt(self, seperate: bool = False) -> None:
+    def save_to_txt(self, seperate: bool = False):
         """
         Save the results to .txt files.
 
@@ -190,7 +187,7 @@ class DatasetGenerator:
                 file.close()
 
     @staticmethod
-    def merge_crawl_results(super_dir: str) -> None:
+    def merge_crawl_results(super_dir: str):
         """
         Method to merge all crawling results in class directories by copying the crawl documents to them.
 

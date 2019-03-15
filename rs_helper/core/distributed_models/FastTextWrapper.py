@@ -5,7 +5,7 @@ import pickle
 import json
 from joblib import load, dump
 from gensim.models import FastText
-from typing import *
+from typing import List
 from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
 
 
@@ -14,7 +14,7 @@ class FastTextWrapper(EmbeddingModel):
     Class to train and use FastText Models
     """
 
-    def __init__(self, path: str = "", **kwargs) -> None:
+    def __init__(self, path: str = "", **kwargs):
         """
         Class to train and use FastText Models
 
@@ -30,7 +30,7 @@ class FastTextWrapper(EmbeddingModel):
         self.config = dict()
         self.dimensions = 100
 
-    def initialize_model(self, **kwargs) -> None:
+    def initialize_model(self, **kwargs):
         """
         Initializes the model by loading it via joblib.load()
 
@@ -79,12 +79,12 @@ class FastTextWrapper(EmbeddingModel):
               iterations: int = 5,
               window_size: int = 5,
               min_count: int = 3,
-              hs: int = 0) -> None:
+              hs: int = 0):
         """
         Train a new FastText model.
 
         :param data: The training data
-        :type data: list(list(str))
+        :type data: list(list(string))
         :param save_path: Directory path to save the model
         :type save_path: str
         :param save_name: Name of the model (Should be <name>.joblib)
@@ -124,7 +124,7 @@ class FastTextWrapper(EmbeddingModel):
             tf.logging.warning("model could not be saved!")
         return None
 
-    def save_config_json(self, config_path: str, **kwargs) -> None:
+    def save_config_json(self, config_path, **kwargs):
         """
         Save the config of the model as json
 

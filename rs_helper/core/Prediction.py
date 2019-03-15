@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 from math import log
 
 
@@ -8,7 +8,7 @@ class Prediction:
     Class to store the final prediction of pipelines
     """
 
-    def __init__(self, classes: List[str], values: List[float]) -> None:
+    def __init__(self, classes: List[str], values: List[float]):
         """
         Class to store the final prediction of pipelines
 
@@ -32,8 +32,7 @@ class Prediction:
         """
         Returns prediction object as DataFrame
 
-        :return: Prediction as DataFrame
-        :rtype: pd.DataFrame
+        :return: DataFrame
         """
         pass
 
@@ -64,7 +63,7 @@ class Prediction:
         """
         self.values = [round(x, 3) for x in self.values]
 
-    def compress(self) -> List[Tuple[str, float]]:
+    def compress(self) -> list:
         """
         Compresses the prediction in tuples. I.e. [('class A', 0.762), ('class B', 0.77)]
 

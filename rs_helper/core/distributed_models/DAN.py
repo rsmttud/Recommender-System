@@ -16,7 +16,7 @@ class DAN(EmbeddingModel):
     def __init__(self,
                  word_embedding_model: EmbeddingModel,
                  frozen_graph_path: str = "",
-                 **kwargs) -> None:
+                 **kwargs):
         """
         Object for training and using Deep Averaging Networks.
 
@@ -35,7 +35,7 @@ class DAN(EmbeddingModel):
 
     # TODO in extra script and pd.DataFrame Type hinting
     @staticmethod
-    def __create_one_hot_encodings(labels) -> np.ndarray:
+    def __create_one_hot_encodings(labels):
         """
         Method to create One-Hot-representations of labels
 
@@ -51,7 +51,7 @@ class DAN(EmbeddingModel):
         enc.fit(labels)
         return enc.transform(labels).toarray()
 
-    def initialize_model(self, **kwargs) -> tf.Graph:
+    def initialize_model(self, **kwargs):
         """
         Method to initialize the DAN model
 
@@ -115,7 +115,7 @@ class DAN(EmbeddingModel):
 
         return train, x_input, y_true, dense_dan_layers[-1]
 
-    def __create_dan_layer(self, input_tensor: tf.Tensor, num_hidden_layer) -> List[tf.layers.dense]:
+    def __create_dan_layer(self, input_tensor: tf.Tensor, num_hidden_layer):
         dense_layers = []
         dense_layers.append(input_tensor)
         for i in range(1, num_hidden_layer + 1):
@@ -130,7 +130,7 @@ class DAN(EmbeddingModel):
 
     # TODO put this in a separate file
     @staticmethod
-    def __create_classifier_layer(input_layer, classifier_shape: List[int], classifier_act) -> List[tf.layers.dense]:
+    def __create_classifier_layer(input_layer, classifier_shape: List[int], classifier_act):
         c_layers = []
         for i, neurons in enumerate(classifier_shape):
             if i == 0:
@@ -163,7 +163,7 @@ class DAN(EmbeddingModel):
               classifier_act=tf.nn.tanh,
               batch_size: int = 1,
               wdrop_prob: float = 0.2
-              ) -> None:
+              ):
 
         self.config.update({"epoches": str(epoches),
                             "dropout": str(wdrop_prob),
@@ -299,7 +299,7 @@ class DAN(EmbeddingModel):
             sess.close()
             return embeddings_lst
 
-    def save_config_json(self, config_path: str, **kwargs) -> None:
+    def save_config_json(self, config_path, **kwargs):
         for key, value in kwargs.items():
             self.config.update({str(key): str(value)})
         with open(config_path, "w+") as _json:

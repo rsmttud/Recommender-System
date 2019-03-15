@@ -6,7 +6,7 @@ class LabelMap:
     A class which represents a label map. It loads a json - label map, where keys are label names. The method provides
     two methods to get the label name as string and one to get the label names as int.
     """
-    def __init__(self, path_to_json: str) -> None:
+    def __init__(self, path_to_json: str):
         self.label_map = {}
         self.__initialize_map(path_to_json)
         self.labels = self.label_map.keys()
@@ -14,7 +14,7 @@ class LabelMap:
     def __repr__(self):
         return str(self.label_map)
 
-    def __initialize_map(self, path_to_json: str) -> None:
+    def __initialize_map(self, path_to_json):
         """
         Initializes the map by building the mapping dict.
 

@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import CountVectorizer
-from typing import List
+import os
 import string
 import re
 from nltk.stem import WordNetLemmatizer
@@ -23,7 +23,7 @@ class Preprocessor:
     """
     Class to preprocess textual data
     """
-    def __init__(self, data: str) -> None:
+    def __init__(self, data: str):
         """
         Constructor of the Preprocessor class.
         Sklean CountVectorizer will be initialized.
@@ -39,7 +39,7 @@ class Preprocessor:
         self.vectorizer.fit(self.data)
         self.analyzer = self.vectorizer.build_analyzer()
 
-    def lemmatize(self) -> None:
+    def lemmatize(self):
         """
         Lemmatize the text data. Results will be stored in class attribute data.
 
@@ -47,7 +47,7 @@ class Preprocessor:
         """
         self.data = [self.analyzer(s) for s in self.data]
 
-    def remove_puctuation(self) -> None:
+    def remove_puctuation(self):
         """
         Remove punctuation from data. Results will be stored in class attribute data.
 
@@ -55,7 +55,7 @@ class Preprocessor:
         """
         self.data = [[x for x in s if x not in string.punctuation] for s in self.data]
 
-    def remove_numbers(self) -> None:
+    def remove_numbers(self):
         """
         Remove numbers from data. Results will be stored in class attribute data.
 
@@ -63,7 +63,7 @@ class Preprocessor:
         """
         self.data = [[x for x in s if re.match("[A-Za-z]+", x) is not None] for s in self.data]
 
-    def transform(self, remove_nums: bool = True, remove_punct: bool = True) -> List[List[str]]:
+    def transform(self, remove_nums: bool = True, remove_punct: bool = True):
         """
         General handler to transform textual data.
 

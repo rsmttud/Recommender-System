@@ -5,13 +5,12 @@ from nltk.tokenize import word_tokenize
 from rs_helper.core.LabelMap import LabelMap
 from keras.models import model_from_yaml
 import numpy as np
-from typing import List
 import os
 
 
 class RNNTypedClassifier(Model):
 
-    def __init__(self, path_to_model: str, architecture: str, embedding_type: str) -> None:
+    def __init__(self, path_to_model: str, architecture: str, embedding_type: str):
         """
         General class for RNNbased Architectures. Supported are One-to-One GRU / LSTMs and Many-to-One LSTM / GRUs
 
@@ -45,7 +44,7 @@ class RNNTypedClassifier(Model):
         self.architecture = architecture
         self.embedding_type = embedding_type
 
-    def initialize(self) -> None:
+    def initialize(self):
         # model loading
         yaml_file = open(os.path.join(self.model_path, "model.yaml"), "r")
         loaded_model_yaml = yaml_file.read()
@@ -61,7 +60,7 @@ class RNNTypedClassifier(Model):
         pred = Prediction(values=list(y), classes=[lm.get_name(i) for i in range(len(y))])
         return pred
 
-    def __transform_input(self, text: str) -> np.ndarray:
+    def __transform_input(self, text: str):
         """
         Transform input to the shape (len(text), 1, 100) or (len(text), 100) depending on architecture.
 
@@ -79,7 +78,7 @@ class RNNTypedClassifier(Model):
             x = np.array(vectorized).reshape(shape=(len(vectorized), 100))
         return x
 
-    def __get_vetorized_text(self, tokens: List[str]) -> np.ndarray:
+    def __get_vetorized_text(self, tokens: list):
         """
         Uses Embedding models to receive the vector representations
 
@@ -98,8 +97,8 @@ class RNNTypedClassifier(Model):
             vectorized = _FT.inference(words=tokens, sentence_level=True) \
                 if self.embedding_type == "FastText" else _DAN.inference_batches([tokens])
         else:
-            vectorized = _FT.inference(tokens) \
-                if self.embedding_type == "FastText" else _DAN.inference(tokens)
+            vectorized = [_FT.inference(x) for x in tokens] \
+                if self.embedding_type == "FastText" else [_DAN.inference(x) for x in tokens]
         return vectorized
 
     def normalize_result(self, prediction: Prediction):

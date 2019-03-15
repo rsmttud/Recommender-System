@@ -8,18 +8,35 @@ from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
 class USE(EmbeddingModel):
 
     def __init__(self, **kwargs):
+        """
+        Universal Sentence Encoder Object
+
+        :param kwargs:
+        """
         super().__init__(**kwargs)
         self.tf_model = self.initialize_model()
 
     def initialize_model(self, **kwargs) -> Any:
+        """
+        Initializes the model by downloading it if not already available.
+
+        :param kwargs:
+
+        :return: tf_hub.Module
+        :rtype: tf_hub.Module
+        """
         url = "https://tfhub.dev/google/universal-sentence-encoder/2"
         return tf_hub.Module(url, trainable=True)
 
     def inference(self, words: List[str]) -> np.ndarray:
         """
         Returns embeddings given a list of strings. You can also inference batches with this method..
+
         :param words: In this case it  can be something like this: ["hello", "Im a paragraph"]
-        :return:
+        :type words: list(str)
+
+        :return: the inferred embeddings
+        :rtype: np.ndarray
         """
         session_conf = tf.ConfigProto(
             device_count={'CPU': 1, 'GPU': 0},

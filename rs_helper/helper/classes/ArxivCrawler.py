@@ -12,12 +12,18 @@ class ArxivCrawler(Crawler):
 
     def __init__(self, out_dir: str, search_query: str, xml_dir: str, start=0, max_results=1000) -> None:
         """
+        Crawler to crawl the database ArXiV
 
-        :param out_dir:
+        :param out_dir: Output directory
+        :type out_dir: str
         :param search_query: https://arxiv.org/help/api/user-manual#query_details
-        :param xml_dir:
-        :param start:
-        :param max_results:
+        :type search_query: str
+        :param xml_dir: Directory to store the received XML file
+        :type xml_dir: str
+        :param start: Index to start search from
+        :type start: int
+        :param max_results: Maximum number of results (default=1000)
+        :type max_results: int
         """
         super().__init__(out_dir)
 
@@ -36,6 +42,12 @@ class ArxivCrawler(Crawler):
         """
         Normalizes string, converts to lowercase, removes non-alpha characters,
         and converts spaces to hyphens.
+
+        :param value: String to clean
+        :type value: str
+
+        :return: The cleaned token
+        :rtype: str
         """
         x = re.sub('[^\w\s-]', '', value).strip().lower()
         x = re.sub('[-\s]+', '-', value)
@@ -45,9 +57,6 @@ class ArxivCrawler(Crawler):
     def save_to_file(self) -> None:
         """
         Function creates for every single entry a separate txt file filled with the abstract/summary
-        :param xml_path: path to crawled arxiv conform xml file
-        :param out_dir: path where all txt will be stored
-        :return: bool when every summary was stored as .txt
         """
 
         if not os.path.isdir(self.out_dir):
@@ -73,6 +82,12 @@ class ArxivCrawler(Crawler):
             file.close()
 
     def __get_xml(self) -> bool:
+        """
+        Method to receive the XML
+
+        :return: Status
+        :rtype: bool
+        """
         if self.max_results > 2000:
             raise ValueError("The API supports only queries to a maximum number of 2000 per call")
 
@@ -98,7 +113,12 @@ class ArxivCrawler(Crawler):
             return False
 
     def save_to_dataframe(self) -> pd.DataFrame:
+        """
+        Save the crawl results to a DataFrame
 
+        :return: DataFrame of the crawls
+        :rtype: pd.DataFrame
+        """
         titles = []
         years = []
         months = []
@@ -118,6 +138,11 @@ class ArxivCrawler(Crawler):
         return pd.DataFrame({"title": titles, "year": years, "month": months, "day": days, "author": authors})
 
     def crawl(self) -> None:
+        """
+        Actually performs the crawl.
+
+        :return: None
+        """
         if self.__get_xml():
             self.save_to_file()
             print("Arvix Crawling - Done!")
