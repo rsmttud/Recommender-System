@@ -16,6 +16,7 @@ from rs_helper.core.distributed_models import DAN
 
 # SOMETHING IS TOTALLY OFF WITH THE DAN CLASS
 
+
 # TODO Obsolete!
 def kd_plot(embedding_model: EmbeddingModel,
             text: List[str],

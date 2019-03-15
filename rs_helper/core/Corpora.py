@@ -54,12 +54,9 @@ class Corpora:
             with open(self.path, "r") as file:
                 self.data = file.read()
 
-    def __count_words(self, include_duplicates=True) -> None:
+    def __count_words(self) -> None:
         """
         Count the words across the corpus. Count will be stored in class attribute n_words
-
-        :param include_duplicates: Weather duplicated should be included in counting
-        :type include_duplicates: bool
 
         :return: None
         """

@@ -1,6 +1,7 @@
 from rs_helper.core.keyword_extraction.KeywordExtractor import KeywordExtractor
 from sklearn.feature_extraction.text import TfidfVectorizer
 from rs_helper.core.Topic import Topic
+from typing import *
 
 
 class TFIDF(KeywordExtractor):
@@ -11,7 +12,6 @@ class TFIDF(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
-    # TODO adjust to Keyword class
     def extract_keywords(self, *kwargs):
         vectorizer = TfidfVectorizer(lowercase=True, preprocessor=None, tokenizer=None,
                                      analyzer="word", stop_words=None, ngram_range=(1, 3))
@@ -25,7 +25,7 @@ class TFIDF(KeywordExtractor):
             result.update({self.labels[i]: topic})
         return result
 
-    def generate_topic(self, token_rank_dict, label: str):
+    def generate_topic(self, token_rank_dict: List[Tuple[str, float]], label: str):
         topic = Topic(class_name=label)
         for el, va in token_rank_dict:
             topic.add_keyword(el, va, self.class_name)

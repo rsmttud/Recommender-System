@@ -1,10 +1,11 @@
 from rs_helper.core.model import Model
 from rs_helper.core import Prediction
+from typing import *
 
 
 class Ensemble(Model):
 
-    def __init__(self, weightening_scheme: list, n_classes: int = 3):
+    def __init__(self, weightening_scheme: List[float], n_classes: int = 3) -> None:
         """
         Class to do weighted averaging based on different classifier predictions.
         Given three classes, every weight in list will be used for three elements of the prediction list.
@@ -21,7 +22,7 @@ class Ensemble(Model):
     def initialize(self):
         pass
 
-    def predict(self, predictions: list) -> Prediction:
+    def predict(self, predictions: List[Prediction]) -> Prediction:
         """
         Perform the merge of predictions according to the weighted averaging approach.
 
@@ -48,6 +49,6 @@ class Ensemble(Model):
         p = Prediction(values=final_predictions, classes=[c for c, p in compressed[0]])
         return p
 
-    def normalize_result(self, prediction: Prediction):
+    def normalize_result(self, prediction: Prediction) -> None:
         pass
 

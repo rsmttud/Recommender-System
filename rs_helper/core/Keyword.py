@@ -1,10 +1,12 @@
+from typing import List
+
 
 class Keyword:
     """
     A class to symbolize a keyword. A keyword is described by the keyword itself, a rank and the
     keyword extraction algorithm, which was responsible for the creation
     """
-    def __init__(self, keyword: list, rank: float, algorithm: str = None):
+    def __init__(self, keyword: List[str], rank: float, algorithm: str = None):
         """
         :param keyword: the tokenized keyword
         :type keyword: list(string)
