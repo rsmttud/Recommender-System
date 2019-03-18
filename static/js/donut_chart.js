@@ -1,4 +1,4 @@
-function donoutChart(data) {
+function donutChart(data) {
     data = data["forecast"]; //Place in dict where final prediction values are stored
     console.log(data);
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
@@ -39,6 +39,16 @@ function donoutChart(data) {
         .append("g")
         .attr("class", "arc");
 
+    var tooltip = svg.append("g")
+        .attr("class", "tooltip")
+        .attr("display", "none")
+        .style("cursor", "pointer");
+
+    tooltip.append("text")
+        .attr("x", 15)
+        .attr("dy", "1.2em")
+        .style("font-size", "1.25em");
+
     //Append path of the arc == Curve of the arc
     g.append("path")
         .attr("d", arc)
@@ -51,6 +61,7 @@ function donoutChart(data) {
         .attrTween("d", transitionPie);
 
     //append labels
+    /*
     g.append("text")
         .attr("transform", function (d) {
             return "translate(" + labelArc.centroid(d) + ")"
@@ -59,6 +70,22 @@ function donoutChart(data) {
         .attr("dx", "0px")
         .text(function (d) {
             return "" + d.data.prob + "%"
+        });
+     */
+
+    g.on("mouseover", function () {
+            tooltip.style("display", "block")
+        }
+    )
+        .on("mouseout", function () {
+            tooltip.style("display", "none")
+        })
+        .on("mousemove", function (d) {
+            var xPos = d3.mouse(this)[0] - 15;
+            var yPos = d3.mouse(this)[1] - 15;
+            tooltip.attr("transform", "translate(" + xPos + ", " + yPos + ")");
+            tooltip.select("text").text("class: "+d.data.class+" " +
+                "prob: "+d.data.prob)
         });
 
     function transitionPie(_arc) {
