@@ -1,4 +1,5 @@
 import numpy as np
+import os
 from rs_helper.core.model.Model import Model
 from rs_helper.core.Prediction import Prediction
 from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
@@ -23,18 +24,18 @@ class SVCModel(Model):
         self.model = load(self.path)
 
     def predict(self, text: str) -> Prediction:
-        if isinstance(self.embedding_model, DAN):
-            embeddings = self.embedding_model.inference([text])
+        if isinstance(self.embedding_model, FastTextWrapper):
+            embeddings = self.embedding_model.inference(word_tokenize(text), sentence_level=True)
         else:
             embeddings = self.embedding_model.inference(word_tokenize(text))
 
         probs = self.model.predict_proba(embeddings)
-
+        lm = LabelMap(path_to_json=os.path.join(os.path.dirname(self.path), "label_map.json"))
         classes = []
         values = []
 
         for x, y in enumerate(probs[0]):
-            classes.append(x)
+            classes.append(lm.get_name(x))
             values.append(y)
 
         return Prediction(classes, values)
