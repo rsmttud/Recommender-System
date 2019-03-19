@@ -3,7 +3,7 @@
   /*min-height: 100vh;*/ }
 
 #nav-main-wrapper {
-  min-height: 100vh; }
+  min-height: 98vh; }
 
 #input-main-descriptive-placeholder {
   background-color: dimgrey; }
@@ -18,5 +18,18 @@ body {
 
 main {
   flex: 1 0 auto; }
+
+#data-structure-description h4 {
+  line-height: 6.5em; }
+
+#analysis-chart svg {
+  transform: translate(-3.5em, 0em); }
+
+#result-chart-wrapper {
+  transform: translate(3.5em, 0em); }
+
+#output-result-main-features {
+  overflow-y: auto;
+  height: 200px; }
 
 /*# sourceMappingURL=main.css.map */
