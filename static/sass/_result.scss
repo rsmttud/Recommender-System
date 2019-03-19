@@ -1,0 +1,19 @@
+#data-structure-description{
+  h4{
+    line-height: 6.5em;
+  }
+}
+#analysis-chart{
+  svg{
+    transform: translate(-3.5em,0em);
+  }
+}
+
+#result-chart-wrapper{
+  transform: translate(3.5em,0em);
+}
+
+#output-result-main-features{
+  overflow-y: auto;
+  height:200px;
+}

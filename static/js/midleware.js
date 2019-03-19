@@ -145,9 +145,14 @@ function implant_modal_functionality(entities, most_likely_class) {
 
 function initialize_result_page(data, entities, class_name) {
 
+    // Header Chart Section
+    $("#result-chart-wrapper h4")
+        .append("Recommended Approach: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
 
-    $("#output-result-main-class")
-        .append("<h5>" + class_name.charAt(0).toUpperCase() + class_name.slice(1) + "</h5>");
+    // Short/Long Desc
+     $("#output-result-main-collapsible-short").text($('#short_description').val());
+
+     $("#output-result-main-collapsible-long").text($('#long_description').val());
 
     //<li class = "collection-item">Lorem Ipsum</li>
     entities.forEach(function (element) {
