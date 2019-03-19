@@ -87,36 +87,43 @@ class RecommendationFacade:
         :return: The final prediction
         :rtype: Prediction
         """
-        ensemble = Ensemble(weightening_scheme=[0.7, 0.6, 0.5, 0.86, 0.65, 0.76], n_classes=3)
-        _FT = FastTextWrapper(path="models/FastText/1/model.joblib")
-        _DAN = DAN(frozen_graph_path="models/DAN/1/frozen_graph.pb", word_embedding_model=_FT)
+        ensemble = Ensemble(weightening_scheme=[0.575, 0.575, 0.775, 0.7, 0.75, 0.775], n_classes=3)
+        _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")
+        _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
 
         container = list()
         # LDA Classification
-        lda = LatentDirichletAllocation(path_to_model="models/LDA/1/grid_model.joblib",
-                                        path_to_vectorizer="models/LDA/1/vec.joblib")
+        print("LDA...")
+        lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
+                                        path_to_vectorizer="./models/LDA/1/vec.joblib")
         container.append(lda.predict(self.corpora.data))
 
-        # SVC Classification
-        svc = SVCModel(path_to_model="models/SVC/1/model.joblib")
-        container.append(svc.predict(self.corpora.data))
-
         # Topic KNN
-        topic_knn = TopicKNNModel(path_to_topic="", embedding_model=_DAN)
+        print("TKNN...")
+        topic_knn = TopicKNNModel(path_to_topic="./models/Keyword/1/model.joblib", embedding_model=_DAN)
         container.append(topic_knn.predict(self.corpora.data))
 
+        # SVC Classification
+        print("SVC...")
+        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib", embedding_model=_DAN)
+        container.append(svc.predict(self.corpora.data))
+
         # KNN
-        knn = KNNModel(path_to_model="models/KNN/1/knn.joblib", embedding_model=_DAN)
+        print("KNN...")
+        knn = KNNModel(path_to_model="./models/KNN/1/knn.joblib", embedding_model=_DAN)
         container.append(knn.predict(self.corpora.data))
 
         # lstm 1:1
-        lstm_11 = RNNTypedClassifier(model_dir="models/OneToOneLSTM/1/", architecture="1:1", embedding_model=_DAN)
+        print("1:1...")
+        lstm_11 = RNNTypedClassifier(model_dir="./models/OneToOneGRU/1/", architecture="1:1", embedding_model=_DAN)
         container.append(lstm_11.predict(self.corpora.data))
 
         # lstm N:1
-        lstm_n1 = RNNTypedClassifier(model_dir="models/ManyToOneGRU/1/", architecture="N:1", embedding_model=_FT)
+        print("N:1...")
+        lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
         container.append(lstm_n1.predict(self.corpora.data))
 
+        print("Ensemble...")
         final_prediction = ensemble.predict(predictions=container)
         return final_prediction
 
