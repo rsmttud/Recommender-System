@@ -8,6 +8,7 @@ from tensorflow.python.tools.freeze_graph import freeze_graph
 from sklearn import preprocessing
 from nltk.tokenize import word_tokenize
 from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
+from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
 from rs_helper.helper.classes.tf_helper import Batches, dropout_layer
 
 
@@ -28,6 +29,9 @@ class DAN(EmbeddingModel):
         """
 
         super().__init__(**kwargs)
+        if not isinstance(word_embedding_model, FastTextWrapper):
+            raise ValueError("Please supply FastTextWrapper object as word_embedding_model.")
+
         self.embedding_model = word_embedding_model
         self.embedding_len = word_embedding_model.inference(["x"]).shape[1]
         self.frozen_graph_path = frozen_graph_path
@@ -264,7 +268,7 @@ class DAN(EmbeddingModel):
         x = graph.get_tensor_by_name('prefix/placeholder_input:0')
         y = graph.get_operations()[-1].name + ":0"
         with tf.Session(graph=graph) as sess:
-            embeddings = self.embedding_model.inference(text)
+            embeddings = self.embedding_model.inference(text, sentence_level=True).reshape(1, -1)
             dan_embeddings = sess.run(y, feed_dict={x: embeddings})
             sess.close()
             return dan_embeddings
