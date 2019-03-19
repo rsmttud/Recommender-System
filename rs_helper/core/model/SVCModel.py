@@ -1,5 +1,9 @@
 import numpy as np
+<<<<<<< HEAD
+from sklearn.svm import SVC
+=======
 import os
+>>>>>>> 90b5477... General Recommendation Facade Update
 from rs_helper.core.model.Model import Model
 from rs_helper.core.Prediction import Prediction
 from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
@@ -22,12 +26,14 @@ class SVCModel(Model):
 
     def initialize(self) -> None:
         self.model = load(self.path)
+        if not isinstance(self.model, SVC):
+            raise ValueError("Supplied model not of type sklearn.svm.SVC")
 
     def predict(self, text: str) -> Prediction:
         if isinstance(self.embedding_model, FastTextWrapper):
             embeddings = self.embedding_model.inference(word_tokenize(text), sentence_level=True)
         else:
-            embeddings = self.embedding_model.inference(word_tokenize(text))
+            embeddings = self.embedding_model.inference(word_tokenize(text), sentence_level=True)
 
         probs = self.model.predict_proba(embeddings)
         lm = LabelMap(path_to_json=os.path.join(os.path.dirname(self.path), "label_map.json"))
@@ -39,6 +45,3 @@ class SVCModel(Model):
             values.append(y)
 
         return Prediction(classes, values)
-
-    def normalize_result(self, prediction: Prediction) -> Prediction:
-        pass
