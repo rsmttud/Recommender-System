@@ -3,8 +3,13 @@ function implant_class_definitions(class_name) {
     var path = get_path_to_txt(class_name);
     var class_name = class_name.charAt(0).toUpperCase() + class_name.slice(1);
     $.get(path, function (data) {
-        $("#analysis-definition")
-            .append("<h4>" + class_name + " Definition: </h4>")
+
+        if (class_name !== "Pattern_mining") {
+            $("#analysis-definition").append("<h4>" + class_name + " - Definition: </h4>")
+        }else{
+              $("#analysis-definition").append("<h4>Pattern Mining - Definition:</h4>")
+        }
+
         $("#analysis-definition")
             .append("<span>" + data + "</span>")
     }, "text")
