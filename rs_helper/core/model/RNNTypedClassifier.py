@@ -5,28 +5,62 @@ from nltk.tokenize import word_tokenize
 from rs_helper.core.LabelMap import LabelMap
 from keras.models import model_from_yaml
 import numpy as np
-from typing import List
+from typing import List, Any
 import os
+
+
+class SequencePadder:
+
+    def __init__(self, distance: int) -> None:
+        """
+        Class that can be used to pad sequences to specific lengths.
+
+        :param distance: The length sequences should be padded to
+        :type distance: int
+        """
+        self.dist = distance
+
+    def pad(self, sequence: Any) -> np.ndarray:
+        """
+        Pads a given sequence to length self.distance
+
+        :param sequence: The sequence to pad
+        :type sequence: Any
+
+        :return: Padded sequence
+        :rtype: np.ndarray
+        """
+
+        if not isinstance(sequence, np.ndarray):
+            sequence = np.array(sequence)
+
+        if len(sequence) < self.dist:
+            to_pad = self.dist - len(sequence)
+            padding = np.array([np.zeros(100) for _ in range(to_pad)])
+            seq = np.concatenate((sequence, padding))
+        else:
+            seq = sequence[:self.dist]
+        return seq
 
 
 class RNNTypedClassifier(Model):
 
-    def __init__(self, path_to_model: str, architecture: str, embedding_type: str) -> None:
+    def __init__(self, model_dir: str, architecture: str, embedding_model: EmbeddingModel) -> None:
         """
         General class for RNNbased Architectures. Supported are One-to-One GRU / LSTMs and Many-to-One LSTM / GRUs
 
-        :param path_to_model: Path to the model directory. Needs to contain model.yaml, weights.h5 and label_map.json
-        :type path_to_model: str
+        :param model_dir: Path to the model directory. Needs to contain model.yaml, weights.h5 and label_map.json
+        :type model_dir: str
         :param architecture: "N:1" or "1:1" Architecture
         :type architecture: str
-        :param embedding_type: "DAN" or "FastText" Embeddings
-        :type embedding_type: str
+        :param embedding_model: Initialized EmbeddingModel
+        :type embedding_model: EmbeddingModel
 
         """
-        if not os.path.isdir(path_to_model):
+        if not os.path.isdir(model_dir):
             raise NotADirectoryError("The specified path is not a directory")
 
-        paths = [os.path.join(path_to_model, x) for x in ["model.yaml", "weights.h5", "label_map.json"]]
+        paths = [os.path.join(model_dir, x) for x in ["model.yaml", "weights.h5", "label_map.json"]]
         for p in paths:
             if not os.path.exists(p):
                 raise FileNotFoundError("The supplied directory does not contain {}. The directory needs to contain "
@@ -36,14 +70,13 @@ class RNNTypedClassifier(Model):
         if architecture not in ["N:1", "1:1"]:
             raise ValueError("Specified architecture not available. Please select N:1 or 1:1.")
 
-        if embedding_type not in ["DAN", "FastText"]:
-            raise ValueError("Specified embedding_type not available. Please select DAN or FastText")
-
-        super().__init__(path_to_model=path_to_model)
-        self.model_path = path_to_model
+        super().__init__(path_to_model=model_dir)
+        self.model_path = model_dir
         self.model = None
         self.architecture = architecture
-        self.embedding_type = embedding_type
+        self.embedding_model = embedding_model
+        self.padder = SequencePadder(distance=69)
+        self.initialize()
 
     def initialize(self) -> None:
         # model loading
@@ -58,7 +91,7 @@ class RNNTypedClassifier(Model):
         x = self.__transform_input(text)
         y = self.model.predict(x, verbose=0)
         lm = LabelMap(path_to_json=os.path.join(self.model_path, "label_map.json"))
-        pred = Prediction(values=list(y), classes=[lm.get_name(i) for i in range(len(y))])
+        pred = Prediction(values=list(y[0]), classes=[lm.get_name(i) for i in range(len(y[0]))])
         return pred
 
     def __transform_input(self, text: str) -> np.ndarray:
@@ -71,12 +104,15 @@ class RNNTypedClassifier(Model):
         :return: The input for classification
         :rtype: np.ndarray
         """
-        tokens = word_tokenize(text)
-        vectorized = self.__get_vetorized_text(tokens)
+
         if self.architecture == "1:1":
-            x = np.array(vectorized).reshape(shape=(len(vectorized), 1, 100))
+            vectorized = self.__get_vetorized_text([text])
+            x = np.array(vectorized).reshape((1, 1, 100))
         else:
-            x = np.array(vectorized).reshape(shape=(len(vectorized), 100))
+            tokens = word_tokenize(text)
+            vectorized = self.__get_vetorized_text(tokens)
+            vectorized = self.padder.pad(vectorized)
+            x = np.array(vectorized).reshape((1, self.padder.dist, 100))
         return x
 
     def __get_vetorized_text(self, tokens: List[str]) -> np.ndarray:
@@ -89,16 +125,5 @@ class RNNTypedClassifier(Model):
         :return: list of embeddings
         :rtype: list(np.ndarray)
         """
-        _FT = FastTextWrapper(path="models/FastText/1/model.joblib")
-        _DAN = None
-        if self.embedding_type == "DAN":
-            _DAN = DAN(frozen_graph_path="models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
-
-        if self.architecture == "1:1":
-            vectorized = _FT.inference(words=tokens, sentence_level=True) \
-                if self.embedding_type == "FastText" else _DAN.inference_batches([tokens])
-        else:
-            vectorized = _FT.inference(tokens) \
-                if self.embedding_type == "FastText" else _DAN.inference(tokens)
-        return vectorized
+        return self.embedding_model.inference(tokens)
 

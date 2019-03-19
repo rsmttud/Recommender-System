@@ -1,11 +1,12 @@
 from rs_helper.core.Corpora import Corpora
 from rs_helper.core.Prediction import Prediction
-
+from rs_helper.core.model import Ensemble
 from rs_helper.core.model.RNNTypedClassifier import RNNTypedClassifier
 from rs_helper.core.model.LatentDirichletAllocation import LatentDirichletAllocation
 from rs_helper.core.distributed_models.DAN import DAN
 from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
 from rs_helper.core.model.SVCModel import SVCModel
+from rs_helper.core.model import TopicKNNModel, KNNModel
 from typing import List
 
 
@@ -19,12 +20,52 @@ class RecommendationFacade:
     """
     def __init__(self, path_to_files: str) -> None:
         """
-        Constructor of Facade
+        Constructor of Facade. Initializes the Corpora Object
 
         :param path_to_files: Directory where all files are stored. They will be loaded in Corpora object
         :type path_to_files: str
         """
         self.corpora = Corpora(path=path_to_files)
+
+    def recommend(self):
+        """
+        General method that calls all single models and performs ensemble learning step.
+
+        :return: The final prediction
+        :rtype: Prediction
+        """
+        ensemble = Ensemble(weightening_scheme=[0.7, 0.6, 0.5, 0.86, 0.65, 0.76], n_classes=3)
+        _FT = FastTextWrapper(path="models/FastText/1/model.joblib")
+        _DAN = DAN(frozen_graph_path="models/DAN/1/frozen_graph.pb", word_embedding_model=_FT)
+
+        container = list()
+        # LDA Classification
+        lda = LatentDirichletAllocation(path_to_model="models/LDA/1/grid_model.joblib",
+                                        path_to_vectorizer="models/LDA/1/vec.joblib")
+        container.append(lda.predict(self.corpora.data))
+
+        # SVC Classification
+        svc = SVCModel(path_to_model="models/SVC/1/model.joblib")
+        container.append(svc.predict(self.corpora.data))
+
+        # Topic KNN
+        topic_knn = TopicKNNModel(path_to_topic="", embedding_model=_DAN)
+        container.append(topic_knn.predict(self.corpora.data))
+
+        # KNN
+        knn = KNNModel(path_to_model="models/KNN/1/knn.joblib", embedding_model=_DAN)
+        container.append(knn.predict(self.corpora.data))
+
+        # lstm 1:1
+        lstm_11 = RNNTypedClassifier(model_dir="models/OneToOneLSTM/1/", architecture="1:1", embedding_model=_DAN)
+        container.append(lstm_11.predict(self.corpora.data))
+
+        # lstm N:1
+        lstm_n1 = RNNTypedClassifier(model_dir="models/ManyToOneGRU/1/", architecture="N:1", embedding_model=_FT)
+        container.append(lstm_n1.predict(self.corpora.data))
+
+        final_prediction = ensemble.predict(predictions=container)
+        return final_prediction
 
     def run(self, lda: bool = False, key_ex: bool = False,
             doc2vec: bool = False, classification: bool = False,
@@ -48,6 +89,10 @@ class RecommendationFacade:
         :return: Merged prediction of all pipelines
         :rtype: Prediction
         """
+
+        DeprecationWarning("This method will be replaced in future. "
+                           "Please use recommend() to use model ensemble")
+
         if lda:
             return self.__lda_pipeline()
         if key_ex:
@@ -59,7 +104,6 @@ class RecommendationFacade:
         if gru_oto:
             return self.__gru_oto_classification()
 
-    # TODO they probably all need an adjustment
     def __lda_pipeline(self):
         path_model = "models/LDA/LdaModel_3_freq_clean.bin"
         path_vectorizer = "models/LDA/vectorizer_3_freq_clean.bin"
@@ -104,7 +148,7 @@ class RecommendationFacade:
         path_model = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_200_units_0.2_dropout_20_epochs.yaml"
         path_weights = "models/classifier/GRU_OtO/gru_one_to_one_equal_sets_weights_200_units_0.2_dropout_20_epochs.h5"
         path_encoder = "notebooks/model_trainings/FastText/models/ft_model_15000.pkl"
-        model = RNNTypedClassifier(path_to_model=path_model,
+        model = RNNTypedClassifier(model_dir=path_model,
                                    path_to_weights=path_weights,
                                    path_to_encoder=path_encoder)
         model.initialize()
