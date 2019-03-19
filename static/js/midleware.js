@@ -59,17 +59,16 @@ $("document").ready(function () {
 
                     });
 
-                    if (most_prob_class == "prediction") {
+                    if (most_prob_class === "prediction") {
                         if ($("#modal-content-radio-yes").is(':checked')) {
                             initialize_result_page(data, entities, "regression")
                         } else {
+                            console.log("Radio Button not checked (Classification)");
                             initialize_result_page(data, entities, "classification")
                         }
                     }else{
                         initialize_result_page(data, entities, most_prob_class)
                     }
-                    // Check radio buttons and initialize page
-
 
                 });
 
@@ -117,15 +116,16 @@ function send_json_to_python_backend(json) {
         dataType: "json",
         type: "POST",
         url: "/save_json",
-        complete: function (data) {
-            console.log("Result as JSON saved: " + data);
+        complete: function () {
+            console.log("Result as JSON saved");
         }
     })
 }
 
 function reset_html() {
-    $("#output-result-main > h5").remove();
-    $("#donut-chart > svg").remove();
+    console.log("reset called");
+    $("#output-result-main-class h5").remove();
+    $("#donut-chart").empty();
     $("#modal-form").empty();
 }
 
@@ -134,7 +134,6 @@ function implant_modal_functionality(entities, most_likely_class) {
         console.log(most_likely_class);
         $("#modal-content-prediction").css("display", "block")
     } else {
-        console.log("ve")
         console.log(most_likely_class)
     }
 
@@ -146,8 +145,9 @@ function implant_modal_functionality(entities, most_likely_class) {
 
 function initialize_result_page(data, entities, class_name) {
 
+
     $("#output-result-main-class")
-        .append("<h6>" + class_name);
+        .append("<h5>" + class_name.charAt(0).toUpperCase() + class_name.slice(1) + "</h5>");
 
     //<li class = "collection-item">Lorem Ipsum</li>
     entities.forEach(function (element) {
@@ -160,6 +160,17 @@ function initialize_result_page(data, entities, class_name) {
     });
 
     let json = get_json(forecast, data["entities"]);
-    donoutChart(json);
+    console.log(json);
+    donutChart(json);
     send_json_to_python_backend(json);
+    implant_analysis_chart(class_name, entities);
+    implant_class_definitions(class_name);
+    implant_table(entities, 4)
 }
+
+/*This is lazy workaround*/
+$("document").ready(function () {
+   $("#nav-input").click(function (){
+       location.reload();
+   } )
+});
