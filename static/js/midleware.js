@@ -66,7 +66,7 @@ $("document").ready(function () {
                             console.log("Radio Button not checked (Classification)");
                             initialize_result_page(data, entities, "classification")
                         }
-                    }else{
+                    } else {
                         initialize_result_page(data, entities, most_prob_class)
                     }
 
@@ -146,13 +146,19 @@ function implant_modal_functionality(entities, most_likely_class) {
 function initialize_result_page(data, entities, class_name) {
 
     // Header Chart Section
-    $("#result-chart-wrapper h4")
-        .append("Recommended Approach: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
+
+    if (class_name !== "pattern_mining") {
+        $("#result-chart-wrapper h4")
+            .append("Recommended Approach: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
+    } else {
+         $("#result-chart-wrapper h4")
+            .append("Recommended Approach: Pattern Mining");
+    }
 
     // Short/Long Desc
-     $("#output-result-main-collapsible-short").text($('#short_description').val());
+    $("#output-result-main-collapsible-short").text($('#short_description').val());
 
-     $("#output-result-main-collapsible-long").text($('#long_description').val());
+    $("#output-result-main-collapsible-long").text($('#long_description').val());
 
     //<li class = "collection-item">Lorem Ipsum</li>
     entities.forEach(function (element) {
@@ -175,7 +181,7 @@ function initialize_result_page(data, entities, class_name) {
 
 /*This is lazy workaround*/
 $("document").ready(function () {
-   $("#nav-input").click(function (){
-       location.reload();
-   } )
+    $("#nav-input").click(function () {
+        location.reload();
+    })
 });
