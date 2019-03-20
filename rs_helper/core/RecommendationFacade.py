@@ -8,6 +8,8 @@ from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
 from rs_helper.core.model.SVCModel import SVCModel
 from rs_helper.core.model import TopicKNNModel, KNNModel
 from typing import List
+from keras import backend
+import warnings
 
 
 # from rs_helper.cor.EmbeddingClassificationPipeline import EmbeddingClassificationPipeline
@@ -26,6 +28,7 @@ class RecommendationFacade:
         :type path_to_files: str
         """
         self.corpora = Corpora(path=path_to_files)
+        warnings.filterwarnings("ignore")
 
     def recommend(self):
         """
@@ -34,21 +37,22 @@ class RecommendationFacade:
         :return: The final prediction
         :rtype: Prediction
         """
-        ensemble = Ensemble(weightening_scheme=[0.575, 0.575, 0.775, 0.7, 0.75, 0.775], n_classes=3)
+        # Used weightening for all models: weightening_scheme=[0.575, 0.575, 0.775, 0.7, 0.75, 0.775]
+        ensemble = Ensemble(weightening_scheme=[0.725, 0.75, 0.775], n_classes=3)
         _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")
         _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
 
         container = list()
         # LDA Classification
-        print("LDA...")
-        lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
-                                        path_to_vectorizer="./models/LDA/1/vec.joblib")
-        container.append(lda.predict(self.corpora.data))
+        # print("LDA...")
+        # lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
+        # path_to_vectorizer="./models/LDA/1/vec.joblib")
+        # container.append(lda.predict(self.corpora.data))
 
         # Topic KNN
-        print("TKNN...")
-        topic_knn = TopicKNNModel(path_to_topic="./models/Keyword/1/model.joblib", embedding_model=_DAN)
-        container.append(topic_knn.predict(self.corpora.data))
+        # print("TKNN...")
+        # topic_knn = TopicKNNModel(path_to_topic="./models/Keyword/1/model.joblib", embedding_model=_DAN)
+        # container.append(topic_knn.predict(self.corpora.data))
 
         # SVC Classification
         print("SVC...")
@@ -56,9 +60,9 @@ class RecommendationFacade:
         container.append(svc.predict(self.corpora.data))
 
         # KNN
-        print("KNN...")
-        knn = KNNModel(path_to_model="./models/KNN/1/knn.joblib", embedding_model=_DAN)
-        container.append(knn.predict(self.corpora.data))
+        # print("KNN...")
+        # knn = KNNModel(path_to_model="./models/KNN/1/knn.joblib", embedding_model=_DAN)
+        # container.append(knn.predict(self.corpora.data))
 
         # lstm 1:1
         print("1:1...")
@@ -69,6 +73,8 @@ class RecommendationFacade:
         print("N:1...")
         lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
         container.append(lstm_n1.predict(self.corpora.data))
+
+        backend.clear_session()
 
         print("Ensemble...")
         final_prediction = ensemble.predict(predictions=container)

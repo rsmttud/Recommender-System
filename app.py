@@ -63,10 +63,15 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
     """
     prediction = {}
 
-    path_long_desc = os.path.join("data/input/long_desc", file_name + ".txt")
+    path_long_desc = os.path.join("data/input/joined", file_name + ".txt")
     facade = RecommendationFacade(path_to_files=path_long_desc)
 
-    if pipeline_method == "classification":
+    if pipeline_method == "ensemble":
+        result = facade.recommend()
+        for (c, p) in result.compress():
+            prediction.update({c: p})
+
+    elif pipeline_method == "classification":
         result = facade.run(classification=True)
         label_map = LabelMap(path_to_json="models/label_maps/3_classes.json")
         for index, class_id in enumerate(result.classes):
@@ -79,23 +84,19 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
         for index, class_id in enumerate(result.classes):
             # The float type casting is necessary, because json.dumps doesnt support np.float32
             prediction.update({label_map.get_name(class_id): float(result.values[index])})
+
     elif pipeline_method == "svc_classification":
         result = facade.run(svc_classification=True)
         label_map = LabelMap(path_to_json="models/label_maps/3_classes.json")
         for index, class_id in enumerate(result.classes):
             # The float type casting is necessary, because json.dumps doesnt support np.float32
             prediction.update({label_map.get_name(class_id): float(result.values[index])})
+
     elif pipeline_method == "key_ex":
         result = facade.run(key_ex=True)
         for index, class_id in enumerate(result.classes):
             prediction.update({class_id: float(result.values[index])})
-    # TODO: Clarify how to work with sentence predictions. Multiple predictions need to be placed then!
-    elif pipeline_method == "one_to_one_gru_classification":
-        result = facade.run(gru_oto=True)
-        # Prediction per sentence
-        for pred in result:
-            for index, class_id in enumerate(pred.classes):
-                prediction.update({class_id: float(pred.values[index])})
+
     else:
         prediction.update({"NoMethod": "Implemented"})
 
