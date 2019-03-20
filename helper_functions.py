@@ -22,6 +22,11 @@ def save_txt_from_interface(title: str, short_desc: str, long_desc: str = None) 
         with open(path_long, "w") as file:
             file.write(long_desc)
             file.close()
+
+        path_joined = os.path.join("data/input/joined", file_name+".txt")
+        with open(path_joined, "w") as file:
+            file.write(short_desc + ". " + long_desc)
+            file.close()
     return file_name
 
 
