@@ -2,6 +2,7 @@ from nltk.tag import pos_tag
 from nltk.tokenize import word_tokenize
 from nltk.tree import Tree
 from nltk import RegexpParser
+from nltk.corpus import stopwords
 from typing import List
 import spacy
 
@@ -34,6 +35,7 @@ class EntityExtractor:
         self.parser = RegexpParser(self.chunk_pattern)
         self.chunks = list()
         self.nlp = spacy.load('en_core_web_sm')
+        self.stopwords = list(set(stopwords.words('english')))
         self.doc = self.nlp(self.text)
 
     def __get_continuous_chunks(self, chunked: Tree) -> List[str]:
@@ -55,9 +57,7 @@ class EntityExtractor:
                 named_entity = " ".join(current_chunk)
                 if named_entity not in continuous_chunk:
                     continuous_chunk.append(named_entity)
-                    current_chunk = []
-                else:
-                    continue
+                current_chunk = []
         if len(current_chunk) > 0:
             continuous_chunk.append(" ".join(current_chunk))
         return continuous_chunk
@@ -88,8 +88,16 @@ class EntityExtractor:
         :rtype: list(str)
         """
         assigned = list()
+        haystack = " ".join([x for x in self.tokens if x not in self.stopwords])
+        print(haystack)
         for chunk in chunks:
-            index = self.text.index(chunk)
+            try:
+                index = haystack.index(chunk)
+            except ValueError:
+                if chunk.find(" ") != -1:
+                    index = haystack.index(chunk.split(" ")[1])
+                else:
+                    index = 0
             N = len(self.tokens)
             tf = self.text.count(chunk)
             assigned.append((chunk, (index+tf)/N))  # Calculate the scoring mechanism
