@@ -16,7 +16,6 @@ class Ensemble(Model):
         super().__init__(path_to_model="")
         self.n_classes = n_classes
         self.weights = weightening_scheme
-        self.label_maps = None
         self.initialize()
 
     def initialize(self):
@@ -49,6 +48,4 @@ class Ensemble(Model):
         p = Prediction(values=final_predictions, classes=[c for c, p in compressed[0]])
         return p
 
-    def normalize_result(self, prediction: Prediction) -> None:
-        pass
 

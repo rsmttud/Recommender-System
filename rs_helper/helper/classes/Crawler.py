@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import pickle
+from typing import Any
 import pandas as pd
 
 class Crawler(ABC):
@@ -21,7 +22,7 @@ class Crawler(ABC):
         pass
 
     @abstractmethod
-    def save_to_file(self):
+    def save_to_file(self) -> None:
         """
         Save documents to file
 
@@ -39,7 +40,7 @@ class Crawler(ABC):
         """
         pass
 
-    def pickle_dataframe(self, df, dir):
+    def pickle_dataframe(self, df: pd.DataFrame, dir: str) -> Any:
         """
         Dump the DataFrame of crawl results with pickle
 

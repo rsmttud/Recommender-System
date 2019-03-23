@@ -37,9 +37,8 @@ class DAN(EmbeddingModel):
         self.frozen_graph_path = frozen_graph_path
         self.config = {}
 
-    # TODO in extra script and pd.DataFrame Type hinting
     @staticmethod
-    def __create_one_hot_encodings(labels) -> np.ndarray:
+    def create_one_hot_encodings(labels: pd.DataFrame) -> np.ndarray:
         """
         Method to create One-Hot-representations of labels
 
@@ -93,7 +92,7 @@ class DAN(EmbeddingModel):
 
         # Classifier
         # TODO Activation Function
-        classifier_layers = self.__create_classifier_layer(dense_dan_layers[-1], classifier_shape, classifier_act)
+        classifier_layers = self.create_classifier_layer(dense_dan_layers[-1], classifier_shape, classifier_act)
 
         logits = tf.layers.dense(inputs=classifier_layers[-1],
                                  units=classes,
@@ -132,9 +131,8 @@ class DAN(EmbeddingModel):
             dense_layers.append(dense_layer)
         return dense_layers
 
-    # TODO put this in a separate file
     @staticmethod
-    def __create_classifier_layer(input_layer, classifier_shape: List[int], classifier_act) -> List[tf.layers.dense]:
+    def create_classifier_layer(input_layer, classifier_shape: List[int], classifier_act) -> List[tf.layers.dense]:
         c_layers = []
         for i, neurons in enumerate(classifier_shape):
             if i == 0:
@@ -177,7 +175,7 @@ class DAN(EmbeddingModel):
         # Bundle the Data together in a DataFrame
         df = pd.DataFrame.from_dict({"text": text, "labels": labels})
         # Create One-Hot-Encodings for Available Classes
-        one_hot_encodings = self.__create_one_hot_encodings(df.drop(columns=["text"]))
+        one_hot_encodings = self.create_one_hot_encodings(df.drop(columns=["text"]))
 
         # Check the if dir exist
         if not os.path.isdir(save_path):

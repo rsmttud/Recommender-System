@@ -33,6 +33,15 @@ class EmbeddingModel(ABC):
         """
         pass
 
-    def inference_batches(self, words: List[List[str]]) -> List:
+    def inference_batches(self, text: List[List[str]]) -> List:
+        """
+        Batch inference for larger texts
+
+        :param text: List of tokenized sentences.
+        :type text: list
+
+        :return: List with embeddings
+        :rtype: list
+        """
         pass
 

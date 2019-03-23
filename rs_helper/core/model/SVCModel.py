@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.svm import SVC
 import os
 from rs_helper.core.model.Model import Model
 from rs_helper.core.Prediction import Prediction
@@ -25,6 +26,8 @@ class SVCModel(Model):
     def initialize(self) -> None:
         self.model = load(self.path)
         self.label_map = LabelMap(path_to_json=os.path.join(os.path.dirname(self.path), "label_map.json"))
+        if not isinstance(self.model, SVC):
+            raise ValueError("Supplied model not of type sklearn.svm.SVC")
 
     def predict(self, text: str) -> Prediction:
         if isinstance(self.embedding_model, FastTextWrapper):
@@ -41,6 +44,3 @@ class SVCModel(Model):
             values.append(y)
 
         return Prediction(classes, values)
-
-    def normalize_result(self, prediction: Prediction) -> Prediction:
-        pass

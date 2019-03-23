@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from typing import List
+from typing import List, Tuple
 
 
 def dropout_layer(input_layer: np.ndarray, dropout_prob: float = 0.2):
@@ -17,7 +17,7 @@ def average_layer(placeholder: tf.Variable, name="average_layer"):
 
 class Batches:
 
-    def __init__(self, x: List, y: List, batch_size=8):
+    def __init__(self, x: List, y: List, batch_size: int = 8):
         self.__x = x
         self.__y = y
         self.__data = self.__init_data()
@@ -33,7 +33,7 @@ class Batches:
     def __iter__(self):
         return self
 
-    def __next__(self):
+    def __next__(self) -> Tuple:
         if self.__current_state >= self.__data.shape[0]:
             raise StopIteration
         else:

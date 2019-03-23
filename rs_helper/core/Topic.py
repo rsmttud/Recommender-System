@@ -80,7 +80,7 @@ class Topic:
         """
         self.keyword_set.append(Keyword(keyword, rank, algorithm))
 
-    def get_keywords(self, duplicates=True) -> List[Keyword]:
+    def get_keywords(self, duplicates: bool = True) -> List[Keyword]:
         """
         Get the list of unique keywords
 
@@ -95,7 +95,7 @@ class Topic:
         else:
             return list(set(self.keyword_set))
 
-    def pretty_print(self, duplicates=True) -> None:
+    def pretty_print(self, duplicates: bool = True) -> None:
         """
         Print out the topic pretty formatted
 

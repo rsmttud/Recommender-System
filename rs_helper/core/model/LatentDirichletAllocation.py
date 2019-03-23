@@ -75,6 +75,3 @@ class LatentDirichletAllocation(Model):
         p = Preprocessor(text)
         lemmatized = p.transform(remove_nums=False, remove_punct=False)
         return reduce(operator.concat, lemmatized)
-
-    def normalize_result(self, prediction: Prediction):
-        pass

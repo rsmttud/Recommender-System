@@ -127,5 +127,3 @@ class RNNTypedClassifier(Model):
         """
         return self.embedding_model.inference(tokens)
 
-    def normalize_result(self, prediction: Prediction):
-        pass
