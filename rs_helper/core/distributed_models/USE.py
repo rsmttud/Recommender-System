@@ -16,7 +16,7 @@ class USE(EmbeddingModel):
         super().__init__(**kwargs)
         self.tf_model = self.initialize_model()
 
-    def initialize_model(self, **kwargs) -> Any:
+    def initialize_model(self, **kwargs) -> tf_hub.Module:
         """
         Initializes the model by downloading it if not already available.
 
@@ -26,7 +26,7 @@ class USE(EmbeddingModel):
         :rtype: tf_hub.Module
         """
         url = "https://tfhub.dev/google/universal-sentence-encoder/2"
-        return tf_hub.Module(url, trainable=True)
+        return tf_hub.Module(url, trainable=False)
 
     def inference(self, words: List[str]) -> np.ndarray:
         """

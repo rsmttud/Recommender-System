@@ -135,7 +135,7 @@ class TFIGM(KeywordExtractor):
             del unique_tokens, bigram_tokens, trigram_tokens, all_tokens
         return vocab
 
-    def extract_keywords(self) -> Dict[str, Topic]:
+    def extract_keywords(self, **kwargs) -> Dict[str, Topic]:
         results = dict()
         vocab = self.__get_vocab()
         # pickle.dump(reduce(operator.concat, vocab), open("data/topics/tfigm_vocab.vocab", "wb"))

@@ -5,6 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
 from rs_helper.core import *
 from rs_helper.helper import *
+import pandas as pd
 from typing import List
 
 

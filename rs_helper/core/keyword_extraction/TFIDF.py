@@ -12,7 +12,7 @@ class TFIDF(KeywordExtractor):
         self.labels = labels
         self.top_n = top_n
 
-    def extract_keywords(self, *kwargs):
+    def extract_keywords(self, *kwargs) -> Dict[str, Topic]:
         vectorizer = TfidfVectorizer(lowercase=True, preprocessor=None, tokenizer=None,
                                      analyzer="word", stop_words=None, ngram_range=(1, 3))
         scores = vectorizer.fit_transform(self.docs)

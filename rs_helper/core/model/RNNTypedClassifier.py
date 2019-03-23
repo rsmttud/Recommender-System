@@ -102,5 +102,3 @@ class RNNTypedClassifier(Model):
                 if self.embedding_type == "FastText" else _DAN.inference(tokens)
         return vectorized
 
-    def normalize_result(self, prediction: Prediction):
-        pass

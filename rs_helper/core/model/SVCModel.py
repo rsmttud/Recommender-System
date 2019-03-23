@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.svm import SVC
 from rs_helper.core.model.Model import Model
 from rs_helper.core.Prediction import Prediction
 from rs_helper.core.distributed_models.EmbeddingModel import EmbeddingModel
@@ -21,12 +22,14 @@ class SVCModel(Model):
 
     def initialize(self) -> None:
         self.model = load(self.path)
+        if not isinstance(self.model, SVC):
+            raise ValueError("Supplied model not of type sklearn.svm.SVC")
 
     def predict(self, text: str) -> Prediction:
         if isinstance(self.embedding_model, DAN):
             embeddings = self.embedding_model.inference([text])
         else:
-            embeddings = self.embedding_model.inference(word_tokenize(text))
+            embeddings = self.embedding_model.inference(word_tokenize(text), sentence_level=True)
 
         probs = self.model.predict_proba(embeddings)
 
@@ -38,6 +41,3 @@ class SVCModel(Model):
             values.append(y)
 
         return Prediction(classes, values)
-
-    def normalize_result(self, prediction: Prediction) -> Prediction:
-        pass

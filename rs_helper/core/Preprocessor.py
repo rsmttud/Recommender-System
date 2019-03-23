@@ -15,7 +15,7 @@ class LemmaTokenizer(object):
     def __init__(self):
         self.wnl = WordNetLemmatizer()
 
-    def __call__(self, text):
+    def __call__(self, text: str) -> List[str]:
         return [self.wnl.lemmatize(t) for t in word_tokenize(text)]
 
 
@@ -47,7 +47,7 @@ class Preprocessor:
         """
         self.data = [self.analyzer(s) for s in self.data]
 
-    def remove_puctuation(self) -> None:
+    def remove_punctuation(self) -> None:
         """
         Remove punctuation from data. Results will be stored in class attribute data.
 
@@ -79,8 +79,8 @@ class Preprocessor:
         if remove_nums and not remove_punct:
             self.remove_numbers()
         if remove_punct and not remove_nums:
-            self.remove_puctuation()
+            self.remove_punctuation()
         if remove_nums and remove_punct:
-            self.remove_puctuation()
+            self.remove_punctuation()
             self.remove_numbers()
         return self.data
