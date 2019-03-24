@@ -25,6 +25,7 @@ def classify():
     file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
     prediction = get_prediction(pipeline_method, file_name)
 
+    # TODO: Add Entity Extractor to RecommendationFacade -> Return Tuple
     entity_extractor = EntityExtractor(problem_long_desc)
     entities = entity_extractor.extract_entities()
 
@@ -103,4 +104,5 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
 
 
 if __name__ == '__main__':
+    #app.run(host="0.0.0.0", port=80, debug=False)
     app.run(debug=True)
