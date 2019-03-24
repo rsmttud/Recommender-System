@@ -1,6 +1,6 @@
 from rs_helper.core import Prediction
 from rs_helper.core.model import Model
-from rs_helper.core.distributed_models import EmbeddingModel, DAN, FastTextWrapper
+from rs_helper.core.distributed_models import EmbeddingModel, DAN, FastTextWrapper, USE
 from joblib import load
 from typing import Dict
 from nltk.tokenize import word_tokenize
@@ -22,7 +22,7 @@ class TopicKNNModel(Model):
         :param embedding_model: The embedding model to generate the vector representations
         :type embedding_model: EmbeddingModel
         """
-        if not isinstance(embedding_model, DAN) or isinstance(embedding_model, FastTextWrapper):
+        if not (isinstance(embedding_model, DAN) or isinstance(embedding_model, FastTextWrapper) or isinstance(embedding_model, USE)):
             raise ValueError("Embedding model must be of type DAN or FastTextWrapper")
 
         super().__init__(path_to_topic)
@@ -63,8 +63,10 @@ class TopicKNNModel(Model):
 
             if isinstance(self.embedding_model, FastTextWrapper):
                 topic_embedding = self.embedding_model.inference(tokens, sentence_level=True)
-            else:
+            elif isinstance(self.embedding_model, DAN):
                 topic_embedding = self.embedding_model.inference(tokens)[0]
+            else:
+                topic_embedding = self.embedding_model.inference([" ".join(tokens)])[0]
             return_dict[cl] = topic_embedding
         return return_dict
 
@@ -81,9 +83,17 @@ class TopicKNNModel(Model):
         if self.vectors is None:
             raise IOError("Model needs to initialized first. Please call KNN.initialize() first.")
 
+        """
         input_embedding = self.embedding_model.inference(word_tokenize(text), sentence_level=True) \
             if isinstance(self.embedding_model, FastTextWrapper) \
             else self.embedding_model.inference(word_tokenize(text))[0]
+        """
+        if isinstance(self.embedding_model, FastTextWrapper):
+            input_embedding = self.embedding_model.inference(word_tokenize(text), sentence_level=True)
+        elif isinstance(self.embedding_model, DAN):
+            input_embedding = self.embedding_model.inference(word_tokenize(text))[0]
+        else:
+            input_embedding = self.embedding_model.inference([text])[0]
 
         similarities = list()
         for cl in self.vectors:

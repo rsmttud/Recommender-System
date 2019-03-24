@@ -22,7 +22,7 @@ class KNNModel(Model):
         :param embedding_model: The embedding model to generate the vector representations
         :type embedding_model: EmbeddingModel
         """
-        if not isinstance(embedding_model, DAN) or isinstance(embedding_model, FastTextWrapper):
+        if not (isinstance(embedding_model, DAN) or isinstance(embedding_model, FastTextWrapper)):
             raise ValueError("Embedding model must be of type DAN or FastTextWrapper")
 
         super().__init__(path_to_model)

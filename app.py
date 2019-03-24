@@ -68,6 +68,8 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
 
     if pipeline_method == "ensemble":
         result = facade.recommend()
+        result.scale_log()
+        result.round_values()
         for (c, p) in result.compress():
             prediction.update({c: p})
 
