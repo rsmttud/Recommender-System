@@ -1,0 +1,16 @@
+{
+  "labels": [
+    {
+      "name": "clustering",
+      "id": 0
+    },
+    {
+      "name": "pattern_mining",
+      "id": 1
+    },
+    {
+      "name": "prediction",
+      "id": 2
+    }
+  ]
+}

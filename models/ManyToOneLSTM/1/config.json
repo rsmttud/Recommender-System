@@ -1,0 +1,1 @@
+{"name": "model_33", "units": 120, "dropout": 0.3, "optimizer": "adam", "epochs": 10, "test_accuracy": 96.03443777719801, "test_loss": 0.1298082213359964, "time": 1.2786008675893148, "accuracy": 0.85, "cohens_kappa": 0.775, "f1_micro": 0.85, "f1_macro": 0.8403805496828752, "precision_micro": 0.85, "precision_macro": 0.8614362690449647, "recall_micro": 0.85, "recall_macro": 0.85}
