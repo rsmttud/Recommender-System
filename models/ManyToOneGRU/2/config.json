@@ -1,1 +1,0 @@
-{"name": "model_38", "units": 100, "dropout": 0.2, "optimizer": "adadelta", "epochs": 100, "test_accuracy": 99.68902709906709, "test_loss": 0.029910760083376023, "time": 6.082406397660574, "validation_accuracy": 82.14285714285714}
