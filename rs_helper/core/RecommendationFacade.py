@@ -43,10 +43,10 @@ class RecommendationFacade:
         _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
 
         container = list()
-        # LDA Classification
-        # print("LDA...")
-        # lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
-        # path_to_vectorizer="./models/LDA/1/vec.joblib")
+        # LDAModel Classification
+        # print("LDAModel...")
+        # lda = LatentDirichletAllocation(path_to_model="./models/LDAModelModel/1/grid_model.joblib",
+        # path_to_vectorizer="./models/LDAModel/1/vec.joblib")
         # container.append(lda.predict(self.corpora.data))
 
         # Topic KNN
@@ -86,7 +86,7 @@ class RecommendationFacade:
         """
         Function should manage the starting of pipelines according to input
 
-        :param lda: boolean to start or not start LDA pipeline
+        :param lda: boolean to start or not start LDAModel pipeline
         :type lda: bool
         :param key_ex: boolean to start or not start Keyword Extraction pipeline
         :type key_ex: bool
@@ -118,8 +118,8 @@ class RecommendationFacade:
             return self.__gru_oto_classification()
 
     def __lda_pipeline(self):
-        path_model = "models/LDA/LdaModel_3_freq_clean.bin"
-        path_vectorizer = "models/LDA/vectorizer_3_freq_clean.bin"
+        path_model = "models/LDAModel/LdaModel_3_freq_clean.bin"
+        path_vectorizer = "models/LDAModel/vectorizer_3_freq_clean.bin"
         model = LatentDirichletAllocation(path_to_model=path_model, path_to_vectorizer=path_vectorizer)
         model.initialize()
         prediction = model.predict(self.corpora.data)
