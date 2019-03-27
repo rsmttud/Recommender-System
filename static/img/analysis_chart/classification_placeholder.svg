@@ -1836,12 +1836,12 @@
         <g id="patch_5" transform="matrix(1.11345,0,0,1.11345,-14.3799,-30.9513)">
             <path d="M54,252L388.8,252" style="fill:none;stroke:black;stroke-width:0.8px;stroke-linecap:square;"/>
         </g>
-        <g id="custom" transform="matrix(1.11345,0,0,1.11345,-29.5358,-16.4765)">
-            <g id="entity-placeholder-1" transform="matrix(1,0,0,1,206.06,264.274)">
-                <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Entity Placeholder I</text>
+        <g id="custom" transform="matrix(1.11345,0,0,1.11345,-26.5959,-16.7506)">
+            <g transform="matrix(0.898109,0,0,0.898109,-41.4696,-13.4282)">
+                <text id = "entity-placeholder-2" x="216px" y="56.596px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Entity Placeholder II</text>
             </g>
-            <g id="entity-placeholder-2" transform="matrix(0.0158606,-0.999874,0.999874,0.0158606,35.1001,155.037)">
-                <text x="0px" y="0px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Entity Placeholder II</text>
+            <g transform="matrix(0.898109,0,0,0.898109,96.8393,185.086)">
+                <text id = "entity-placeholder-1" x="216px" y="56.596px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">Entity Placeholder I</text>
             </g>
         </g>
         <g transform="matrix(1.02365,0,0,1.013,-12.6724,7.5294)">
@@ -1861,6 +1861,12 @@
         </g>
         <g transform="matrix(1.11345,0,0,1.11345,-29.5358,-16.4765)">
             <rect x="67" y="14.826" width="365" height="6.734" style="fill:white;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,10.8586,-3)">
+            <text x="216px" y="275.596px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">x1</text>
+        </g>
+        <g transform="matrix(6.12323e-17,-1,1,6.12323e-17,-257.36,354.646)">
+            <text x="216px" y="275.596px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:12px;">x2</text>
         </g>
     </g>
 </svg>
