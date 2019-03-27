@@ -1,1 +1,0 @@
-The XY-Company is specialized on implementing different document management systems. To offer out costumers a new feature we want to forecaste the type of our documents. Because of the available huge amount of data we aim to use new machine learning, to make those kinds of prediction.

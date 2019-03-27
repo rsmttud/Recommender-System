@@ -1,1 +1,0 @@
-Based on the process data of our employes. We want to find patterns in their working behavior.

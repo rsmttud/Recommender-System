@@ -1,1 +1,0 @@
-As a semi conductor company many failures in the production line can occur. Based on the failure type different solutions can be applied to handle the situation. The upcoming project should group similar failures in 4 different clusters. 

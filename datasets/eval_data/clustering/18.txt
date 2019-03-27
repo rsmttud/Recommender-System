@@ -1,1 +1,0 @@
-The goal of the project is to group different friendships together in similar groups based on social media data. 

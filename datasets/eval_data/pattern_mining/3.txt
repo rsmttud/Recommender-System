@@ -1,1 +1,0 @@
-Based on our costumer data we want to extract interesting patterns in their consumer behavior. Its up to the analyst to define what a frequent pattern is and how it should be discovered.

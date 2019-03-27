@@ -1,1 +1,0 @@
-I have different machine types and want to find similar error structures based on recent error history. Thereby, the error should be grouped in different categories or groups which are as dissimilar as possible.

@@ -1,1 +1,0 @@
-I want a forecasting of the used machine types in my assembly line. Not based on numerical features.

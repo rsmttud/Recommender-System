@@ -1,1 +1,0 @@
-I want to extract a set of colours from an image, where each set contains similar colors. This way i can have different color schema.

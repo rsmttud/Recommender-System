@@ -1,1 +1,0 @@
-Over the past ten years the XY-Company collected data about diseases, their medical treatment as well their success. Based on those sequential data the best pattern for treating diseases should be discovered, using modern algorithmic approaches. 

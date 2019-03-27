@@ -1,1 +1,0 @@
-The objective of the project is to find similar patterns and structures based on the behavior of our employees. All relevant data are stored as sequences. The goal is to use those extracted pattern to increase the overall efficiency of the corresponding department. 

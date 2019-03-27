@@ -1,1 +1,0 @@
-The analysis should evauate the relationship between the weather and the amount of sold ice cream. More specific, it should be examined how much the temperature influences the renvenue of the organization.

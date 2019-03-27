@@ -1,1 +1,0 @@
-As e-commerce shop we want to find patterns in the consumer behavior of our costumers. 

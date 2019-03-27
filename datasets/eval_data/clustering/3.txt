@@ -1,1 +1,0 @@
-The purpose of this project is to segment supply chain partners in the automobile industry, according to their provided quality.

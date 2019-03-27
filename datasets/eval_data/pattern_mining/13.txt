@@ -1,1 +1,0 @@
-The projects aims to finding frequent co-occurring associations among a collection of our data. 

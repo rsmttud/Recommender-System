@@ -1,1 +1,0 @@
-As a shop for digital articles we want to find out which products are bought in which combination and when they where bought in what sequence. We want to use the information to promote the most promising products better. 

@@ -1,2 +1,0 @@
-In this competition, you will use a more realistic acoustic data set. You are provided with three different Subsets. The purpose of this analysis is to group similar sound together. 
-The golden number of groups that should be found is around 4-5 clumps.

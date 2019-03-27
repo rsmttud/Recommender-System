@@ -1,1 +1,0 @@
-The project focus is focused on new healthcare approaches in interaction with new machine learning methods. Based on different patients data the objective is to group similar diseases of patients in similar groups. 

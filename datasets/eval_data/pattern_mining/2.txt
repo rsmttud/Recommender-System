@@ -1,1 +1,0 @@
-The last 2 years the XX-Company collected data of their machine errors. Based on those sequential data, a analysis should be performed to find different frequent error patterns.

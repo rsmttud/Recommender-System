@@ -1,1 +1,0 @@
-The project is focused on a logistic process. The goal is to analyze loading pattern among different warehouses. 

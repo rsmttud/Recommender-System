@@ -1,1 +1,0 @@
-Based on the stored machine events in our production line. The project should extract interesting error patterns and should predict in the ongoing production process if it is likely that such a pattern appear inn the future. 

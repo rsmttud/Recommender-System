@@ -1,3 +1,0 @@
-I want to group my machines according to their energy consumption.
-Machines with a similar energy consumption should be grouped together.
-The number of the resulting classes doesnt matter.
