@@ -89,7 +89,7 @@ class EntityExtractor:
         """
         assigned = list()
         haystack = " ".join([x for x in self.tokens if x not in self.stopwords])
-        print(haystack)
+        # print(haystack)
         for chunk in chunks:
             try:
                 index = haystack.index(chunk)

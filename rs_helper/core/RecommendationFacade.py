@@ -58,7 +58,7 @@ class RecommendationFacade:
         # container.append(topic_knn.predict(self.corpora.data))
 
         # SVC Classification
-        print("SVC...")
+        #print("SVC...")
         svc = SVCModel(path_to_model="./models/SVC/1/model.joblib",  embedding_model=_DAN)
         container.append(svc.predict(input_data))
 
@@ -68,19 +68,20 @@ class RecommendationFacade:
         # container.append(knn.predict(self.corpora.data))
 
         # lstm 1:1
-        print("1:1...")
+        #print("1:1...")
         lstm_11 = RNNTypedClassifier(model_dir="./models/OneToOneGRU/1/", architecture="1:1", embedding_model=_DAN)
         container.append(lstm_11.predict(input_data))
 
         # lstm N:1
-        print("N:1...")
+        #print("N:1...")
         lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
         container.append(lstm_n1.predict(input_data))
 
         backend.clear_session()
 
-        print("Ensemble...")
+        #print("Ensemble...")
         final_prediction = ensemble.predict(predictions=container)
+        print(final_prediction)
         return final_prediction
 
     def run(self, lda: bool = False, key_ex: bool = False,

@@ -65,7 +65,6 @@ $("document").ready(function () {
                         if ($("#modal-content-radio-yes").is(':checked')) {
                             initialize_result_page(data, entities, "regression")
                         } else {
-                            console.log("Radio Button not checked (Classification)");
                             initialize_result_page(data, entities, "classification")
                         }
                     } else {
@@ -135,8 +134,6 @@ function reset_html() {
 function implant_modal_functionality(entities, most_likely_class) {
     if (most_likely_class == "prediction") {
         $("#modal-content-prediction").css("display", "block")
-    } else {
-        console.log(most_likely_class)
     }
 
     entities.forEach(function (entity) {
@@ -173,7 +170,6 @@ function initialize_result_page(data, entities, class_name) {
     });
 
     let json = get_json(forecast, data["entities"], class_name);
-    console.log(json);
     donutChart(json);
     send_json_to_python_backend(json);
     implant_analysis_chart(class_name, entities);
@@ -196,10 +192,8 @@ $("document").ready(function () {
 function fixMaterializeInput(e) {
     //Materialize doesnt set the attribute checked again - BugFix
     if (!e.hasAttribute("checked")) {
-        console.log("doesnt have");
         e.setAttribute("checked", "checked")
     } else if (e.hasAttribute("checked")) {
-        console.log("has checked");
         e.removeAttribute("checked")
     }
 }
