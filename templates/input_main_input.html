@@ -10,23 +10,23 @@
                     <label for="title">Title</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="short_description" class="materialize-textarea" name="short_description"></textarea>
+                    <textarea id="short_description" class="materialize-textarea" name="short_description" required></textarea>
                     <label for="short_description">Short description</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="long_description" class="materialize-textarea" name="long_description"
-                              required></textarea>
+                    <textarea id="long_description" class="materialize-textarea" name="long_description"></textarea>
                     <label for="long_description">Long description</label>
                 </div>
-                <div class="input-field col s12">
+                <!--<div class="input-field col s12">
                     <select id="method" name="method">
                         <option value="" disabled selected>Choose your option</option>
                         <option value="lda">LDA</option>
                         <option value="key_ex">KeywordExtractor</option>
                         <option value="classification">Classification[Author]</option>
+                        <option value="ensemble">Ensemble</option>
                     </select>
                     <label for="method">Select a method</label>
-                </div>
+                </div>-->
                 <button id="submit-button" class="btn waves-effect waves-light" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
                 </button>
