@@ -3,7 +3,6 @@ import pandas as pd
 import json
 import os
 from tqdm import tqdm
-from helper_functions import find_nth
 import re
 from rs_helper.helper.classes.Crawler import Crawler
 import pickle
@@ -36,6 +35,19 @@ class ScienceDirectCrawler(Crawler):
         self.total_nums = 0
         self.num_res = 0
         self.out_dir = out_dir
+
+    def find_nth(self,string, substring, n):
+        """
+        :param string: String to search in
+        :param substring: String to find
+        :param n: int (Which occurrence)
+        :return: int (Index of the occurrence)
+        Function to find the n-th occurrence of a needle in a string. (Used by ScienceDirect Crawler)
+        """
+        if n == 1:
+            return string.find(substring)
+        else:
+            return string.find(substring, self.find_nth(string, substring, n - 1) + 1)
 
     def crawl(self):
         """
@@ -151,7 +163,7 @@ class ScienceDirectCrawler(Crawler):
         """
         values = ["1 Introduction", "1. Introduction", "1 INTRODUCTION", "1. INTRODUCTION"]
         for v in values:
-            idx = find_nth(text, v, 2)
+            idx = self.find_nth(text, v, 2)
             if idx != -1:
                 return idx
         return 0
