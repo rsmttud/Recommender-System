@@ -108,7 +108,6 @@ thinc==6.12.1
 toolz==0.9.0
 tornado==5.1.1
 tqdm==4.31.1
-traitlets==4.3.2
 ujson==1.35
 Unidecode==1.0.23
 urllib3==1.24.1
