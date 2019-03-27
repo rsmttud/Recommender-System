@@ -12,10 +12,14 @@ class MediumCrawler(Crawler):
 
     def __init__(self, out_path: str, query: str, number_of_scrollings):
         """
-        :param url: String (URL to start from)
-        :param query: String (Search term for medium)
-        :param number_of_scrollings: int (Number of Scrollings to be done on medium.com)
         Crawler for medium articles. Chromedriver required!
+
+        :param url: URL to start from
+        :type url: str
+        :param query: Search term for medium
+        :type query: str
+        :param number_of_scrollings: Number of Scrollings to be done on medium.com
+        :type number_of_scrollings: int
         """
         super().__init__(out_path=out_path)
         self.url = "https://medium.com/search?q={}".format(query)
@@ -37,9 +41,13 @@ class MediumCrawler(Crawler):
 
     def scroll_to_end(self, n_scroll):
         """
-        :param n_scroll: int (Number of scrolls)
-        :return: int (Height of the website body)
         Method to scroll to the end of the website
+
+        :param n_scroll: Number of scrolls
+        :type n_scroll: int
+
+        :return: Height of the website body
+        :rtype: int
         """
         pause = 3
         last_height = self.driver.execute_script("return document.body.scrollHeight")
@@ -69,15 +77,17 @@ class MediumCrawler(Crawler):
 
     def get_whole_html(self):
         """
-        :return: String (HTML of the website)
+        :return: HTML of the website
+        :rtype: str
         """
         return self.driver.page_source
 
     def crawl(self):
         """
-        :return: void
         Method to perform the crawl and extract links and texts from scrolled website.
         Reults will be saved in out/ directory.
+
+        :return: void
         """
         if not os.path.exists(self.out_path):
             os.mkdir(self.out_path)
