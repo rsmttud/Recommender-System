@@ -1,10 +1,8 @@
 import os
-import time
-from flask import Flask, render_template, request, json
-from helper_functions import save_txt_from_interface
+from flask import Flask, render_template, request, json, jsonify
+from helper_functions import *
 from rs_helper.core import *
 from rs_helper.helper import *
-from typing import Dict
 
 app = Flask(__name__)
 
@@ -20,10 +18,10 @@ def classify():
     problem_title = "" if "title" not in request.form else request.form['title']
     problem_short_desc = "" if "short_description" not in request.form else request.form['short_description']
     problem_long_desc = "" if "long_description" not in request.form else request.form['long_description']
-    pipeline_method = "" if "method" not in request.form else request.form['method']
+    # pipeline_method = "" if "method" not in request.form else request.form['method']
 
     file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
-    prediction = get_prediction(pipeline_method, file_name)
+    prediction = get_prediction("", file_name)
 
     # TODO: Add Entity Extractor to RecommendationFacade -> Return Tuple
     entity_extractor = EntityExtractor(problem_long_desc)
@@ -42,67 +40,20 @@ def save_json():
     save_dir = "data/output"
     file_name = str(int(time.time())) + ".json"
     # Write Json
-    print(type(request.json))
-    print(request.json)
     with open(os.path.join(save_dir, file_name), "w", encoding="utf-8") as file:
         json.dump(request.json, file, indent=4)
 
-    response = app.response_class(
-        response="True",
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    entities = request.json["entities"]
+    class_name = request.json["final_class_agreement"]  # class from forecast with highest prob
+    short_desc = request.json["short_desc"]
+    long_desc = request.json["long_desc"]
 
-
-def get_prediction(pipeline_method: str, file_name: str) -> Dict:
-    """
-    Returns a dict {class: value, class: value, ...}, which can be send as json to client.
-    :param pipeline_method: The value of the select form
-    :param file_name: The file name to the long or short description to construct the corpora
-    :return: dict {class: value, class: value, ...}
-    """
-    prediction = {}
-
-    path_long_desc = os.path.join("data/input/long_desc", file_name + ".txt")
-    facade = RecommendationFacade(path_to_files=path_long_desc)
-
-    if pipeline_method == "classification":
-        result = facade.run(classification=True)
-        label_map = LabelMap(path_to_json="models/label_maps/3_classes.json")
-        for index, class_id in enumerate(result.classes):
-            # The float type casting is necessary, because json.dumps doesnt support np.float32
-            prediction.update({label_map.get_name(class_id): float(result.values[index])})
-
-    elif pipeline_method == "lda":
-        result = facade.run(lda=True)
-        label_map = LabelMap(path_to_json="models/label_maps/lda_3_topics.json")
-        for index, class_id in enumerate(result.classes):
-            # The float type casting is necessary, because json.dumps doesnt support np.float32
-            prediction.update({label_map.get_name(class_id): float(result.values[index])})
-    elif pipeline_method == "svc_classification":
-        result = facade.run(svc_classification=True)
-        label_map = LabelMap(path_to_json="models/label_maps/3_classes.json")
-        for index, class_id in enumerate(result.classes):
-            # The float type casting is necessary, because json.dumps doesnt support np.float32
-            prediction.update({label_map.get_name(class_id): float(result.values[index])})
-    elif pipeline_method == "key_ex":
-        result = facade.run(key_ex=True)
-        for index, class_id in enumerate(result.classes):
-            prediction.update({class_id: float(result.values[index])})
-    # TODO: Clarify how to work with sentence predictions. Multiple predictions need to be placed then!
-    elif pipeline_method == "one_to_one_gru_classification":
-        result = facade.run(gru_oto=True)
-        # Prediction per sentence
-        for pred in result:
-            for index, class_id in enumerate(pred.classes):
-                prediction.update({class_id: float(pred.values[index])})
-    else:
-        prediction.update({"NoMethod": "Implemented"})
-
-    return prediction
+    notebook_path, html_path = create_notebooks(entities, class_name, short_desc, long_desc)
+    return jsonify(n_link=notebook_path, h_link=html_path)
 
 
 if __name__ == '__main__':
+    # Use this command for the docker build!
     #app.run(host="0.0.0.0", port=80, debug=False)
+    # Use this line for development!
     app.run(debug=True)
