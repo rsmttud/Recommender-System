@@ -36,23 +36,30 @@ class ScienceDirectCrawler(Crawler):
         self.num_res = 0
         self.out_dir = out_dir
 
-    def find_nth(self,string, substring, n):
+    def find_nth(self,string, substring, n) -> int:
         """
-        :param string: String to search in
-        :param substring: String to find
-        :param n: int (Which occurrence)
-        :return: int (Index of the occurrence)
         Function to find the n-th occurrence of a needle in a string. (Used by ScienceDirect Crawler)
+
+        :param string: Haystack
+        :type string: str
+        :param substring: Needle
+        :type substring: str
+        :param n: Which occurrence
+        :type n: int
+
+        :return: Index of the occurrence
+        :rtype: int
         """
         if n == 1:
             return string.find(substring)
         else:
             return string.find(substring, self.find_nth(string, substring, n - 1) + 1)
 
-    def crawl(self):
+    def crawl(self) -> None:
         """
-        :return: void
         General handler of crawling
+        
+        :return: void
         """
         result = self.__exec_request(self.url)
         if result == "failed":
@@ -80,16 +87,28 @@ class ScienceDirectCrawler(Crawler):
                     break
         pbar.close()
 
-    def save_response(self, res):
+    def save_response(self, res) -> None:
+        """
+        Saves the server response to json
+
+        :param res: The server response
+        :type res: dict
+
+        :return void
+        """
         file = open("response_{}.json".format(self.num_res), "w")
         file.write(str(res))
         file.close()
 
-    def __exec_request(self, URL):
+    def __exec_request(self, URL) -> Any:
         """
-        :param URL: String (URL to request)
-        :return: dict (Server response)
         This method actually makes the requests and handles the response of the server
+
+        :param URL: URL to request
+        :type URL: str
+
+        :return: Server response
+        :rtype: dict
         """
         headers = {
             "X-ELS-APIKey": self.config['apikey'],
@@ -107,12 +126,16 @@ class ScienceDirectCrawler(Crawler):
         else:
             return "failed"
 
-    def __save_relevants_in_results(self, exec_result, total: bool = False):
+    def __save_relevants_in_results(self, exec_result, total: bool = False) -> None:
         """
-        :param exec_result: Dict (Server response of API request)
-        :param total: Boolean (Should the total result num be setted)
-        :return: void
         This method stores the relevant information of the server response in the instance results variable
+
+        :param exec_result: Server response of API request
+        :type exec_result: dict
+        :param total: Should the total result num be setted
+        :type total: bool
+
+        :return: void
         """
         current_idx = self.num_res
         # print("Current index: {}".format(current_idx))
@@ -135,10 +158,14 @@ class ScienceDirectCrawler(Crawler):
             self.results["documents"][current_idx+i]["month"] = date_parts[1]
             self.results["documents"][current_idx+i]["day"] = date_parts[2]
 
-    def __get_article_and_abstract(self, eid: str):
+    def __get_article_and_abstract(self, eid: str) -> None:
         """
-        :return: void
         Makes calls to science direct to receive the article and abstracts based on the article eid number.
+        
+        :param eid: the eid number to call 
+        :type eid: str
+
+        :return: void
         """
         eid_url = self.base_article_url+eid
         eid_response = self.__exec_request(eid_url)
@@ -157,9 +184,13 @@ class ScienceDirectCrawler(Crawler):
 
     def __get_introduction_index(self, text: str) -> int:
         """
-        :param text: String (The text to be searched)
-        :return: int
         This method sould return the index of the SECOND occurrence of "1 Introduction" or "1. Introduction" or ...
+
+        :param text: The text to be searched
+        :type text: str
+
+        :return: the position of the string
+        :rtype: int
         """
         values = ["1 Introduction", "1. Introduction", "1 INTRODUCTION", "1. INTRODUCTION"]
         for v in values:
@@ -168,11 +199,15 @@ class ScienceDirectCrawler(Crawler):
                 return idx
         return 0
 
-    def __convert_authors(self, author_dict: dict):
+    def __convert_authors(self, author_dict: dict) -> str:
         """
-        :param author_dict: dict
-        :return: String (The authors)
         Internal function to get the author names of an article
+
+        :param author_dict: The raw dict from server with authors
+        :type author_dict: dict
+
+        :return: Formatted authors
+        :rtype: str
         """
         if "author" not in author_dict.keys():
             return str(author_dict)
@@ -184,27 +219,41 @@ class ScienceDirectCrawler(Crawler):
                 res += str(author_dict['author'][i])
         return res
 
-    def __split_date(self, date: str):
+    def __split_date(self, date: str) -> list:
+        """
+        Method splits the date in month, day, year
+        """
         parts = date.split("-")
         return parts
 
-    def __load_config(self):
+    def __load_config(self) -> dict:
         """
-        :return: void
         Loads configuration file in which the necessary APIKey is stored
+
+        :return: dict
         """
         file = open("config.json")
         config_file = json.load(file)
         file.close()
         return config_file
 
-    def __prepare_title(self, input):
+    def __prepare_title(self, input) -> str:
+        """
+        Cuts the inputtitle to 130 characters maximum
+
+        :param input: the title to cut 
+        :type input: str
+
+        :return: the cutted string 
+        :rtype: str
+        """
         return re.sub(r"[^A-Za-z| ]+", '', input)[:130]
 
-    def save_to_file(self):
+    def save_to_file(self) -> None:
         """
-        :return: void
         Saves all results to files in the supplied output directory
+
+        :return: void
         """
         abs_errors = 0
         art_errors = 0
@@ -226,8 +275,10 @@ class ScienceDirectCrawler(Crawler):
 
     def save_to_dataframe(self):
         """
-        :return: DataFrame
         Saves the results to a pandas dataframe
+
+        :return: The final datafram 
+        :rtype: pd.DataFrame
         """
         titles, years, months, days, authors = list(), list(), list(), list(), list()
         for doc in self.results["documents"]:
