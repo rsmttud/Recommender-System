@@ -5,11 +5,11 @@
       "id": 0
     },
     {
-      "name": "prediction",
+      "name": "pattern_mining",
       "id": 1
     },
     {
-      "name": "frequent_pattern_mining",
+      "name": "prediction",
       "id": 2
     }
   ]
