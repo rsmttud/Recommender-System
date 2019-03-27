@@ -6,6 +6,7 @@
 /static/materialize-src/css/materialize.css.map
 /data/definitions
 /datasets/final_datasets/*
+/datasets/eval_data/*
 notes.md
 playground*
 test.txt
@@ -18,9 +19,10 @@ __pychache__/*
 /models/embeddings/*
 !models/embeddings/readme.md
 models/FastText/*
-models/LDA/*
 playground*
 create_topic_files.py
 generate_topics.py
 static/js/style.js
 sandbox*
+/notebooks/*
+/helper/*
