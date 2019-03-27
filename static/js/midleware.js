@@ -6,6 +6,8 @@
  * Load Json for Donout Chart or other descriptive stuff
  *
   * */
+
+
 $("document").ready(function () {
     $("#input-form").submit(function (e) {
         e.preventDefault();
@@ -36,7 +38,7 @@ $("document").ready(function () {
 
                 //Swipe to result page
                 $("#nav-result").parent("li").removeClass("disabled");
-                $("#nav-download").parent("li").removeClass("disabled");
+                //$("#nav-download").parent("li").removeClass("disabled");
                 $("#tabs-swipe-demo").tabs({swipeable: false});
                 //Remove html tags before writing new information to them
                 reset_html();
@@ -79,7 +81,7 @@ $("document").ready(function () {
     });
 });
 
-function get_json(forecast, entities) {
+function get_json(forecast, entities, final_class_agreement = "") {
     let short_desc = $('#short_description').val(),
         long_desc = $("#long_description").val(),
         title = $("#title").val(),
@@ -102,6 +104,7 @@ function get_json(forecast, entities) {
 
         },
         method: method,
+        final_class_agreement: final_class_agreement,
         forecast: forecast,
         entities: entities
     };
@@ -116,14 +119,14 @@ function send_json_to_python_backend(json) {
         dataType: "json",
         type: "POST",
         url: "/save_json",
-        complete: function () {
-            console.log("Result as JSON saved");
+        complete: function (d) {
+            $("#download-notebook").attr("href", d["responseJSON"]["n_link"]);
+            $("#download-notebook-html").attr("href", d["responseJSON"]["h_link"])
         }
     })
 }
 
 function reset_html() {
-    console.log("reset called");
     $("#output-result-main-class h5").remove();
     $("#donut-chart").empty();
     $("#modal-form").empty();
@@ -131,14 +134,13 @@ function reset_html() {
 
 function implant_modal_functionality(entities, most_likely_class) {
     if (most_likely_class == "prediction") {
-        console.log(most_likely_class);
         $("#modal-content-prediction").css("display", "block")
     } else {
         console.log(most_likely_class)
     }
 
     entities.forEach(function (entity) {
-        let _html = "<p><label><input type=\"checkbox\" id=\"test\" checked=\"checked\"/><span>" + entity + "</span></label>\</p>";
+        let _html = "<p class = \"center-align\"><label><input onclick = \"fixMaterializeInput(this)\" type=\"checkbox\" id=\"test\"/><span>" + entity + "</span></label>\</p>";
         $("#modal-form").append(_html)
     });
 }
@@ -151,7 +153,7 @@ function initialize_result_page(data, entities, class_name) {
         $("#result-chart-wrapper h4")
             .append("Recommended Approach: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
     } else {
-         $("#result-chart-wrapper h4")
+        $("#result-chart-wrapper h4")
             .append("Recommended Approach: Pattern Mining");
     }
 
@@ -170,7 +172,7 @@ function initialize_result_page(data, entities, class_name) {
         forecast.push({"class": key, "prob": value})
     });
 
-    let json = get_json(forecast, data["entities"]);
+    let json = get_json(forecast, data["entities"], class_name);
     console.log(json);
     donutChart(json);
     send_json_to_python_backend(json);
@@ -183,5 +185,22 @@ function initialize_result_page(data, entities, class_name) {
 $("document").ready(function () {
     $("#nav-input").click(function () {
         location.reload();
-    })
+    });
+
+    // Copyright text
+    let copyright_text = ["© 2019 Daniel Höschele & Richard Horn", "© 2019 Richard Horn & Daniel Höschele"][Math.floor(Math.random() * 2)];
+    $(".footer-copyright >.container").text(copyright_text)
+
 });
+
+function fixMaterializeInput(e) {
+    //Materialize doesnt set the attribute checked again - BugFix
+    if (!e.hasAttribute("checked")) {
+        console.log("doesnt have");
+        e.setAttribute("checked", "checked")
+    } else if (e.hasAttribute("checked")) {
+        console.log("has checked");
+        e.removeAttribute("checked")
+    }
+}
+

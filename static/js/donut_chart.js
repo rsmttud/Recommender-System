@@ -1,6 +1,10 @@
 function donutChart(data) {
     data = data["forecast"]; //Place in dict where final prediction values are stored
-
+    // console.log(data);
+    let _sum = 0;
+    data.forEach(function (d) {
+        _sum += parseFloat(d["prob"])
+    });
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
         width = $("#donut-chart").width() - margin.right - margin.left,
         height = 400 - margin.top - margin.bottom,
@@ -30,7 +34,7 @@ function donutChart(data) {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", "translate(" + width / 2.8 + ", " + height / 2 + ")"); //Set the group object to the middlepoint
+        .attr("transform", "translate(" + width / 2.8 + ", " + height / 2 + ")"); //Set the group object to the middlepoint (close)
 
     //Appending g elements and arcs
     var g = svg.selectAll(".arc")
@@ -84,7 +88,8 @@ function donutChart(data) {
     tooltip.append("text")
         .attr("x", 15)
         .attr("dy", "1.2em")
-        .style("font-size", "1.6em");
+        .style("font-size", "1.6em")
+        .style("pointer-events", "none");
 
     //Append path of the arc == Curve of the arc
     g.append("path")
@@ -100,7 +105,8 @@ function donutChart(data) {
     // Mouseover effects
     //Legend
     legend.on("mouseover", function (d) {
-        $("#" + d.data.class).find("path").css("transform", "scale(1.15)");
+
+        $("#" + d.data.class ).find("path").css("transform", "scale(1.15)");
 
     })
         .on("mouseout", function (d) {
@@ -119,7 +125,7 @@ function donutChart(data) {
             var xPos = d3.mouse(this)[0] - 15;
             var yPos = d3.mouse(this)[1] - 15;
             tooltip.attr("transform", "translate(" + xPos + ", " + yPos + ")");
-            tooltip.select("text").text(d.data.prob + "%")
+            tooltip.select("text").text((d.data.prob/_sum * 100).toFixed(2) + "%");
         });
 
 

@@ -13,3 +13,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('.collapsible').collapsible();
 });
+
+$(document).ready(function () {
+    $('.fixed-action-btn').floatingActionButton();
+});
