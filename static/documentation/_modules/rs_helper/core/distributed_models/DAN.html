@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rs_helper.core.distributed_models.DAN &mdash; Recommender-System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation of RS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rs_helper.html">rs_helper package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Additional Notes.html">Additional Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>rs_helper.core.distributed_models.DAN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rs_helper.core.distributed_models.DAN</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.tools.freeze_graph</span> <span class="k">import</span> <span class="n">freeze_graph</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">word_tokenize</span>
+<span class="kn">from</span> <span class="nn">rs_helper.core.distributed_models.EmbeddingModel</span> <span class="k">import</span> <span class="n">EmbeddingModel</span>
+<span class="kn">from</span> <span class="nn">rs_helper.core.distributed_models.FastTextWrapper</span> <span class="k">import</span> <span class="n">FastTextWrapper</span>
+<span class="kn">from</span> <span class="nn">rs_helper.helper.classes.tf_helper</span> <span class="k">import</span> <span class="n">Batches</span><span class="p">,</span> <span class="n">dropout_layer</span>
+
+
+<span class="c1"># OPTIMIZED FOR GPU TRAINING!</span>
+<div class="viewcode-block" id="DAN"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN">[docs]</a><span class="k">class</span> <span class="nc">DAN</span><span class="p">(</span><span class="n">EmbeddingModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">word_embedding_model</span><span class="p">:</span> <span class="n">EmbeddingModel</span><span class="p">,</span>
+                 <span class="n">frozen_graph_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object for training and using Deep Averaging Networks.</span>
+
+<span class="sd">        :param word_embedding_model: The embedding model that is used to generate input vectors</span>
+<span class="sd">        :type word_embedding_model: EmbeddingModel</span>
+<span class="sd">        :param frozen_graph_path: Path to the frozen_graph.pb of the DAN model</span>
+<span class="sd">        :type frozen_graph_path: str</span>
+<span class="sd">        :param kwargs:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word_embedding_model</span><span class="p">,</span> <span class="n">FastTextWrapper</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please supply FastTextWrapper object as word_embedding_model.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">word_embedding_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_len</span> <span class="o">=</span> <span class="n">word_embedding_model</span><span class="o">.</span><span class="n">inference</span><span class="p">([</span><span class="s2">&quot;x&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frozen_graph_path</span> <span class="o">=</span> <span class="n">frozen_graph_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># TODO in extra script and pd.DataFrame Type hinting</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__create_one_hot_encodings</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to create One-Hot-representations of labels</span>
+
+<span class="sd">        :param labels: The labels to encode</span>
+<span class="sd">        :type labels: list(str))</span>
+
+<span class="sd">        :return: The encoded labels</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">le</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">)</span>
+        <span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">()</span>
+        <span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DAN.initialize_model"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.initialize_model">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to initialize the DAN model</span>
+
+<span class="sd">        :param kwargs:</span>
+
+<span class="sd">        :return: the tensorflow graph</span>
+<span class="sd">        :rtype: tf.Graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Parse Protobuf</span>
+        <span class="n">frozen_graph_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frozen_graph_path</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">GFile</span><span class="p">(</span><span class="n">frozen_graph_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">graph_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+            <span class="n">graph_def</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="c1"># import the graph_def into a new Graph and returns it</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span><span class="o">.</span><span class="n">as_default</span><span class="p">()</span> <span class="k">as</span> <span class="n">graph</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">import_graph_def</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prefix&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">graph</span></div>
+
+    <span class="k">def</span> <span class="nf">__create_training_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">classifier_shape</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">num_hidden_layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                               <span class="n">classifier_act</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+        <span class="c1"># Updating config dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;classes&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">classes</span><span class="p">),</span> <span class="s2">&quot;classifier_shape&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">classifier_shape</span><span class="p">),</span> <span class="s2">&quot;hidden_layer&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_hidden_layer</span><span class="p">)})</span>
+        <span class="c1"># Net Architecture</span>
+        <span class="n">x_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_len</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;placeholder_input&quot;</span><span class="p">)</span>
+        <span class="n">y_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">classes</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;placeholder_y_true&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Composition Layer</span>
+        <span class="c1"># average = average_layer(x_input)</span>
+
+        <span class="c1"># Dense Layers</span>
+        <span class="n">dense_dan_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_dan_layer</span><span class="p">(</span><span class="n">x_input</span><span class="p">,</span> <span class="n">num_hidden_layer</span><span class="o">=</span><span class="n">num_hidden_layer</span><span class="p">)</span>
+        <span class="c1"># self.last_dan_layer = dense_dan_layers[-1].name</span>
+
+        <span class="c1"># Classifier</span>
+        <span class="c1"># TODO Activation Function</span>
+        <span class="n">classifier_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_classifier_layer</span><span class="p">(</span><span class="n">dense_dan_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">classifier_shape</span><span class="p">,</span> <span class="n">classifier_act</span><span class="p">)</span>
+
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">classifier_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                 <span class="n">units</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span>
+                                 <span class="n">activation</span><span class="o">=</span><span class="n">classifier_act</span><span class="p">,</span>
+                                 <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                 <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                 <span class="n">name</span><span class="o">=</span><span class="s2">&quot;logits&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;loss&quot;</span><span class="p">):</span>
+            <span class="n">softmax_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits_v2</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
+            <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">softmax_layer</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s2">&quot;cross_entropy&quot;</span><span class="p">,</span> <span class="n">cross_entropy</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;    </span>
+<span class="sd">        with tf.name_scope(&quot;pred_eval&quot;):</span>
+<span class="sd">            prob_target = tf.argmax(logits, 1, name=&quot;prob_target&quot;)  # Returns Index with largest value</span>
+<span class="sd">            prob_true = tf.argmax(y_true, 1, name=&quot;prob_true&quot;)</span>
+<span class="sd">            pred_eval = tf.equal(prob_target, prob_true)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">):</span>
+            <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+            <span class="n">train</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">x_input</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">dense_dan_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__create_dan_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">num_hidden_layer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">]:</span>
+        <span class="n">dense_layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dense_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_hidden_layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">dense_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_len</span><span class="p">,</span>
+                                          <span class="n">inputs</span><span class="o">=</span><span class="n">dense_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                          <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
+                                          <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dense_layer_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">dense_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dense_layer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dense_layers</span>
+
+    <span class="c1"># TODO put this in a separate file</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__create_classifier_layer</span><span class="p">(</span><span class="n">input_layer</span><span class="p">,</span> <span class="n">classifier_shape</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">classifier_act</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">]:</span>
+        <span class="n">c_layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">neurons</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">classifier_shape</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dense_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span>
+                                              <span class="n">units</span><span class="o">=</span><span class="n">neurons</span><span class="p">,</span>
+                                              <span class="n">activation</span><span class="o">=</span><span class="n">classifier_act</span><span class="p">,</span>
+                                              <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                              <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                              <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cl_layer_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="n">c_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dense_layer</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dense_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">c_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                              <span class="n">units</span><span class="o">=</span><span class="n">neurons</span><span class="p">,</span>
+                                              <span class="n">activation</span><span class="o">=</span><span class="n">classifier_act</span><span class="p">,</span>
+                                              <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                              <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                              <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cl_layer_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="n">c_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dense_layer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c_layers</span>
+
+<div class="viewcode-block" id="DAN.train"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+              <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+              <span class="n">classifier_shape</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+              <span class="n">save_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+              <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+              <span class="n">epoches</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="n">classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+              <span class="n">num_hidden_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+              <span class="n">classifier_act</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
+              <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="n">wdrop_prob</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
+              <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;epoches&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">epoches</span><span class="p">),</span>
+                            <span class="s2">&quot;dropout&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">wdrop_prob</span><span class="p">),</span>
+                            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">model_name</span><span class="p">))})</span>
+
+        <span class="c1"># TODO don&#39;t use a DataFrame here</span>
+        <span class="c1"># Bundle the Data together in a DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
+        <span class="c1"># Create One-Hot-Encodings for Available Classes</span>
+        <span class="n">one_hot_encodings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_one_hot_encodings</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]))</span>
+
+        <span class="c1"># Check the if dir exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+
+        <span class="c1"># Get Training Pipe and Placeholder</span>
+        <span class="n">train_pipe</span><span class="p">,</span> <span class="n">x_input</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">dl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_training_pipe</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span>
+                                                                      <span class="n">classifier_shape</span><span class="o">=</span><span class="n">classifier_shape</span><span class="p">,</span>
+                                                                      <span class="n">classifier_act</span><span class="o">=</span><span class="n">classifier_act</span><span class="p">,</span>
+                                                                      <span class="n">num_hidden_layer</span><span class="o">=</span><span class="n">num_hidden_layer</span><span class="p">)</span>
+
+        <span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>  <span class="c1"># Saver object to store the checkpoints</span>
+        <span class="c1"># gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9) # Activate this line if you want to use only a percentage of GPU memory</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">gpu_options</span><span class="o">.</span><span class="n">allow_growth</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># https://www.tensorflow.org/guide/using_gpu#allowing_gpu_memory_growth</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+            <span class="c1"># merged_summary = tf.summary.merge_all()</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add_graph</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epoches</span><span class="p">):</span>
+                <span class="n">batches</span> <span class="o">=</span> <span class="n">Batches</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">one_hot_encodings</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batches</span><span class="p">:</span>
+                    <span class="n">X</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">Y</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                    <span class="n">averaged_embeddings_lst</span> <span class="o">=</span> <span class="p">[]</span>
+
+                    <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="p">[</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]:</span>
+                        <span class="n">word_embeddings</span> <span class="o">=</span> <span class="n">dropout_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">paragraph</span><span class="p">),</span> <span class="n">wdrop_prob</span><span class="p">)</span>
+                        <span class="c1"># Check if Dropout didn&#39;t kill every word</span>
+                        <span class="k">while</span> <span class="n">word_embeddings</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">word_embeddings</span> <span class="o">=</span> <span class="n">dropout_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">paragraph</span><span class="p">),</span>
+                                                            <span class="n">dropout_prob</span><span class="o">=</span><span class="n">wdrop_prob</span><span class="p">)</span>
+                        <span class="c1"># Average Layer</span>
+                        <span class="n">averaged_word_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">word_embeddings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="n">averaged_embeddings_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">averaged_word_embeddings</span><span class="p">)</span>
+                    <span class="c1"># start the training</span>
+                    <span class="n">train</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_pipe</span><span class="p">,</span>
+                                     <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x_input</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">averaged_embeddings_lst</span><span class="p">),</span> <span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">Y</span><span class="p">)})</span>
+
+            <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.ckpt&quot;</span><span class="p">))</span>
+
+            <span class="c1"># Save graph definition</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span>
+            <span class="n">graph_def</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_graph_def</span><span class="p">(</span><span class="n">add_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">write_graph</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.pbtxt&quot;</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># TODO Wrap in a function</span>
+            <span class="n">input_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.pbtxt&quot;</span><span class="p">)</span>
+            <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;.ckpt&quot;</span><span class="p">)</span>
+            <span class="n">input_saver_def_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">input_binary</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">output_node_names</span> <span class="o">=</span> <span class="s2">&quot;dense_layer_</span><span class="si">{}</span><span class="s2">/Tanh&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_hidden_layer</span><span class="p">)</span>
+            <span class="n">restore_op_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">filename_tensor_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">output_frozen_graph_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s2">&quot;frozen_graph.pb&quot;</span><span class="p">)</span>
+            <span class="n">clear_devices</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">freeze_graph</span><span class="p">(</span><span class="n">input_graph_path</span><span class="p">,</span> <span class="n">input_saver_def_path</span><span class="p">,</span>
+                         <span class="n">input_binary</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">,</span> <span class="n">output_node_names</span><span class="p">,</span>
+                         <span class="n">restore_op_name</span><span class="p">,</span> <span class="n">filename_tensor_name</span><span class="p">,</span>
+                         <span class="n">output_frozen_graph_name</span><span class="p">,</span> <span class="n">clear_devices</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">frozen_graph_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s2">&quot;frozen_graph.pb&quot;</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;model saved to </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">save_path</span><span class="p">)))</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DAN.inference"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.inference">[docs]</a>    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method takes a tokenized sentence as well as the desired output_operation name as parameters</span>
+
+<span class="sd">        :param text: Tokenized String</span>
+<span class="sd">        :type text: list(str)</span>
+
+<span class="sd">        :return: the inferred embedding</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frozen_graph_path</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please set the path to the frozen graph.&quot;</span><span class="p">)</span>
+
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_model</span><span class="p">()</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;prefix/placeholder_input:0&#39;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_operations</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;:0&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">sentence_level</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">dan_embeddings</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">embeddings</span><span class="p">})</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">dan_embeddings</span></div>
+
+    <span class="c1"># TODO Implement a general method</span>
+<div class="viewcode-block" id="DAN.inference_batches"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.inference_batches">[docs]</a>    <span class="k">def</span> <span class="nf">inference_batches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method takes a list containing a list with tokenized words.</span>
+
+<span class="sd">        :param text: Tokenized String</span>
+<span class="sd">        :type text: list(str)</span>
+
+<span class="sd">        :return: the inferred embedding</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frozen_graph_path</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please set the path to the frozen graph.&quot;</span><span class="p">)</span>
+
+        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_model</span><span class="p">()</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;prefix/placeholder_input:0&#39;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_operations</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;:0&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">gpu_options</span><span class="o">.</span><span class="n">allow_growth</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># https://www.tensorflow.org/guide/using_gpu#allowing_gpu_memory_growth</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+            <span class="n">embeddings_lst</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_model</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">paragraph</span><span class="p">)</span>
+                <span class="n">averaged_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">dan_embeddings</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">averaged_embeddings</span><span class="p">})</span>
+                <span class="n">embeddings_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dan_embeddings</span><span class="p">)</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">embeddings_lst</span></div>
+
+<div class="viewcode-block" id="DAN.save_config_json"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.save_config_json">[docs]</a>    <span class="k">def</span> <span class="nf">save_config_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_json</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">_json</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DAN.set_config"><a class="viewcode-back" href="../../../../rs_helper.core.distributed_models.html#rs_helper.core.distributed_models.DAN.DAN.set_config">[docs]</a>    <span class="k">def</span> <span class="nf">set_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">_json</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">_json</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+core.model package
+==================
+
+model.Ensemble
+--------------
+
+.. automodule:: rs_helper.core.model.Ensemble
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+model.LatentDirichletAllocation
+-------------------------------
+
+.. automodule:: rs_helper.core.model.LatentDirichletAllocation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+model.Model
+-----------
+
+.. automodule:: rs_helper.core.model.Model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+model.RNNTypedClassifier
+------------------------
+
+.. automodule:: rs_helper.core.model.RNNTypedClassifier
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+model.SVCModel
+--------------
+
+.. automodule:: rs_helper.core.model.SVCModel
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

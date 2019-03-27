@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rs_helper.core package &mdash; Recommender-System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="core.distributed_models package" href="rs_helper.core.distributed_models.html" />
+    <link rel="prev" title="rs_helper package" href="rs_helper.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation of RS</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="rs_helper.html">rs_helper package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rs_helper.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">rs_helper.core package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.Corpora">core.Corpora module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.EntityExtractor">core.EntityExtractor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.Keyword">core.Keyword module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.LabelMap">core.LabelMap module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.Prediction">core.Prediction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.Preprocessor">core.Preprocessor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.RecommendationFacade">core.RecommendationFacade module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rs_helper.core.Topic">core.Topic module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rs_helper.helper.html">rs_helper.helper package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Additional Notes.html">Additional Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="rs_helper.html">rs_helper package</a> &raquo;</li>
+        
+      <li>rs_helper.core package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/rs_helper.core.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rs-helper-core-package">
+<h1>rs_helper.core package<a class="headerlink" href="#rs-helper-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rs_helper.core.distributed_models.html">core.distributed_models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.distributed_models.html#module-rs_helper.core.distributed_models.DAN">distributed_models.DAN module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.distributed_models.html#module-rs_helper.core.distributed_models.EmbeddingModel">distributed_models.EmbeddingModel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.distributed_models.html#module-rs_helper.core.distributed_models.FastTextWrapper">distributed_models.FastTextWrapper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.distributed_models.html#module-rs_helper.core.distributed_models.USE">distributed_models.USE module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rs_helper.core.keyword_extraction.html">core.keyword_extraction package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.KeywordExtractor">keyword_extraction.KeywordExtractor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.PositionRank">keyword_extraction.PositionRank module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.TFIDF">keyword_extraction.TFIDF module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.TFIGM">keyword_extraction.TFIGM module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.TopicRank">keyword_extraction.TopicRank module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.keyword_extraction.html#module-rs_helper.core.keyword_extraction.YAKE">keyword_extraction.YAKE module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rs_helper.core.model.html">core.model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.model.html#module-rs_helper.core.model.Ensemble">model.Ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.model.html#module-rs_helper.core.model.LatentDirichletAllocation">model.LatentDirichletAllocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.model.html#module-rs_helper.core.model.Model">model.Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.model.html#module-rs_helper.core.model.RNNTypedClassifier">model.RNNTypedClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rs_helper.core.model.html#module-rs_helper.core.model.SVCModel">model.SVCModel</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rs_helper.core.Corpora">
+<span id="core-corpora-module"></span><h2>core.Corpora module<a class="headerlink" href="#module-rs_helper.core.Corpora" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.Corpora.Corpora">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Corpora.</code><code class="descname">Corpora</code><span class="sig-paren">(</span><em>path: str</em>, <em>label: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Corpora.html#Corpora"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Corpora.Corpora" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains the current process descriptions and the referred label</p>
+<dl class="method">
+<dt id="rs_helper.core.Corpora.Corpora._Corpora__count_words">
+<code class="descname">_Corpora__count_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.core.Corpora.Corpora._Corpora__count_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the words across the corpus. Count will be stored in class attribute n_words</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Corpora.Corpora._Corpora__delete_multiple_spaces">
+<code class="descname">_Corpora__delete_multiple_spaces</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.core.Corpora.Corpora._Corpora__delete_multiple_spaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete duplicated spaces from data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Corpora.Corpora._Corpora__read_text">
+<code class="descname">_Corpora__read_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.core.Corpora.Corpora._Corpora__read_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>The methods reads text files and stores them into the data class attribute. Depending on the given path in
+the constructor it distinguishes between directories or a single file. In case of an directory all txt files are
+stored in the data attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Corpora.Corpora.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>out_path: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/rs_helper/core/Corpora.html#Corpora.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Corpora.Corpora.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method saves the supplied problem description to a .txt file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>out_path</strong> (<em>str</em>) – full path to the out_file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Boolean if save worked</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.EntityExtractor">
+<span id="core-entityextractor-module"></span><h2>core.EntityExtractor module<a class="headerlink" href="#module-rs_helper.core.EntityExtractor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.EntityExtractor.EntityExtractor">
+<em class="property">class </em><code class="descclassname">rs_helper.core.EntityExtractor.</code><code class="descname">EntityExtractor</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/EntityExtractor.html#EntityExtractor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.EntityExtractor.EntityExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>General Class to perform Named Entity Recognition on new problem statements provided in the system.
+Entities will be extracted by the pattern:</p>
+<blockquote>
+<div>CHUNK: {&lt;NN.*&gt;&lt;NN.*&gt;}
+CHUNK: {&lt;DT.*&gt;?&lt;NN.*&gt;}
+CHUNK: {&lt;V.*&gt;&lt;N.*&gt;+}</div></blockquote>
+<p>and then sorted by (Position Index + Term frequency) / n_words</p>
+<dl class="method">
+<dt id="rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__check_dependencies">
+<code class="descname">_EntityExtractor__check_dependencies</code><span class="sig-paren">(</span><em>chunks: List[str]</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__check_dependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method extends existing chunks by their potentially compount-related words</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunks</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – List of Chunks</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Updated chunks</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__get_continuous_chunks">
+<code class="descname">_EntityExtractor__get_continuous_chunks</code><span class="sig-paren">(</span><em>chunked: nltk.tree.Tree</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__get_continuous_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a NLTK ParseTree to a list of chunks as strings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunked</strong> (<em>Tree</em>) – Tree after initial parsing the sentence with the given pattern</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of found chunks</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__score_chunks">
+<code class="descname">_EntityExtractor__score_chunks</code><span class="sig-paren">(</span><em>chunks: List[str]</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#rs_helper.core.EntityExtractor.EntityExtractor._EntityExtractor__score_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method evaluates the supplied chunks by calculating their score with
+(Position Index + Term frequency) / n_words</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunks</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – Unscored chunks</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Scored chunks</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.EntityExtractor.EntityExtractor.extract_entities">
+<code class="descname">extract_entities</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/rs_helper/core/EntityExtractor.html#EntityExtractor.extract_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.EntityExtractor.EntityExtractor.extract_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generel handler - Methods extracts the chunks of a sentence by the pattern in self.pattern</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of chunks</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.Keyword">
+<span id="core-keyword-module"></span><h2>core.Keyword module<a class="headerlink" href="#module-rs_helper.core.Keyword" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.Keyword.Keyword">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Keyword.</code><code class="descname">Keyword</code><span class="sig-paren">(</span><em>keyword: List[str], rank: float, algorithm: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Keyword.html#Keyword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Keyword.Keyword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to symbolize a keyword. A keyword is described by the keyword itself, a rank and the
+keyword extraction algorithm, which was responsible for the creation</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.LabelMap">
+<span id="core-labelmap-module"></span><h2>core.LabelMap module<a class="headerlink" href="#module-rs_helper.core.LabelMap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.LabelMap.LabelMap">
+<em class="property">class </em><code class="descclassname">rs_helper.core.LabelMap.</code><code class="descname">LabelMap</code><span class="sig-paren">(</span><em>path_to_json: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/LabelMap.html#LabelMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.LabelMap.LabelMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class which represents a label map. It loads a json - label map, where keys are label names. The method provides
+two methods to get the label name as string and one to get the label names as int.</p>
+<dl class="method">
+<dt id="rs_helper.core.LabelMap.LabelMap._LabelMap__initialize_map">
+<code class="descname">_LabelMap__initialize_map</code><span class="sig-paren">(</span><em>path_to_json: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.core.LabelMap.LabelMap._LabelMap__initialize_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the map by building the mapping dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_json</strong> (<em>str</em>) – Path where the json with label information is stored</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.LabelMap.LabelMap.get_index">
+<code class="descname">get_index</code><span class="sig-paren">(</span><em>class_name: str</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/rs_helper/core/LabelMap.html#LabelMap.get_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.LabelMap.LabelMap.get_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives the the label_id as integer given a label name as string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_name</strong> (<em>str</em>) – label name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">label id</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.LabelMap.LabelMap.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><em>label_id: int</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/rs_helper/core/LabelMap.html#LabelMap.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.LabelMap.LabelMap.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the label name as string for a given integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label_id</strong> (<em>int</em>) – label id</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the text label</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.Prediction">
+<span id="core-prediction-module"></span><h2>core.Prediction module<a class="headerlink" href="#module-rs_helper.core.Prediction" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.Prediction.Prediction">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Prediction.</code><code class="descname">Prediction</code><span class="sig-paren">(</span><em>classes: List[str], values: List[float]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to store the final prediction of pipelines</p>
+<dl class="method">
+<dt id="rs_helper.core.Prediction.Prediction.compress">
+<code class="descname">compress</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[Tuple[str, float]]<a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction.compress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction.compress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compresses the prediction in tuples. I.e. [(‘class A’, 0.762), (‘class B’, 0.77)]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the compressed tuples</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(tupel(str, float))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Prediction.Prediction.get_class_with_max_confidence">
+<code class="descname">get_class_with_max_confidence</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction.get_class_with_max_confidence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction.get_class_with_max_confidence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the prediction with the highest confidence</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the class name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Prediction.Prediction.get_data_frame">
+<code class="descname">get_data_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction.get_data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction.get_data_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns prediction object as DataFrame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Prediction as DataFrame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Prediction.Prediction.round_values">
+<code class="descname">round_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction.round_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction.round_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rounds the values to three decimal nums</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Prediction.Prediction.scale_log">
+<code class="descname">scale_log</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Prediction.html#Prediction.scale_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Prediction.Prediction.scale_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>scales the probabilities logarithmic</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.Preprocessor">
+<span id="core-preprocessor-module"></span><h2>core.Preprocessor module<a class="headerlink" href="#module-rs_helper.core.Preprocessor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.Preprocessor.LemmaTokenizer">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Preprocessor.</code><code class="descname">LemmaTokenizer</code><a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#LemmaTokenizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.LemmaTokenizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to perform lemmatization in preprocessing</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rs_helper.core.Preprocessor.Preprocessor">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Preprocessor.</code><code class="descname">Preprocessor</code><span class="sig-paren">(</span><em>data: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#Preprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.Preprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to preprocess textual data</p>
+<dl class="method">
+<dt id="rs_helper.core.Preprocessor.Preprocessor.lemmatize">
+<code class="descname">lemmatize</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#Preprocessor.lemmatize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.Preprocessor.lemmatize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lemmatize the text data. Results will be stored in class attribute data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Preprocessor.Preprocessor.remove_numbers">
+<code class="descname">remove_numbers</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#Preprocessor.remove_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.Preprocessor.remove_numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove numbers from data. Results will be stored in class attribute data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Preprocessor.Preprocessor.remove_puctuation">
+<code class="descname">remove_puctuation</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#Preprocessor.remove_puctuation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.Preprocessor.remove_puctuation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove punctuation from data. Results will be stored in class attribute data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Preprocessor.Preprocessor.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>remove_nums: bool = True</em>, <em>remove_punct: bool = True</em><span class="sig-paren">)</span> &#x2192; List[List[str]]<a class="reference internal" href="_modules/rs_helper/core/Preprocessor.html#Preprocessor.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Preprocessor.Preprocessor.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>General handler to transform textual data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>remove_nums</strong> (<em>bool</em>) – Remove numbers?</li>
+<li><strong>remove_punct</strong> (<em>bool</em>) – Remove Punctuation?</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">preprocessed data</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.RecommendationFacade">
+<span id="core-recommendationfacade-module"></span><h2>core.RecommendationFacade module<a class="headerlink" href="#module-rs_helper.core.RecommendationFacade" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade">
+<em class="property">class </em><code class="descclassname">rs_helper.core.RecommendationFacade.</code><code class="descname">RecommendationFacade</code><span class="sig-paren">(</span><em>path_to_files: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/RecommendationFacade.html#RecommendationFacade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>General Class to handle to predictions. Actual implementation of the Facade-Pattern.</p>
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__classification_embedding">
+<code class="descname">_RecommendationFacade__classification_embedding</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; rs_helper.core.Prediction.Prediction<a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__classification_embedding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__gru_oto_classification">
+<code class="descname">_RecommendationFacade__gru_oto_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__gru_oto_classification" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__key_ex_pipeline">
+<code class="descname">_RecommendationFacade__key_ex_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__key_ex_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__lda_pipeline">
+<code class="descname">_RecommendationFacade__lda_pipeline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__lda_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__merge_predictions">
+<code class="descname">_RecommendationFacade__merge_predictions</code><span class="sig-paren">(</span><em>predictions: List[rs_helper.core.Prediction.Prediction]</em><span class="sig-paren">)</span> &#x2192; rs_helper.core.Prediction.Prediction<a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__merge_predictions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs Ensemble Learning with Ensemble class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>predictions</strong> (<em>list</em><em>(</em><a class="reference internal" href="#rs_helper.core.Prediction.Prediction" title="rs_helper.core.Prediction.Prediction"><em>Prediction</em></a><em>)</em>) – list of all predictions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Final prediction</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#rs_helper.core.Prediction.Prediction" title="rs_helper.core.Prediction.Prediction">Prediction</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__svc_classification">
+<code class="descname">_RecommendationFacade__svc_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade._RecommendationFacade__svc_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>path_classifier = “models/classifier/SVC/<a href="#id1"><span class="problematic" id="id2">SVC_tfidf_clean_</span></a>.pkl”
+path_vectorizer = “models/classifier/SVC/<a href="#id3"><span class="problematic" id="id4">TFIDF_SVC_tfidf_clean_</span></a>.pkl”
+model = SVC(path_to_model=path_classifier, path_to_vectorizer=path_vectorizer)
+model.initialize()
+prediction = model.predict(self.corpora.data)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade.recommend">
+<code class="descname">recommend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/RecommendationFacade.html#RecommendationFacade.recommend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade.recommend" title="Permalink to this definition">¶</a></dt>
+<dd><p>General method that calls all single models and performs ensemble learning step.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The final prediction</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#rs_helper.core.Prediction.Prediction" title="rs_helper.core.Prediction.Prediction">Prediction</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.RecommendationFacade.RecommendationFacade.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>lda: bool = False</em>, <em>key_ex: bool = False</em>, <em>doc2vec: bool = False</em>, <em>classification: bool = False</em>, <em>svc_classification: bool = False</em>, <em>gru_oto: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/RecommendationFacade.html#RecommendationFacade.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.RecommendationFacade.RecommendationFacade.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function should manage the starting of pipelines according to input</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lda</strong> (<em>bool</em>) – boolean to start or not start LDA pipeline</li>
+<li><strong>key_ex</strong> (<em>bool</em>) – boolean to start or not start Keyword Extraction pipeline</li>
+<li><strong>doc2vec</strong> (<em>bool</em>) – boolean to start or not start Doc2Vec pipeline</li>
+<li><strong>classification</strong> (<em>bool</em>) – boolean to start or not start ML Classification pipeline</li>
+<li><strong>svc_classification</strong> (<em>bool</em>) – boolean to start or not start ML SVC Classification pipeline</li>
+<li><strong>gru_oto</strong> (<em>bool</em>) – boolean to start the GRU One To One Classification pipeline</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Merged prediction of all pipelines</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#rs_helper.core.Prediction.Prediction" title="rs_helper.core.Prediction.Prediction">Prediction</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.core.Topic">
+<span id="core-topic-module"></span><h2>core.Topic module<a class="headerlink" href="#module-rs_helper.core.Topic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.core.Topic.Topic">
+<em class="property">class </em><code class="descclassname">rs_helper.core.Topic.</code><code class="descname">Topic</code><span class="sig-paren">(</span><em>class_name: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.add_keyword">
+<code class="descname">add_keyword</code><span class="sig-paren">(</span><em>keyword: List[str], rank: float, algorithm: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.add_keyword"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.add_keyword" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add another keyword to the topic</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>keyword</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – The tokenized keyword</li>
+<li><strong>rank</strong> (<em>float</em>) – The keywords rank</li>
+<li><strong>algorithm</strong> (<em>str</em>) – The algorithm that was used for extraction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.get_keyword_algorithm">
+<code class="descname">get_keyword_algorithm</code><span class="sig-paren">(</span><em>topic</em>, <em>key: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.get_keyword_algorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.get_keyword_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the algorithm of a specific keyword</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>topic</strong> (<a class="reference internal" href="#rs_helper.core.Topic.Topic" title="rs_helper.core.Topic.Topic"><em>Topic</em></a>) – Topic object to receive algorithm of word from</li>
+<li><strong>key</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – The keyword to get the algorithm from</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The keywords algorithm</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.get_keyword_names">
+<code class="descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.get_keyword_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of the keyword names only</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of keyword names</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(list(str))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.get_keyword_rank">
+<code class="descname">get_keyword_rank</code><span class="sig-paren">(</span><em>topic</em>, <em>key</em><span class="sig-paren">)</span> &#x2192; List[int]<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.get_keyword_rank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.get_keyword_rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the rank of a specific keyword</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>topic</strong> (<a class="reference internal" href="#rs_helper.core.Topic.Topic" title="rs_helper.core.Topic.Topic"><em>Topic</em></a>) – Topic object to receive rank of word from</li>
+<li><strong>key</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – The keyword to get the rank from</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The keywords rank</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.get_keywords">
+<code class="descname">get_keywords</code><span class="sig-paren">(</span><em>duplicates=True</em><span class="sig-paren">)</span> &#x2192; List[rs_helper.core.Keyword.Keyword]<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.get_keywords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.get_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of unique keywords</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>duplicates</strong> (<em>bool</em>) – Include duplicated in the list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of keywords</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(<a class="reference internal" href="#rs_helper.core.Keyword.Keyword" title="rs_helper.core.Keyword.Keyword">Keyword</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.norm_ranks">
+<code class="descname">norm_ranks</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.norm_ranks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.norm_ranks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize the keyword ranks by Min-Max-Normalization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.pretty_print">
+<code class="descname">pretty_print</code><span class="sig-paren">(</span><em>duplicates=True</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.pretty_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.pretty_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the topic pretty formatted</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>duplicates</strong> (<em>bool</em>) – Include duplicates?</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.core.Topic.Topic.sort_by_rank">
+<code class="descname">sort_by_rank</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/core/Topic.html#Topic.sort_by_rank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.core.Topic.Topic.sort_by_rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the topic keywords by their rank</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rs_helper.core.distributed_models.html" class="btn btn-neutral float-right" title="core.distributed_models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rs_helper.html" class="btn btn-neutral float-left" title="rs_helper package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

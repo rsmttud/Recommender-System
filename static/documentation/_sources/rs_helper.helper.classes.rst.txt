@@ -1,0 +1,50 @@
+helper.classes package
+======================
+
+classes.ArxivCrawler
+--------------------
+
+.. automodule:: rs_helper.helper.classes.ArxivCrawler
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+classes.Crawler
+---------------
+
+.. automodule:: rs_helper.helper.classes.Crawler
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+classes.DatasetGenerator
+------------------------
+
+.. automodule:: rs_helper.helper.classes.DatasetGenerator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+classes.SimilarityEval module
+-----------------------------
+
+.. automodule:: rs_helper.helper.classes.SimilarityEval
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+classes.SystemEvaluation module
+-------------------------------
+
+.. automodule:: rs_helper.helper.classes.SystemEvaluation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+classes.tf\_helper module
+-------------------------
+
+.. automodule:: rs_helper.helper.classes.tf_helper
+    :members:
+    :undoc-members:
+    :show-inheritance:

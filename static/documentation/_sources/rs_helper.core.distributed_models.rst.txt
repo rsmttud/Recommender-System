@@ -1,0 +1,35 @@
+core.distributed\_models package
+================================
+
+distributed\_models.DAN module
+------------------------------
+
+.. automodule:: rs_helper.core.distributed_models.DAN
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+distributed\_models.EmbeddingModel module
+-----------------------------------------
+
+.. automodule:: rs_helper.core.distributed_models.EmbeddingModel
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+distributed\_models.FastTextWrapper module
+------------------------------------------
+
+.. automodule:: rs_helper.core.distributed_models.FastTextWrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+distributed\_models.USE module
+------------------------------
+
+.. automodule:: rs_helper.core.distributed_models.USE
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

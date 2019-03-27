@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rs_helper.core.keyword_extraction.TFIGM &mdash; Recommender-System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation of RS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rs_helper.html">rs_helper package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Additional Notes.html">Additional Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>rs_helper.core.keyword_extraction.TFIGM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rs_helper.core.keyword_extraction.TFIGM</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">nltk</span> <span class="k">import</span> <span class="n">bigrams</span><span class="p">,</span> <span class="n">trigrams</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rs_helper.core.keyword_extraction.KeywordExtractor</span> <span class="k">import</span> <span class="n">KeywordExtractor</span>
+<span class="kn">from</span> <span class="nn">rs_helper.core.Topic</span> <span class="k">import</span> <span class="n">Topic</span>
+<span class="kn">from</span> <span class="nn">rs_helper.core</span> <span class="k">import</span> <span class="n">Keyword</span>
+
+
+<div class="viewcode-block" id="TFIGM"><a class="viewcode-back" href="../../../../rs_helper.core.keyword_extraction.html#rs_helper.core.keyword_extraction.TFIGM.TFIGM">[docs]</a><span class="k">class</span> <span class="nc">TFIGM</span><span class="p">(</span><span class="n">KeywordExtractor</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">top_n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param data: List(List(String)) (List of tokenized documents)</span>
+<span class="sd">        :param labels: List(String) (List of labels associated with documents)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters data and labels needs to be of type List.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The provided list of documents and labels need to have same length.&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key_score_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_n</span> <span class="o">=</span> <span class="n">top_n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_words</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_docs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joined_docs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_value</span> <span class="o">=</span> <span class="mi">7</span>
+
+    <span class="k">def</span> <span class="nf">__compute_tf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the term frequency of a word in a given document</span>
+
+<span class="sd">        :param word: The word</span>
+<span class="sd">        :type word: str</span>
+<span class="sd">        :param document: The document</span>
+<span class="sd">        :type document: list(str)</span>
+
+<span class="sd">        :return: The frequency of a word</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">document</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__num_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the length of a document</span>
+
+<span class="sd">        :param document: the tokenized document</span>
+<span class="sd">        :type document: list(str)</span>
+
+<span class="sd">        :return: The document length</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_words</span>
+
+    <span class="k">def</span> <span class="nf">__compute_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute document frequency for a word</span>
+
+<span class="sd">        :param key: word</span>
+<span class="sd">        :type key: str</span>
+
+<span class="sd">        :return: The count of the word across corpus</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">joined_docs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">count</span>
+
+    <span class="k">def</span> <span class="nf">__compute_idf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the inverse document frequency</span>
+
+<span class="sd">        :param key: word</span>
+<span class="sd">        :type key: str</span>
+
+<span class="sd">        :return: Inverse document frequency</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute_df</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">num_docs</span><span class="o">/</span><span class="n">count</span><span class="p">))</span>
+
+<div class="viewcode-block" id="TFIGM.term_frequency"><a class="viewcode-back" href="../../../../rs_helper.core.keyword_extraction.html#rs_helper.core.keyword_extraction.TFIGM.TFIGM.term_frequency">[docs]</a>    <span class="k">def</span> <span class="nf">term_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the term frequency of a word</span>
+
+<span class="sd">        :param word: word</span>
+<span class="sd">        :type word: str</span>
+<span class="sd">        :param document: list of documents</span>
+<span class="sd">        :type document: list(str)</span>
+
+<span class="sd">        :return: the term frequency</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__compute_tf</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">document</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_words</span><span class="p">(</span><span class="n">document</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TFIGM.frequency_class_distribution"><a class="viewcode-back" href="../../../../rs_helper.core.keyword_extraction.html#rs_helper.core.keyword_extraction.TFIGM.TFIGM.frequency_class_distribution">[docs]</a>    <span class="k">def</span> <span class="nf">frequency_class_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">documents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the frequncy class distribution of a word.</span>
+
+<span class="sd">        :param word: word</span>
+<span class="sd">        :type word: str</span>
+<span class="sd">        :param documents: list of documents</span>
+<span class="sd">        :type documents: list(list(str))</span>
+
+<span class="sd">        :return: Sorted list of term frequencies over documents</span>
+<span class="sd">        :rtype: list(str)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__compute_tf</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__get_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate basic vocab containing all uni-, bi- and trigrams of the documents.</span>
+
+<span class="sd">        :return: list of tokens</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">unique_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
+            <span class="n">bigram_tokens</span> <span class="o">=</span> <span class="n">bigrams</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>  <span class="c1"># Returns list of tupels</span>
+            <span class="n">bigram_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">bigram_tokens</span><span class="p">]</span>
+            <span class="n">trigram_tokens</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">trigrams</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>  <span class="c1"># Returns list of tupels</span>
+            <span class="n">trigram_tokens</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">trigram_tokens</span><span class="p">]</span>
+            <span class="n">all_tokens</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">concat</span><span class="p">,</span> <span class="p">[</span><span class="n">unique_tokens</span><span class="p">,</span> <span class="n">bigram_tokens</span><span class="p">,</span> <span class="n">trigram_tokens</span><span class="p">])</span>
+            <span class="n">vocab</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_tokens</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">unique_tokens</span><span class="p">,</span> <span class="n">bigram_tokens</span><span class="p">,</span> <span class="n">trigram_tokens</span><span class="p">,</span> <span class="n">all_tokens</span>
+        <span class="k">return</span> <span class="n">vocab</span>
+
+<div class="viewcode-block" id="TFIGM.extract_keywords"><a class="viewcode-back" href="../../../../rs_helper.core.keyword_extraction.html#rs_helper.core.keyword_extraction.TFIGM.TFIGM.extract_keywords">[docs]</a>    <span class="k">def</span> <span class="nf">extract_keywords</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Topic</span><span class="p">]:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">vocab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_vocab</span><span class="p">()</span>
+        <span class="c1"># pickle.dump(reduce(operator.concat, vocab), open(&quot;data/topics/tfigm_vocab.vocab&quot;, &quot;wb&quot;))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">):</span>
+            <span class="n">word_tfigm_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+                <span class="n">term_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_frequency</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+                <span class="n">term_class_distribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency_class_distribution</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+                <span class="n">weighted_sum_of_frequencies</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                                                   <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">term_class_distribution</span><span class="p">)])</span>
+
+                <span class="n">tf_igm</span> <span class="o">=</span> <span class="n">term_freq</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_value</span> <span class="o">*</span> <span class="p">(</span><span class="n">term_class_distribution</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">weighted_sum_of_frequencies</span><span class="p">))</span>
+                <span class="n">word_tfigm_dict</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf_igm</span>
+            <span class="n">sorted_dict</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">word_tfigm_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># print(sorted_dict)</span>
+            <span class="n">topic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_topic</span><span class="p">(</span><span class="n">sorted_dict</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">top_n</span><span class="p">],</span>
+                                        <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">topic</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="TFIGM.generate_topic"><a class="viewcode-back" href="../../../../rs_helper.core.keyword_extraction.html#rs_helper.core.keyword_extraction.TFIGM.TFIGM.generate_topic">[docs]</a>    <span class="k">def</span> <span class="nf">generate_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tdidf_values</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Topic</span><span class="p">:</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tdidf_values</span><span class="p">:</span>
+            <span class="n">topic</span><span class="o">.</span><span class="n">add_keyword</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">topic</span></div></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

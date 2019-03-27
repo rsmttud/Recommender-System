@@ -1,0 +1,77 @@
+rs\_helper.core package
+=======================
+
+Subpackages
+-----------
+
+.. toctree::
+    rs_helper.core.distributed_models
+    rs_helper.core.keyword_extraction
+    rs_helper.core.model
+
+Submodules
+----------
+
+core.Corpora module
+-------------------
+
+.. automodule:: rs_helper.core.Corpora
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.EntityExtractor module
+---------------------------
+
+.. automodule:: rs_helper.core.EntityExtractor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.Keyword module
+-------------------
+
+.. automodule:: rs_helper.core.Keyword
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.LabelMap module
+--------------------
+
+.. automodule:: rs_helper.core.LabelMap
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.Prediction module
+----------------------
+
+.. automodule:: rs_helper.core.Prediction
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.Preprocessor module
+------------------------
+
+.. automodule:: rs_helper.core.Preprocessor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.RecommendationFacade module
+--------------------------------
+
+.. automodule:: rs_helper.core.RecommendationFacade
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+core.Topic module
+-----------------
+
+.. automodule:: rs_helper.core.Topic
+    :members:
+    :undoc-members:
+    :show-inheritance:

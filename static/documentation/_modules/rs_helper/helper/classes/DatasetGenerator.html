@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rs_helper.helper.classes.DatasetGenerator &mdash; Recommender-System 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation of RS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rs_helper.html">rs_helper package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Additional Notes.html">Additional Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>rs_helper.helper.classes.DatasetGenerator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rs_helper.helper.classes.DatasetGenerator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">sent_tokenize</span><span class="p">,</span> <span class="n">word_tokenize</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="k">import</span> <span class="n">cosine_similarity</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="DatasetGenerator"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator">[docs]</a><span class="k">class</span> <span class="nc">DatasetGenerator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to generate the cleaned data containing sentences that are similar to definitions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search_terms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                 <span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">save_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">seperate_save</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor of class</span>
+
+<span class="sd">        :param path_to_files: Path where all files are stored</span>
+<span class="sd">        :type path_to_files: str</span>
+<span class="sd">        :param search_terms: List of search terms to search in the data</span>
+<span class="sd">        :type search_terms: list(str)</span>
+<span class="sd">        :param class_name: The name of the class</span>
+<span class="sd">        :type class_name: str</span>
+<span class="sd">        :param save_name: Name to save the created files</span>
+<span class="sd">        :type save_name: str</span>
+<span class="sd">        :param seperate_save: Specify if sentences sould be saved seperately</span>
+<span class="sd">        :type seperate_save: bool (default=False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_to_files</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No such file or directory&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path_to_files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span> <span class="o">=</span> <span class="n">class_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_sentences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_terms</span> <span class="o">=</span> <span class="n">search_terms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_name</span> <span class="o">=</span> <span class="n">save_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seperate</span> <span class="o">=</span> <span class="n">seperate_save</span>
+
+<div class="viewcode-block" id="DatasetGenerator.run"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs the extraction</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sentences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_sentences</span><span class="p">()</span>
+        <span class="n">topics</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;manual_topics_for_embedding_2.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+        <span class="n">all_words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_corpora</span><span class="p">(</span><span class="n">topics</span><span class="p">,</span> <span class="n">sentences</span><span class="p">)</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">topics</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">])</span>
+        <span class="n">topic_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">all_words</span><span class="p">)</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_similarities</span><span class="p">(</span><span class="n">all_words</span><span class="p">,</span> <span class="n">sentences</span><span class="p">,</span> <span class="n">topic_vector</span><span class="p">)</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">similarities</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span><span class="o">*</span><span class="mf">0.25</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_in_class</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">sim_list</span><span class="o">=</span><span class="n">similarities</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_to_txt</span><span class="p">(</span><span class="n">seperate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seperate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.save_in_class"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_in_class">[docs]</a>    <span class="k">def</span> <span class="nf">save_in_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentences</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">sim_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the sentences in class attribute result_sentences</span>
+
+<span class="sd">        :param sentences: List of sentences to store</span>
+<span class="sd">        :type sentences: list(str)</span>
+<span class="sd">        :param sim_list: List of similarities to sort by</span>
+<span class="sd">        :type sim_list: list(float)</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">sim_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sentences</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.calculate_similarities"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.calculate_similarities">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_similarities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basis</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">sentences</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                               <span class="n">vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates all similarities between sentences and topic-vectors</span>
+
+<span class="sd">        :param basis: list of documents representing the corpus</span>
+<span class="sd">        :type basis: list(str)</span>
+<span class="sd">        :param sentences: List of sentences to compare</span>
+<span class="sd">        :type sentences: list(str)</span>
+<span class="sd">        :param vector: vector to compare against</span>
+<span class="sd">        :type vector: np.array</span>
+
+<span class="sd">        :return: dict of similarities</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sims</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="n">sentences</span><span class="p">)):</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">basis</span><span class="p">)</span>
+            <span class="n">similarity</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">vector</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">sims</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">i</span><span class="p">:</span> <span class="n">similarity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]})</span>
+        <span class="k">return</span> <span class="n">sims</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.vectorize"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.vectorize">[docs]</a>    <span class="k">def</span> <span class="nf">vectorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">basis</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform text in bag of words vector</span>
+
+<span class="sd">        :param words: text</span>
+<span class="sd">        :type words: list(str)</span>
+<span class="sd">        :param basis: Basis vocabulary</span>
+<span class="sd">        :type basis: list(list(str))</span>
+
+<span class="sd">        :return: Vector</span>
+<span class="sd">        :rtype: np.array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">increase</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+            <span class="n">vec</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">))</span>
+        <span class="p">[</span><span class="n">increase</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.get_corpora"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.get_corpora">[docs]</a>    <span class="k">def</span> <span class="nf">get_corpora</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">sents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the whole corpora by merging topic keywords and sentence words</span>
+
+<span class="sd">        :param topics: topics</span>
+<span class="sd">        :type topics: dict(str: list(str))</span>
+<span class="sd">        :param sents: Sentences</span>
+<span class="sd">        :type sents: list(str)</span>
+
+<span class="sd">        :return: List of all unique words</span>
+<span class="sd">        :rtype: list(str)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Getting Copora:&quot;</span><span class="p">)</span>
+        <span class="nb">all</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">all</span><span class="p">:</span>
+                    <span class="nb">all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">sents</span><span class="p">):</span>
+            <span class="n">ws</span> <span class="o">=</span> <span class="n">word_tokenize</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">all</span><span class="p">:</span>
+                    <span class="nb">all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">all</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.find_sentences"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.find_sentences">[docs]</a>    <span class="k">def</span> <span class="nf">find_sentences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filter sentences that contain search terms</span>
+
+<span class="sd">        :return: List(str)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">sentences</span> <span class="o">=</span> <span class="n">sent_tokenize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="c1"># print(&quot;Sentences: {}&quot;.format(len(sentences)))</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[^A-Za-z ,.]+&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">needle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_terms</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">needle</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sents</span><span class="p">:</span>
+                                <span class="n">sents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">sents</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.save_to_dataframe"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the results to a pandas DataFrame</span>
+
+<span class="sd">        :return: the DataFrame</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_sentences</span><span class="p">})</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.save_to_txt"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_txt">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seperate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the results to .txt files.</span>
+
+<span class="sd">        :param seperate: Should each sentence be saved seperately?</span>
+<span class="sd">        :type seperate: bool</span>
+
+<span class="sd">        :return: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">seperate</span><span class="p">:</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;out/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">save_name</span> <span class="o">+</span> <span class="s2">&quot;_sentences.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_sentences</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;out/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;out/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_sentences</span><span class="p">):</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;out/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">save_name</span><span class="o">+</span><span class="s2">&quot;_</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DatasetGenerator.merge_crawl_results"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.merge_crawl_results">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">merge_crawl_results</span><span class="p">(</span><span class="n">super_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method to merge all crawling results in class directories by copying the crawl documents to them.</span>
+
+<span class="sd">        :param super_dir: Super directory where class-subdirectories should be created</span>
+<span class="sd">        :type super_dir: str</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">merged_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">super_dir</span><span class="p">,</span> <span class="s2">&quot;merged_datasets&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">merged_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">merged_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sub_dir</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">super_dir</span><span class="p">)):</span>
+            <span class="n">label_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">merged_path</span><span class="p">,</span> <span class="n">sub_dir</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">label_dir</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">label_dir</span><span class="p">)</span>
+            <span class="n">sub_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">super_dir</span><span class="p">,</span> <span class="n">sub_dir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">sub_path</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">sub_path</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;txt&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">label_dir</span><span class="p">):</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_path</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">label_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">search_terms_for_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;frequent pattern mining is&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern analysis is&quot;</span><span class="p">,</span> <span class="s2">&quot;frequent pattern mining aims&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;frequent pattern is&quot;</span><span class="p">,</span> <span class="s2">&quot;frequent pattern mining defined&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;frequent patterns are&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern analysis&quot;</span><span class="p">,</span> <span class="s2">&quot;sequential patterns are&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;sequential pattern mining is&quot;</span><span class="p">,</span> <span class="s2">&quot;sequential pattern mining defined&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;pattern mining aims&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern mining is&quot;</span><span class="p">,</span> <span class="s2">&quot;association rules are&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;association rule mining is&quot;</span><span class="p">,</span> <span class="s2">&quot;association rule mining aims&quot;</span><span class="p">]</span>
+
+    <span class="n">search_terms_for_prediction</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;prediction aims&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction is&quot;</span><span class="p">,</span> <span class="s2">&quot;classification is&quot;</span><span class="p">,</span> <span class="s2">&quot;classification aims&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;classification defined&quot;</span><span class="p">,</span> <span class="s2">&quot;classification defines&quot;</span><span class="p">,</span> <span class="s2">&quot;regression is&quot;</span><span class="p">,</span> <span class="s2">&quot;regression aims&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;regression defined&quot;</span><span class="p">,</span> <span class="s2">&quot;regression defines&quot;</span><span class="p">,</span> <span class="s2">&quot;regression analysis is&quot;</span><span class="p">,</span> <span class="s2">&quot;classification analysis is&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;classification analysis aims&quot;</span><span class="p">,</span> <span class="s2">&quot;regression analysis aims&quot;</span><span class="p">]</span>
+
+    <span class="n">search_terms_for_clustering</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;clustering is&quot;</span><span class="p">,</span> <span class="s2">&quot;clustering defined&quot;</span><span class="p">,</span> <span class="s2">&quot;clustering defines&quot;</span><span class="p">,</span> <span class="s2">&quot;clustering aims&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;cluster analysis is&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster analysis aims&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster analysis defined&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;cluster analysis defines&quot;</span><span class="p">]</span>
+
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">DatasetGenerator</span><span class="p">(</span><span class="n">path_to_files</span><span class="o">=</span><span class="s2">&quot;../../data_obtaining/arxiv/out/frequent_pattern&quot;</span><span class="p">,</span>
+                                 <span class="n">search_terms</span><span class="o">=</span><span class="n">search_terms_for_patterns</span><span class="p">,</span>
+                                 <span class="n">class_name</span><span class="o">=</span><span class="s2">&quot;sequential_pattern_mining&quot;</span><span class="p">,</span>
+                                 <span class="n">save_name</span><span class="o">=</span><span class="s2">&quot;frequent_pattern_mining_arxiv&quot;</span><span class="p">,</span>
+                                 <span class="n">seperate_save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">generator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="c1"># generator.merge_crawl_results(super_dir=&quot;../../data_obtaining/science_direct/out/&quot;)</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

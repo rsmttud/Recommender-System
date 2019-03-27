@@ -1,0 +1,24 @@
+
+Welcome to the Recommender-System Documentation
+===============================================
+
+This projects' goal was to develop a Recommender-System for the automated selection of Data Mining / Machine-Learning methods. 
+
+Therefore this package is divided in the Subpackes "core" and "helper" with different subpackages and submodules. 
+
+For further support please contact: 
+
+- Richard Horn (richard.horn94@yahoo.de)
+- Daniel Höschele (dhoeschele@live.com)
+
+
+Package Structure
+=================
+
+.. toctree::
+   :maxdepth: 6
+
+   Installation
+   rs_helper
+   General Information
+   Additional Notes
