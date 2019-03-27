@@ -20,6 +20,7 @@ class RecommendationFacade:
     """
     General Class to handle to predictions. Actual implementation of the Facade-Pattern.
     """
+
     def __init__(self, path_to_files: str) -> None:
         """
         Constructor of Facade. Initializes the Corpora Object
@@ -42,6 +43,8 @@ class RecommendationFacade:
         _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")
         _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
 
+        input_data = self.corpora.data
+
         container = list()
         # LDA Classification
         # print("LDA...")
@@ -56,8 +59,8 @@ class RecommendationFacade:
 
         # SVC Classification
         print("SVC...")
-        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib", embedding_model=_DAN)
-        container.append(svc.predict(self.corpora.data))
+        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib",  embedding_model=_DAN)
+        container.append(svc.predict(input_data))
 
         # KNN
         # print("KNN...")
@@ -67,61 +70,14 @@ class RecommendationFacade:
         # lstm 1:1
         print("1:1...")
         lstm_11 = RNNTypedClassifier(model_dir="./models/OneToOneGRU/1/", architecture="1:1", embedding_model=_DAN)
-        container.append(lstm_11.predict(self.corpora.data))
+        container.append(lstm_11.predict(input_data))
 
         # lstm N:1
         print("N:1...")
         lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
-        container.append(lstm_n1.predict(self.corpora.data))
+        container.append(lstm_n1.predict(input_data))
 
         backend.clear_session()
-
-        print("Ensemble...")
-        final_prediction = ensemble.predict(predictions=container)
-        return final_prediction
-
-    def recommend(self):
-        """
-        General method that calls all single models and performs ensemble learning step.
-
-        :return: The final prediction
-        :rtype: Prediction
-        """
-        ensemble = Ensemble(weightening_scheme=[0.575, 0.575, 0.775, 0.7, 0.75, 0.775], n_classes=3)
-        _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")
-        _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
-
-        container = list()
-        # LDA Classification
-        print("LDA...")
-        lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
-                                        path_to_vectorizer="./models/LDA/1/vec.joblib")
-        container.append(lda.predict(self.corpora.data))
-
-        # Topic KNN
-        print("TKNN...")
-        topic_knn = TopicKNNModel(path_to_topic="./models/Keyword/1/model.joblib", embedding_model=_DAN)
-        container.append(topic_knn.predict(self.corpora.data))
-
-        # SVC Classification
-        print("SVC...")
-        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib", embedding_model=_DAN)
-        container.append(svc.predict(self.corpora.data))
-
-        # KNN
-        print("KNN...")
-        knn = KNNModel(path_to_model="./models/KNN/1/knn.joblib", embedding_model=_DAN)
-        container.append(knn.predict(self.corpora.data))
-
-        # lstm 1:1
-        print("1:1...")
-        lstm_11 = RNNTypedClassifier(model_dir="./models/OneToOneGRU/1/", architecture="1:1", embedding_model=_DAN)
-        container.append(lstm_11.predict(self.corpora.data))
-
-        # lstm N:1
-        print("N:1...")
-        lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
-        container.append(lstm_n1.predict(self.corpora.data))
 
         print("Ensemble...")
         final_prediction = ensemble.predict(predictions=container)
@@ -179,7 +135,7 @@ class RecommendationFacade:
         prediction = _svc.predict(self.corpora.data)
         prediction.scale_log()
         prediction.round_values()
-        #prediction.values = [x*100 for x in prediction.values]
+        # prediction.values = [x*100 for x in prediction.values]
         return prediction
 
     def __svc_classification(self):
