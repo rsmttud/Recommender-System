@@ -1,16 +1,19 @@
 import os
 import json
 import numpy as np
+from typing import List
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
-from rs_helper.core import *
-from rs_helper.helper import *
+from rs_helper.core.distributed_models.FastTextWrapper import FastTextWrapper
+from rs_helper.core.distributed_models import EmbeddingModel
+from rs_helper.helper.functions.visualizations import similarity_matrix
 import pandas as pd
 from typing import List
 
 
 class SimilarityEval:
-    def __init__(self, path: str, sim_data: pd.DataFrame, valid_data: pd.DataFrame) -> None:
+    def __init__(self, path: str, sim_data: pd.DataFrame, valid_data: pd.DataFrame,
+                 embedding_model: EmbeddingModel) -> None:
         """
         Class to perform similarity evaluation in terms of intrinsic embedding evaluation
 
@@ -24,7 +27,7 @@ class SimilarityEval:
         self.path = path
         self.base_path = os.path.dirname(path)
         self.folder = os.path.basename(os.path.dirname(path))
-        self.model = FastTextWrapper(path=path)
+        self.model = embedding_model
         self.sim_data = sim_data
         self.valid_data = valid_data
         self.pearson_corr = None
@@ -40,9 +43,14 @@ class SimilarityEval:
         """
         sims = list()
         for i, r in self.sim_data.iterrows():
-            vecs = self.model.inference([r["Word 1"], r["Word 2"]])
+            if isinstance(self.model, FastTextWrapper):
+                vecs = self.model.inference([r["Word 1"], r["Word 2"]])
+            else:
+                vecs = self.model.inference_batches([[r["Word 1"]], [r["Word 2"]]])
+                vecs = [x[0] for x in vecs]
             if len(vecs) == 2:
-                sims.append(cosine_similarity([vecs[0]], [vecs[1]])[0][0])
+                s = cosine_similarity([vecs[0]], [vecs[1]])[0][0]
+                sims.append(s)
             else:
                 sims.append(np.nan)
         self.sim_data["assigned_sim"] = sims
@@ -58,8 +66,7 @@ class SimilarityEval:
         :return: the mean error
         :rtype: float
         """
-        self.ME = sum(np.array(self.sim_data["Human (mean)"]) - np.array(self.sim_data["assigned_sim"])) / len(
-            self.sim_data)
+        self.ME = sum(np.array(self.sim_data["Human (mean)"]) - np.array(self.sim_data["assigned_sim"])) / len(self.sim_data)
         return self.ME
 
     def correlation(self) -> List[float]:
@@ -98,8 +105,12 @@ class SimilarityEval:
 
         :return: None
         """
-        self.valid_data["vector"] = self.valid_data["text"].apply(
-            lambda x: self.model.inference(word_tokenize(x), sentence_level=True))
+        if isinstance(self.model, FastTextWrapper):
+            self.valid_data["vector"] = self.valid_data["text"].apply(
+                lambda x: self.model.inference(word_tokenize(x), sentence_level=True))
+        else:
+            self.valid_data["vector"] = self.valid_data["text"].apply(
+                lambda x: self.model.inference(word_tokenize(x))[0])
         messages = list(self.valid_data["label"])
         vectors = list(self.valid_data["vector"])
         similarity_matrix(messages=messages, vectors=vectors, name=self.folder, save_path=self.base_path)

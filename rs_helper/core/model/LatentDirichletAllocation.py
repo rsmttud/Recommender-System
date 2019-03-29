@@ -6,6 +6,12 @@ from rs_helper.core import LabelMap
 from rs_helper.core.model import Model
 from rs_helper.core.Prediction import Prediction
 from rs_helper.core.Preprocessor import Preprocessor
+import nltk
+import re
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 
 class LatentDirichletAllocation(Model):
@@ -30,6 +36,7 @@ class LatentDirichletAllocation(Model):
         self.vec_path = path_to_vectorizer
         self.label_map = LabelMap(os.path.join(os.path.dirname(path_to_vectorizer), "label_map.json"))
         self.vectorizer = None
+        self.initialize()
 
     def initialize(self) -> None:
         """
@@ -42,7 +49,15 @@ class LatentDirichletAllocation(Model):
 
     def predict(self, text: str) -> Prediction:
         raw_data = self.__prepare_data(text)
-        vectorized = self.vectorizer.transform(raw_data)
+        # Join the words which are like: clustering.The
+        splitted = []
+        for w in raw_data:
+            if len(w.split(".")) > 1:
+                parts = w.split(".")
+                [splitted.append(w_part) for w_part in parts]
+            else:
+                splitted.append(w)
+        vectorized = self.vectorizer.transform([" ".join(splitted)])
         scores = self.model.transform(vectorized)[0]
         pred = Prediction(classes=[self.label_map.get_name(i) for i, _ in enumerate(scores)], values=list(scores))
         return pred
@@ -58,5 +73,5 @@ class LatentDirichletAllocation(Model):
         :rtype: list(str)
         """
         p = Preprocessor(text)
-        lemmatized = p.transform(remove_nums=True, remove_punct=True)
+        lemmatized = p.transform(remove_nums=False, remove_punct=False)
         return reduce(operator.concat, lemmatized)

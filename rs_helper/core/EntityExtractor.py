@@ -3,7 +3,7 @@ from nltk.tokenize import word_tokenize
 from nltk.tree import Tree
 from nltk import RegexpParser
 from nltk.corpus import stopwords
-from typing import List, Set
+from typing import List,Set
 import spacy
 
 
@@ -89,7 +89,7 @@ class EntityExtractor:
         """
         assigned = list()
         haystack = " ".join([x for x in self.tokens if x not in self.stopwords])
-        # print(haystack)
+        print(haystack)
         for chunk in chunks:
             try:
                 index = haystack.index(chunk)

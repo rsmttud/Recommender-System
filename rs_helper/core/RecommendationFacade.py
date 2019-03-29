@@ -20,7 +20,6 @@ class RecommendationFacade:
     """
     General Class to handle to predictions. Actual implementation of the Facade-Pattern.
     """
-
     def __init__(self, path_to_files: str) -> None:
         """
         Constructor of Facade. Initializes the Corpora Object
@@ -43,13 +42,11 @@ class RecommendationFacade:
         _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")
         _DAN = DAN(frozen_graph_path="./models/DANs/1/frozen_graph.pb", word_embedding_model=_FT)
 
-        input_data = self.corpora.data
-
         container = list()
-        # LDA Classification
-        # print("LDA...")
-        # lda = LatentDirichletAllocation(path_to_model="./models/LDA/1/grid_model.joblib",
-        # path_to_vectorizer="./models/LDA/1/vec.joblib")
+        # LDAModel Classification
+        # print("LDAModel...")
+        # lda = LatentDirichletAllocation(path_to_model="./models/LDAModelModel/1/grid_model.joblib",
+        # path_to_vectorizer="./models/LDAModel/1/vec.joblib")
         # container.append(lda.predict(self.corpora.data))
 
         # Topic KNN
@@ -58,9 +55,9 @@ class RecommendationFacade:
         # container.append(topic_knn.predict(self.corpora.data))
 
         # SVC Classification
-        #print("SVC...")
-        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib",  embedding_model=_DAN)
-        container.append(svc.predict(input_data))
+        print("SVC...")
+        svc = SVCModel(path_to_model="./models/SVC/1/model.joblib", embedding_model=_DAN)
+        container.append(svc.predict(self.corpora.data))
 
         # KNN
         # print("KNN...")
@@ -68,20 +65,19 @@ class RecommendationFacade:
         # container.append(knn.predict(self.corpora.data))
 
         # lstm 1:1
-        #print("1:1...")
+        print("1:1...")
         lstm_11 = RNNTypedClassifier(model_dir="./models/OneToOneGRU/1/", architecture="1:1", embedding_model=_DAN)
-        container.append(lstm_11.predict(input_data))
+        container.append(lstm_11.predict(self.corpora.data))
 
         # lstm N:1
-        #print("N:1...")
+        print("N:1...")
         lstm_n1 = RNNTypedClassifier(model_dir="./models/ManyToOneLSTM/1/", architecture="N:1", embedding_model=_FT)
-        container.append(lstm_n1.predict(input_data))
+        container.append(lstm_n1.predict(self.corpora.data))
 
         backend.clear_session()
 
-        #print("Ensemble...")
+        print("Ensemble...")
         final_prediction = ensemble.predict(predictions=container)
-        print(final_prediction)
         return final_prediction
 
     def run(self, lda: bool = False, key_ex: bool = False,
@@ -90,7 +86,7 @@ class RecommendationFacade:
         """
         Function should manage the starting of pipelines according to input
 
-        :param lda: boolean to start or not start LDA pipeline
+        :param lda: boolean to start or not start LDAModel pipeline
         :type lda: bool
         :param key_ex: boolean to start or not start Keyword Extraction pipeline
         :type key_ex: bool
@@ -122,8 +118,8 @@ class RecommendationFacade:
             return self.__gru_oto_classification()
 
     def __lda_pipeline(self):
-        path_model = "models/LDA/LdaModel_3_freq_clean.bin"
-        path_vectorizer = "models/LDA/vectorizer_3_freq_clean.bin"
+        path_model = "models/LDAModel/LdaModel_3_freq_clean.bin"
+        path_vectorizer = "models/LDAModel/vectorizer_3_freq_clean.bin"
         model = LatentDirichletAllocation(path_to_model=path_model, path_to_vectorizer=path_vectorizer)
         model.initialize()
         prediction = model.predict(self.corpora.data)
@@ -136,7 +132,7 @@ class RecommendationFacade:
         prediction = _svc.predict(self.corpora.data)
         prediction.scale_log()
         prediction.round_values()
-        # prediction.values = [x*100 for x in prediction.values]
+        #prediction.values = [x*100 for x in prediction.values]
         return prediction
 
     def __svc_classification(self):

@@ -5,7 +5,7 @@ import os
 from tqdm import tqdm
 import re
 from rs_helper.helper.classes.Crawler import Crawler
-import pickle
+from typing import Any
 
 
 class ScienceDirectCrawler(Crawler):
