@@ -5,12 +5,12 @@ function implant_class_definitions(class_name) {
     $.get(path, function (data) {
 
         if (class_name !== "Pattern_mining") {
-            $("#analysis-definition").append("<h4>" + class_name + " - Definition: </h4>")
+            $("#analysis-definition-wrapper").append("<h4>" + class_name + "</h4>");
         }else{
-              $("#analysis-definition").append("<h4>Pattern Mining - Definition:</h4>")
+              $("#analysis-definition-wrapper").append("<h4>Pattern Mining</h4>")
         }
 
-        $("#analysis-definition")
+        $("#analysis-definition-wrapper")
             .append("<span>" + data + "</span>")
     }, "text")
 }

@@ -1,25 +1,31 @@
-#data-structure-description{
-  h4{
-    line-height: 6.5em;
-  }
-}
-#analysis-chart{
-  svg{
-    transform: translate(-3.5em,0em);
+#analysis-chart {
+  svg {
+    transform: translate(-3.5em, 0em);
   }
 }
 
-#result-chart-wrapper{
-  transform: translate(3.5em,0em);
+#result-chart-wrapper {
+  transform: translate(3.5em, 0em);
 }
 
-#output-result-main-features{
+#output-result-main-features {
   overflow-y: auto;
-  height:200px;
+  height: 200px;
 }
 
-table{
-  tr{
+#analysis-definition-wrapper {
+  margin-left: 3%;
+}
+
+table {
+  tr {
     cursor: pointer;
+  }
+}
+
+@media only screen and (max-height: 900px) {
+  #output-result-main-features {
+    overflow-y: auto;
+    height: 165px;
   }
 }

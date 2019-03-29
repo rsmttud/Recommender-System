@@ -16,8 +16,12 @@ function implant_table(entities, table_length) {
             });
         });
     }else{
-         $("#data-structure-table").append("<p style='line-height: 16em'>Sorry a recommendation for the data structure is only" +
+         $("#data-structure-table").append("<p>Sorry a recommendation for the data structure is only" +
              " possible with extracted entities.</p>");
     }
+
+    //Set Line-Height of Text
+    let height = $("#data-structure-table").height()+"px";
+    $("#data-structure-description > h5").css("line-height", height);
 
 }

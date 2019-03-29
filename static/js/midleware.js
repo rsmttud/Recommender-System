@@ -147,11 +147,11 @@ function initialize_result_page(data, entities, class_name) {
     // Header Chart Section
 
     if (class_name !== "pattern_mining") {
-        $("#result-chart-wrapper h4")
-            .append("Recommended Approach: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
+        $("#result-chart-wrapper h5")
+            .append("Recommendation: " + class_name.charAt(0).toUpperCase() + class_name.slice(1));
     } else {
-        $("#result-chart-wrapper h4")
-            .append("Recommended Approach: Pattern Mining");
+        $("#result-chart-wrapper h5")
+            .append("Recommendation: Pattern Mining");
     }
 
     // Short/Long Desc
