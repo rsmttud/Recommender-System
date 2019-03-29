@@ -174,7 +174,7 @@ function initialize_result_page(data, entities, class_name) {
     send_json_to_python_backend(json);
     implant_analysis_chart(class_name, entities);
     implant_class_definitions(class_name);
-    implant_table(entities, 4)
+    implant_table(class_name ,entities, 4)
 }
 
 /*This is lazy workaround*/
