@@ -23,9 +23,7 @@ def classify():
     file_name = save_txt_from_interface(problem_title, problem_short_desc, problem_long_desc)
     prediction = get_prediction("", file_name)
 
-    # TODO: Add Entity Extractor to RecommendationFacade -> Return Tuple
-    entity_extractor = EntityExtractor(problem_long_desc)
-    entities = entity_extractor.extract_entities()
+    entities = get_entities(problem_short_desc, problem_long_desc)
 
     response = app.response_class(
         response=json.dumps({"forecast": prediction, "entities": entities}),

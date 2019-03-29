@@ -2,7 +2,7 @@ import os
 import time
 import json
 from typing import *
-from rs_helper import Prediction, RecommendationFacade
+from rs_helper import Prediction, RecommendationFacade, EntityExtractor
 
 
 def save_txt_from_interface(title: str, short_desc: str, long_desc: str = None) -> str:
@@ -170,3 +170,18 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
         prediction.update({c: p})
 
     return prediction
+
+
+def get_entities(short_desc: str, long_desc: str = "") -> List[str]:
+    """
+    A method to extract the entities from the given input text.
+    :param short_desc: Short description (mandatory) from input
+    :param long_desc: Long description from input
+    :return: Entities in form of List[str]
+    """
+    if long_desc == "":
+        entity_extractor = EntityExtractor(short_desc)
+    else:
+        entity_extractor = EntityExtractor(short_desc + ". " +long_desc)
+    entities = entity_extractor.extract_entities()
+    return entities
