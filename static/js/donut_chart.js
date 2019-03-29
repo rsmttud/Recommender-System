@@ -2,20 +2,26 @@ function donutChart(data) {
     data = data["forecast"]; //Place in dict where final prediction values are stored
     // console.log(data);
     let _sum = 0;
+    let _height = $("#output-result-main-input").height() + $("#output-result-main-recommended-features").height();
+    let _margin = $("#donut-chart").width() * 0.03;
+    console.log(_margin)
     data.forEach(function (d) {
         _sum += parseFloat(d["prob"])
     });
-    var margin = {top: 20, right: 20, bottom: 20, left: 20},
+
+    var margin = {top: _margin, right: _margin, bottom: _margin, left: _margin},
         width = $("#donut-chart").width() - margin.right - margin.left,
-        height = 400 - margin.top - margin.bottom,
-        radius = width / 3.0;
+        height = (width*0.63) - margin.top - margin.bottom; // To width*0.63 to keep a ratio oof 580 * 363
+
+    var radius = width/3;
+
 
     var color = d3.scaleOrdinal()
         .range(["#b4126b", "#007581", "#055E67", "#C0AD26"]); //Color range
     // Arc Generator produces the arcs for the pie generator
     var arc = d3.arc()
-        .outerRadius(radius - 50)
-        .innerRadius(radius - 100);
+        .outerRadius(radius - (width*0.08))
+        .innerRadius(radius - (width * 0.18));
 
     var labelArc = d3.arc()
         .outerRadius(radius)
@@ -57,7 +63,7 @@ function donutChart(data) {
             return d.data.class
         })
         .attr("transform", function (d, i) {
-            return "translate(30," + (-70 * i) + ")"
+            return "translate(30," + (-(height * 0.19) * i) + ")"
         });
     // Legend Entry
     var leg = legend.append("rect");
@@ -78,7 +84,7 @@ function donutChart(data) {
 
     legend.append("text")
         .attr("x", (width / 2) - 5)
-        .attr("dy", ".8em")
+        .attr("y", ".6em")
         .style("text-anchor", "end")
         .text(function (d) {
             return d.data.class
