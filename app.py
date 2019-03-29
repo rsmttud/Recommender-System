@@ -26,7 +26,7 @@ def classify():
     entities = get_entities(problem_short_desc, problem_long_desc)
 
     response = app.response_class(
-        response=json.dumps({"forecast": prediction, "entities": entities}),
+        response=json.dumps({"forecast": prediction, "entities": list(entities)}),
         status=200,
         mimetype='application/json'
     )

@@ -172,7 +172,7 @@ def get_prediction(pipeline_method: str, file_name: str) -> Dict:
     return prediction
 
 
-def get_entities(short_desc: str, long_desc: str = "") -> List[str]:
+def get_entities(short_desc: str, long_desc: str = "") -> Set[str]:
     """
     A method to extract the entities from the given input text.
     :param short_desc: Short description (mandatory) from input

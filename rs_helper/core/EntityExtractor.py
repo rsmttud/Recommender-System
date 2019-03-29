@@ -3,7 +3,7 @@ from nltk.tokenize import word_tokenize
 from nltk.tree import Tree
 from nltk import RegexpParser
 from nltk.corpus import stopwords
-from typing import List
+from typing import List, Set
 import spacy
 
 
@@ -62,7 +62,7 @@ class EntityExtractor:
             continuous_chunk.append(" ".join(current_chunk))
         return continuous_chunk
 
-    def extract_entities(self) -> List[str]:
+    def extract_entities(self) -> Set[str]:
         """
         Generel handler - Methods extracts the chunks of a sentence by the pattern in self.pattern
 
@@ -74,7 +74,7 @@ class EntityExtractor:
         chunks = self.__get_continuous_chunks(parse_tree)
         chunks = self.__check_dependencies(chunks)
         self.chunks = self.__score_chunks(chunks)
-        return self.chunks
+        return set(self.chunks)
 
     def __score_chunks(self, chunks: List[str]) -> List[str]:
         """
