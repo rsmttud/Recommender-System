@@ -7,7 +7,6 @@ from rs_helper.helper import *
 app = Flask(__name__)
 
 
-# TODO definetly needs to be adjusted
 @app.route('/', methods=["GET"])
 def main():
     return render_template("index.html")
@@ -52,6 +51,6 @@ def save_json():
 
 if __name__ == '__main__':
     # Use this command for the docker build!
-    #app.run(host="0.0.0.0", port=80, debug=False)
+    app.run(host="0.0.0.0", port=80, debug=False)
     # Use this line for development!
-    app.run(debug=True)
+    # app.run(debug=True)

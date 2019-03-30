@@ -169,7 +169,9 @@ function initialize_result_page(data, entities, class_name) {
         forecast.push({"class": key, "prob": value})
     });
 
-    let json = get_json(forecast, data["entities"], class_name);
+
+    let json = get_json(forecast, entities, class_name);
+    console.log(json);
     donutChart(json);
     send_json_to_python_backend(json);
     implant_analysis_chart(class_name, entities);

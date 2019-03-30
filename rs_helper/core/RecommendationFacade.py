@@ -37,6 +37,8 @@ class RecommendationFacade:
         :return: The final prediction
         :rtype: Prediction
         """
+
+
         # Used weightening for all models: weightening_scheme=[0.575, 0.575, 0.775, 0.7, 0.75, 0.775]
         ensemble = Ensemble(weightening_scheme=[0.725, 0.75, 0.775], n_classes=3)
         _FT = FastTextWrapper(path="./models/FastText/1/model.joblib")

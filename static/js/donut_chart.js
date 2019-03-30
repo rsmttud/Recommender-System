@@ -13,7 +13,7 @@ function donutChart(data) {
         width = $("#donut-chart").width() - margin.right - margin.left,
         height = (width*0.63) - margin.top - margin.bottom; // To width*0.63 to keep a ratio oof 580 * 363
 
-    var radius = width/3;
+    var radius = width/3.0;
 
 
     var color = d3.scaleOrdinal()
@@ -112,7 +112,7 @@ function donutChart(data) {
     //Legend
     legend.on("mouseover", function (d) {
 
-        $("#" + d.data.class ).find("path").css("transform", "scale(1.15)");
+        $("#" + d.data.class ).find("path").css("transform", "scale(1.12)");
 
     })
         .on("mouseout", function (d) {

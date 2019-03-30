@@ -5,17 +5,16 @@ challenge that Data Science is an highly interdisciplinary field of research. Th
 statistics, mathematics, computer science and machine learning. Nevertheless, the handling of domain-specific data
 requires comprehensive domain knowledge. The developed application tries to close the gap between data scientist and 
 domain experts. On the one hand the access to the domain specific topic is simplified for the data scientist and on
-the other hand the domain expert has an first point of reference for a more comprehensive discussion with the data scientist.
+the other hand the domain expert has an first point of reference for a more comprehensive discussion with the data scientist.  
 
-![](static/img/git/rs.gif)
+![](static/img/git/rs.gif)  
 
 
 ## Documentation
 A detailed description about all the classes, functions, interfaces and the project structure you'll find in the 
-<a href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation/index.html">documentation</a> of the project
+<a target= "_blank" href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation/index.html">documentation</a> of the project.
 
-You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/index.html`` 
-and open the file in your browser. Otherwise you can also use the link in the footer of the application.
+You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/index.html`` and open the file in your browser. Otherwise you can also use the link in the footer of the application.
 
 
 ### Notes an pre Requirements
@@ -24,19 +23,19 @@ and open the file in your browser. Otherwise you can also use the link in the fo
 - Docker version: 18.09.2
 - Python version: 3.6.7
 #### Notes
-- The docker container as well as the requirements.txt are build on TensorFlow 1.13.0 without(!) GPU support
-- If you want GPU support you need to build your own docker image and change the requirements.txt
-- All squared brackets [] in the following code are placeholder and are not part of the command!
+- The docker container as well as the _requirements.txt_ are build on TensorFlow 1.13.0 without(!) GPU support
+- If you want GPU support you need to build your own docker image and change the _requirements.txt_
+- All squared brackets [] in the following code __are placeholder__ and not part of the command!
 
 ## Installation
 
-Basically,  you have to ways to install the recommendation system: 
+Basically,  you have three ways to install the recommendation system: 
 
 __Recommended Approach:__
 1. Basically you can just use the .sh or .bat files of the project to install the software. 
 (_We don't guarantee that these will work on every platform!_)
 
-__Other Approaches:__ 
+__Other Approaches:__   
 2. You can use the docker image (<a href = "">rs_export.tar</a>) to load the image and run the container.
 3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)
 
@@ -52,8 +51,10 @@ The docker consists of all necessary files, libraries and dependencies to start 
 Before you start, make sure that you have installed docker (https://docs.docker.com/docker-for-windows/install/). 
 
 1. Follow the steps as described here: <a href="https://docs.docker.com/docker-for-windows/install/">docker installation</a> to install Docker. 
-2. Open the terminal and load the docker image: ```docker load --input [PATH TO rs_export.tar] ```
-3. Create a docker container with the name "rs" and run it on port 80: ```docker run --name rs  -p 80:80 rs```
+2. Open the terminal and load the docker image: ```docker load --input [PATH TO rs_export.tar] ```  
+![](static/img/git/start_docker.gif)  5
+3. Run the docker ```docker run rs``` (_If it doesn't work go to step 4_) 
+4. (Optional) Create a docker container with the name "rs" and run it on port 80: ```docker run --name rs  -p 80:80 rs```
 
 ### Installation via pip (or conda)
 If you don't prefer to use a docker container, you can also install the software to your local python environment. 
@@ -72,7 +73,7 @@ __Please make sure that you use at least Python 3.6.7__
 5. Now you can run the app in you python environment by using following command: ``python [PATH TO app.py]``
 
 
-#### Some other use full commands
+#### Some Other Use Full Commands
 1. Stop a running container: ```docker stop [NAME OF CONTAINER]``` 
 2. Start the docker container again: ```docker start rs```
 3. List all containers ``docker ps -a``
@@ -81,7 +82,7 @@ __Please make sure that you use at least Python 3.6.7__
 6. Delete a docker image ``docker image rm [IMAGE NAME]``
 
 
-## Start the application
+## Start the Application
 In default mode the application runs at localhost with the port 80. After installation you should enter in your 
 browser ``localhost:80`` and the application should start. Do guarantee the full functionality you should use Google Chrome. 
 
