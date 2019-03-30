@@ -7,13 +7,15 @@ requires comprehensive domain knowledge. The developed application tries to clos
 domain experts. On the one hand the access to the domain specific topic is simplified for the data scientist and on
 the other hand the domain expert has an first point of reference for a more comprehensive discussion with the data scientist.
 
-## How to Use? 
-The only thing you need to do is to provide a short description as well as a title and submit it (long description is optional).
-![documentation](static/documentation/index.html)
-## Documentation
-A detailed description about all the classes, functions, interfaces and the project structure you'll find 
-in the ![](static/img/git/rs.gif) of the project.
+![](static/img/git/rs.gif)
 
+
+## Documentation
+A detailed description about all the classes, functions, interfaces and the project structure you'll find in the 
+<a href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation/index.html">documentation</a> of the project
+
+You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/index.html`` 
+and open the file in your browser. Otherwise you can also use the link in the footer of the application.
 
 
 ### Notes an pre Requirements
@@ -78,6 +80,13 @@ __Please make sure that you use at least Python 3.6.7__
 5. Delete a container ``docker rm [CONTAINER NAME]``
 6. Delete a docker image ``docker image rm [IMAGE NAME]``
 
+
+## Start the application
+In default mode the application runs at localhost with the port 80. After installation you should enter in your 
+browser ``localhost:80`` and the application should start. Do guarantee the full functionality you should use Google Chrome. 
+
+![](static/img/git/start_docker.gif)
+
 ## Building a Docker Image
 The implemented software may be used for later research projects. If you want to build your own docker image you can use
 the docker file attached to the code but you can also install the packages directly to you local python distribution if you prefer.
@@ -94,10 +103,11 @@ The directory structure need to be as followed:
     - ...
 ```
 
-1. Open a terminal and navigate yourself to the directory where you copied the Dockerfile: ``cd [PATH TO Dockerfile]``
-2. Build the image (__This may take a while!__): ```docker build ./ -t rs```
-![](static/img/git/build_docker.gif)
-3. Build the container and test it: ``docker run --name rs  -p 80:80 rs``
-4. Now you can start and run the docker as usual
-
-
+1. Open a terminal and navigate yourself to the directory where you copied the Dockerfile: ``cd [PATH TO Dockerfile]``  
+2. Build the image (__This may take a while!__): ```docker build ./ -t rs```  
+![](static/img/git/build_docker.gif)  
+3. Check if docker installed the container: ``docker ps -a`` (If not execute step 5)  
+![](static/img/git/check_docker.gif)  
+4. Now you can start and run/stop the docker as usual  
+![](static/img/git/run_docker.gif)  
+5. Build the container and test it (if necessary): ``docker run --name rs  -p 80:80 rs``  
