@@ -39,31 +39,32 @@ __Other Approaches:__
 2. You can use the docker image (<a href = "">rs_export.tar</a>) to load the image and run the container.
 3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)
 
-## Installation with the bash files
+## Installation with the batch/shell files (__Recommended__)
 Depending on which operating system you are working you only need to run those files in your terminal. Copy those files
 outside of the directory where the rs_export.tar and the Recommender-System directory is stored - the folder structure 
 needs to look like followed: 
-
 
 ```
 - Dockerfile
 - .dockerignore
 - rs_export.tar
-- install.bat [or install.sh]
+- run.[bat, sh]
+- stop.[bat, sh]
+- install.[bat, sh]
 - Recommender-System
     - data
     - models
     - ...
 ```
 
-__Windows__:  
-- installation.bat
+Please use batch files on windows and shell files on MacOSX/Linux  
+1. Run the install.bat and wait for the process to finish
 
-__Linux/Mac__:
-- installation.sh
+2. Go to localhost:80 in Google Chrome
 
+3. To stop the docker again run stop.bat
 
-In addition you can run and stop the corresponding container by using the _run_ and _stop_ bash files.
+4. Step 1 is only for first installation. In future you simply can run run.bat
 
 ## Using the Docker Container
 The docker consists of all necessary files, libraries and dependencies to start the software - so you don't need to install them. 
@@ -83,12 +84,14 @@ __Please make sure that you use at least Python 3.6.7__
 2. Install the packages via pip: `` pip install -r [PATH TO requirements.txt]`` 
 3. After the installation completed run the following command in your python environment to install the pke package: 
     ``pip install git+https://github.com/boudinfl/pke.git``
-4. Download all necessary nltk packages: 
+4. Download spacy model en_core_web_sm: 
+    ``python -m spacy download en_core_web_sm``    
+5. Download all necessary nltk packages: 
     * First type in your terminal (with you corresponding python environment): ``python``
     * Type ``import nltk``
     * Type ``nltk.download("all")``
     * Exit python with: ``exit()``
-5. Now you can run the app in you python environment by using following command: ``python [PATH TO app.py]``
+6. Now you can run the app in you python environment by using following command: ``python [PATH TO app.py]``
 
 
 #### Some Other Use Full Commands

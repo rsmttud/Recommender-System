@@ -115,7 +115,7 @@ function set_regression_table(entities, table_length = 4) {
 function set_classification_table(entities, table_length = 4) {
 //Table Head
     let entity = "Target";
-    if (entities.length > 1) {
+    if (entities.length >= 1) {
         entity = entities[0]
     }
     let columns = ["C<sub>1</sub>", "C<sub>2</sub>", "...", "C<sub>n</sub>", entity];
