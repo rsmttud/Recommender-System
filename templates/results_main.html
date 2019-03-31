@@ -1,0 +1,30 @@
+<div>
+    <div class="section">
+        <div class="row">
+            <div class="col s12"><h4>Summary</h4></div>
+            <div class="col s6">
+                {% include "results_main_output.html" %}
+            </div>
+            <div class="col s6">
+                {% include "results_main_chart.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+        {% include "results_main_analysis.html" %}
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+        {% include "results_main_data_structure.html" %}
+    </div>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">cloud_download</i>
+        </a>
+        <ul>
+            <li><a id = "download-notebook-html" class="btn-floating red" download=""><i class="material-icons">insert_chart</i></a></li>
+            <li><a id = "download-notebook" class="btn-floating blue" download><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
+</div>

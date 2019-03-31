@@ -1,0 +1,1 @@
+{"accuracy": 0.7, "cohens_kappa": 0.55, "f1_macro": 0.6891587944219523, "f1_micro": 0.7, "precision_macro": 0.7638888888888888, "precision_micro": 0.7, "recall_macro": 0.7000000000000001, "recall_micro": 0.7}

@@ -1,0 +1,15 @@
+Recommender-System/.git
+Recommender-System/.idea
+Recommender-System/.gitignore
+Recommender-System/.gitmodules
+Recommender-System/.vs
+Recommender-System/.dockerignore
+Recommender-System/Dockerfile
+**/*.pyc
+**/__pycache__
+Recommender-System/datasets
+Recommender-System/notebooks
+Recommender-System/sandbox.py
+Recommender-System/playground.py
+Recommender-System/sandbox.html
+Recommender-System/docker_notes

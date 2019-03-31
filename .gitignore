@@ -1,0 +1,10 @@
+/datasets/final_datasets/*
+/datasets/eval_data/*
+*.DS_Store
+*/__pychache__
+__pychache__/*
+models/FastText/*
+/notebooks/*
+/helper/*
+*.pyc
+.idea/*

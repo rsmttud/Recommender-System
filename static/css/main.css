@@ -1,0 +1,52 @@
+#main {
+  margin-top: 3%;
+  /*min-height: 100vh;*/ }
+
+#nav-main-wrapper {
+  min-height: 98vh; }
+
+#input-main-descriptive-placeholder {
+  background-color: dimgrey; }
+
+#main-row {
+  min-height: inherit; }
+
+#input-main-input-wrapper {
+  padding: 5% 0; }
+
+#navbar ul {
+  overflow: hidden; }
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+main {
+  flex: 1 0 auto; }
+
+ul {
+  list-style-type: disc; }
+
+#analysis-chart svg {
+  transform: translate(-3.5em, 0em); }
+
+#result-chart-wrapper {
+  transform: translate(3.5em, 0em); }
+
+#output-result-main-features {
+  overflow-y: auto;
+  height: 200px; }
+
+#analysis-definition-wrapper {
+  margin-left: 3%; }
+
+table tr {
+  cursor: pointer; }
+
+@media only screen and (max-height: 900px) {
+  #output-result-main-features {
+    overflow-y: auto;
+    height: 165px; } }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,4 @@
+Pattern mining concentrates on identifying rules that describe specific patterns within the data.
+ Market-basket analysis, which identifies items that typically occur together in purchase transactions, was one of the first applications of data mining.
+  For example, supermarkets used market-basket analysis to identify items that were often purchased together. Of most interest is the discovery of unexpected associations, which may open new avenues for marketing or research. Another important use of pattern mining is the discovery of sequential patterns;
+for example, sequences of errors or warnings that precede an equipment failure may be used to schedule preventative maintenance or may provide insight into a design flaw. <a target="_blank" href="https://en.wikipedia.org/wiki/Sequential_pattern_mining">[more]</a>

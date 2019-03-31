@@ -1,0 +1,31 @@
+#analysis-chart {
+  svg {
+    transform: translate(-3.5em, 0em);
+  }
+}
+
+#result-chart-wrapper {
+  transform: translate(3.5em, 0em);
+}
+
+#output-result-main-features {
+  overflow-y: auto;
+  height: 200px;
+}
+
+#analysis-definition-wrapper {
+  margin-left: 3%;
+}
+
+table {
+  tr {
+    cursor: pointer;
+  }
+}
+
+@media only screen and (max-height: 900px) {
+  #output-result-main-features {
+    overflow-y: auto;
+    height: 165px;
+  }
+}
