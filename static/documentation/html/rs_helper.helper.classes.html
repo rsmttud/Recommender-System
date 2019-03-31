@@ -1,0 +1,1026 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>classes package &mdash; Recommender-System 1.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="functions package" href="rs_helper.helper.functions.html" />
+    <link rel="prev" title="helper package" href="rs_helper.helper.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation of RS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="General Information.html">General Information</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="rs_helper.html">rs_helper package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rs_helper.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rs_helper.core.html">core package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rs_helper.helper.html">helper package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="rs_helper.helper.html#subpackages">Subpackages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/rsmttud/Recommender-System">Github</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="rs_helper.html">rs_helper package</a> &raquo;</li>
+        
+          <li><a href="rs_helper.helper.html">helper package</a> &raquo;</li>
+        
+      <li>classes package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/rs_helper.helper.classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="classes-package">
+<h1>classes package<a class="headerlink" href="#classes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rs_helper.helper.classes.Crawler">
+<span id="crawler"></span><h2>Crawler<a class="headerlink" href="#module-rs_helper.helper.classes.Crawler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.Crawler.Crawler">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.Crawler.</code><code class="descname">Crawler</code><span class="sig-paren">(</span><em>out_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/Crawler.html#Crawler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.Crawler.Crawler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract class for all crawlers</p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.Crawler.Crawler.crawl">
+<code class="descname">crawl</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/Crawler.html#Crawler.crawl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.Crawler.Crawler.crawl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start crawling …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.Crawler.Crawler.pickle_dataframe">
+<code class="descname">pickle_dataframe</code><span class="sig-paren">(</span><em>df: pandas.core.frame.DataFrame</em>, <em>dir: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="_modules/rs_helper/helper/classes/Crawler.html#Crawler.pickle_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.Crawler.Crawler.pickle_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the DataFrame of crawl results with pickle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pd.DataFrame</em>) – The dataframe to dump</li>
+<li><strong>dir</strong> (<em>str</em>) – Path where the DataFrame should be stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Status</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.Crawler.Crawler.save_to_dataframe">
+<code class="descname">save_to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/rs_helper/helper/classes/Crawler.html#Crawler.save_to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.Crawler.Crawler.save_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save crawl results to pandas DataFrame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the Dataframe</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.Crawler.Crawler.save_to_file">
+<code class="descname">save_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/Crawler.html#Crawler.save_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.Crawler.Crawler.save_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save documents to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.helper.classes.DatasetGenerator">
+<span id="datasetgenerator"></span><h2>DatasetGenerator<a class="headerlink" href="#module-rs_helper.helper.classes.DatasetGenerator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.DatasetGenerator.</code><code class="descname">DatasetGenerator</code><span class="sig-paren">(</span><em>path_to_files: str, search_terms: List[str], class_name: str, save_name: str, seperate_save: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to generate the cleaned data containing sentences that are similar to definitions</p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.calculate_similarities">
+<code class="descname">calculate_similarities</code><span class="sig-paren">(</span><em>basis: List[str], sentences: List[str], vector: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; Dict[int, float]<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.calculate_similarities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.calculate_similarities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates all similarities between sentences and topic-vectors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>basis</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – list of documents representing the corpus</li>
+<li><strong>sentences</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – List of sentences to compare</li>
+<li><strong>vector</strong> (<em>np.array</em>) – vector to compare against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dict of similarities</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.find_sentences">
+<code class="descname">find_sentences</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.find_sentences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.find_sentences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter sentences that contain search terms</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List(str)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.get_corpora">
+<code class="descname">get_corpora</code><span class="sig-paren">(</span><em>topics: Dict[str, List[str]], sents: List[str]</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.get_corpora"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.get_corpora" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the whole corpora by merging topic keywords and sentence words</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>topics</strong> (<em>dict</em><em>(</em><em>str: list</em><em>(</em><em>str</em><em>)</em><em>)</em>) – topics</li>
+<li><strong>sents</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – Sentences</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of all unique words</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list(str)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.merge_crawl_results">
+<em class="property">static </em><code class="descname">merge_crawl_results</code><span class="sig-paren">(</span><em>super_dir: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.merge_crawl_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.merge_crawl_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to merge all crawling results in class directories by copying the crawl documents to them.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>super_dir</strong> (<em>str</em>) – Super directory where class-subdirectories should be created</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the extraction</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_in_class">
+<code class="descname">save_in_class</code><span class="sig-paren">(</span><em>sentences: List[str], sim_list: List[float]</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.save_in_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_in_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the sentences in class attribute result_sentences</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sentences</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – List of sentences to store</li>
+<li><strong>sim_list</strong> (<em>list</em><em>(</em><em>float</em><em>)</em>) – List of similarities to sort by</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_dataframe">
+<code class="descname">save_to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.save_to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the results to a pandas DataFrame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the DataFrame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_txt">
+<code class="descname">save_to_txt</code><span class="sig-paren">(</span><em>seperate: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.save_to_txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.save_to_txt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the results to .txt files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seperate</strong> (<em>bool</em>) – Should each sentence be saved seperately?</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.vectorize">
+<code class="descname">vectorize</code><span class="sig-paren">(</span><em>words: List[str], basis: List[str]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/rs_helper/helper/classes/DatasetGenerator.html#DatasetGenerator.vectorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.DatasetGenerator.DatasetGenerator.vectorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform text in bag of words vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – text</li>
+<li><strong>basis</strong> (<em>list</em><em>(</em><em>list</em><em>(</em><em>str</em><em>)</em><em>)</em>) – Basis vocabulary</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.helper.classes.SimilarityEval">
+<span id="similarityeval"></span><h2>SimilarityEval<a class="headerlink" href="#module-rs_helper.helper.classes.SimilarityEval" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.SimilarityEval.</code><code class="descname">SimilarityEval</code><span class="sig-paren">(</span><em>path: str</em>, <em>sim_data: pandas.core.frame.DataFrame</em>, <em>valid_data: pandas.core.frame.DataFrame</em>, <em>embedding_model: rs_helper.core.distributed_models.EmbeddingModel.EmbeddingModel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval.calculate_similarities">
+<code class="descname">calculate_similarities</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[float]<a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval.calculate_similarities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval.calculate_similarities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate similarities for word pairs in similiarity data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of similarity values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval.correlation">
+<code class="descname">correlation</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List[float]<a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval.correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval.correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correlation between human similarities and model similarities
+Spearman and Pearson correlation are calculated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The correlation values [Pearson, Spearman]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval.mean_error">
+<code class="descname">mean_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval.mean_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval.mean_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate mean error of similarity judgements</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the mean error</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval.plot_similarity">
+<code class="descname">plot_similarity</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval.plot_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval.plot_similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and save similarity matrix of valid data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.SimilarityEval.SimilarityEval.save_to_config">
+<code class="descname">save_to_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/SimilarityEval.html#SimilarityEval.save_to_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.SimilarityEval.SimilarityEval.save_to_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save similarity judgement values in config file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.helper.classes.ArxivCrawler">
+<span id="arxivcrawler"></span><h2>ArxivCrawler<a class="headerlink" href="#module-rs_helper.helper.classes.ArxivCrawler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.ArxivCrawler.</code><code class="descname">ArxivCrawler</code><span class="sig-paren">(</span><em>out_dir: str</em>, <em>search_query: str</em>, <em>xml_dir: str</em>, <em>start=0</em>, <em>max_results=1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/ArxivCrawler.html#ArxivCrawler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rs_helper.helper.classes.Crawler.Crawler" title="rs_helper.helper.classes.Crawler.Crawler"><code class="xref py py-class docutils literal notranslate"><span class="pre">rs_helper.helper.classes.Crawler.Crawler</span></code></a></p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler._ArxivCrawler__get_xml">
+<code class="descname">_ArxivCrawler__get_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler._ArxivCrawler__get_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to receive the XML</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler._ArxivCrawler__slugify">
+<code class="descname">_ArxivCrawler__slugify</code><span class="sig-paren">(</span><em>value: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler._ArxivCrawler__slugify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes string, converts to lowercase, removes non-alpha characters,
+and converts spaces to hyphens.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>str</em>) – String to clean</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The cleaned token</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.crawl">
+<code class="descname">crawl</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/ArxivCrawler.html#ArxivCrawler.crawl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.crawl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Actually performs the crawl.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.pickle_dataframe">
+<code class="descname">pickle_dataframe</code><span class="sig-paren">(</span><em>df: pandas.core.frame.DataFrame</em>, <em>dir: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.pickle_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the DataFrame of crawl results with pickle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pd.DataFrame</em>) – The dataframe to dump</li>
+<li><strong>dir</strong> (<em>str</em>) – Path where the DataFrame should be stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Status</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.save_to_dataframe">
+<code class="descname">save_to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/rs_helper/helper/classes/ArxivCrawler.html#ArxivCrawler.save_to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.save_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the crawl results to a DataFrame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">DataFrame of the crawls</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.save_to_file">
+<code class="descname">save_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/ArxivCrawler.html#ArxivCrawler.save_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ArxivCrawler.ArxivCrawler.save_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function creates for every single entry a separate txt file filled with the abstract/summary</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.helper.classes.MediumCrawler">
+<span id="mediumcrawler"></span><h2>MediumCrawler<a class="headerlink" href="#module-rs_helper.helper.classes.MediumCrawler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.MediumCrawler.</code><code class="descname">MediumCrawler</code><span class="sig-paren">(</span><em>out_path: str</em>, <em>query: str</em>, <em>number_of_scrollings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/MediumCrawler.html#MediumCrawler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rs_helper.helper.classes.Crawler.Crawler" title="rs_helper.helper.classes.Crawler.Crawler"><code class="xref py py-class docutils literal notranslate"><span class="pre">rs_helper.helper.classes.Crawler.Crawler</span></code></a></p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.crawl">
+<code class="descname">crawl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/MediumCrawler.html#MediumCrawler.crawl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.crawl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to perform the crawl and extract links and texts from scrolled website.
+Reults will be saved in out/ directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.get_whole_html">
+<code class="descname">get_whole_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/MediumCrawler.html#MediumCrawler.get_whole_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.get_whole_html" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTML of the website</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.pickle_dataframe">
+<code class="descname">pickle_dataframe</code><span class="sig-paren">(</span><em>df: pandas.core.frame.DataFrame</em>, <em>dir: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.pickle_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the DataFrame of crawl results with pickle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pd.DataFrame</em>) – The dataframe to dump</li>
+<li><strong>dir</strong> (<em>str</em>) – Path where the DataFrame should be stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Status</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.save_to_dataframe">
+<code class="descname">save_to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.save_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save crawl results to pandas DataFrame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the Dataframe</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.save_to_file">
+<code class="descname">save_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.save_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save documents to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.MediumCrawler.MediumCrawler.scroll_to_end">
+<code class="descname">scroll_to_end</code><span class="sig-paren">(</span><em>n_scroll</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/MediumCrawler.html#MediumCrawler.scroll_to_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.MediumCrawler.MediumCrawler.scroll_to_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to scroll to the end of the website</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_scroll</strong> (<em>int</em>) – Number of scrolls</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Height of the website body</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rs_helper.helper.classes.ScienceDirectCrawler">
+<span id="sciencedirectcrawler"></span><h2>ScienceDirectCrawler<a class="headerlink" href="#module-rs_helper.helper.classes.ScienceDirectCrawler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler">
+<em class="property">class </em><code class="descclassname">rs_helper.helper.classes.ScienceDirectCrawler.</code><code class="descname">ScienceDirectCrawler</code><span class="sig-paren">(</span><em>query: str</em>, <em>out_dir: str</em>, <em>to_be_num: int = 1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rs_helper.helper.classes.Crawler.Crawler" title="rs_helper.helper.classes.Crawler.Crawler"><code class="xref py py-class docutils literal notranslate"><span class="pre">rs_helper.helper.classes.Crawler.Crawler</span></code></a></p>
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__convert_authors">
+<code class="descname">_ScienceDirectCrawler__convert_authors</code><span class="sig-paren">(</span><em>author_dict: dict</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__convert_authors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal function to get the author names of an article</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>author_dict</strong> (<em>dict</em>) – The raw dict from server with authors</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Formatted authors</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__exec_request">
+<code class="descname">_ScienceDirectCrawler__exec_request</code><span class="sig-paren">(</span><em>URL</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__exec_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method actually makes the requests and handles the response of the server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>URL</strong> (<em>str</em>) – URL to request</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Server response</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__get_article_and_abstract">
+<code class="descname">_ScienceDirectCrawler__get_article_and_abstract</code><span class="sig-paren">(</span><em>eid: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__get_article_and_abstract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes calls to science direct to receive the article and abstracts based on the article eid number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eid</strong> (<em>str</em>) – the eid number to call</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__get_introduction_index">
+<code class="descname">_ScienceDirectCrawler__get_introduction_index</code><span class="sig-paren">(</span><em>text: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__get_introduction_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sould return the index of the SECOND occurrence of “1 Introduction” or “1. Introduction” or …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – The text to be searched</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the position of the string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__load_config">
+<code class="descname">_ScienceDirectCrawler__load_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads configuration file in which the necessary APIKey is stored</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__prepare_title">
+<code class="descname">_ScienceDirectCrawler__prepare_title</code><span class="sig-paren">(</span><em>input</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__prepare_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts the inputtitle to 130 characters maximum</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input</strong> (<em>str</em>) – the title to cut</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the cutted string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__save_relevants_in_results">
+<code class="descname">_ScienceDirectCrawler__save_relevants_in_results</code><span class="sig-paren">(</span><em>exec_result</em>, <em>total: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__save_relevants_in_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method stores the relevant information of the server response in the instance results variable</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exec_result</strong> (<em>dict</em>) – Server response of API request</li>
+<li><strong>total</strong> (<em>bool</em>) – Should the total result num be setted</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">void</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__split_date">
+<code class="descname">_ScienceDirectCrawler__split_date</code><span class="sig-paren">(</span><em>date: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler._ScienceDirectCrawler__split_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method splits the date in month, day, year</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.crawl">
+<code class="descname">crawl</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler.crawl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.crawl" title="Permalink to this definition">¶</a></dt>
+<dd><p>General handler of crawling</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.find_nth">
+<code class="descname">find_nth</code><span class="sig-paren">(</span><em>string</em>, <em>substring</em>, <em>n</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler.find_nth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.find_nth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to find the n-th occurrence of a needle in a string. (Used by ScienceDirect Crawler)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) – Haystack</li>
+<li><strong>substring</strong> (<em>str</em>) – Needle</li>
+<li><strong>n</strong> (<em>int</em>) – Which occurrence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Index of the occurrence</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.pickle_dataframe">
+<code class="descname">pickle_dataframe</code><span class="sig-paren">(</span><em>df: pandas.core.frame.DataFrame</em>, <em>dir: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.pickle_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the DataFrame of crawl results with pickle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pd.DataFrame</em>) – The dataframe to dump</li>
+<li><strong>dir</strong> (<em>str</em>) – Path where the DataFrame should be stored</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Status</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_response">
+<code class="descname">save_response</code><span class="sig-paren">(</span><em>res</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler.save_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the server response to json</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>res</strong> (<em>dict</em>) – The server response</td>
+</tr>
+</tbody>
+</table>
+<p>:return void</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_dataframe">
+<code class="descname">save_to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler.save_to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the results to a pandas dataframe</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The final datafram</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">pd.DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_file">
+<code class="descname">save_to_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/rs_helper/helper/classes/ScienceDirectCrawler.html#ScienceDirectCrawler.save_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves all results to files in the supplied output directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rs_helper.helper.functions.html" class="btn btn-neutral float-right" title="functions package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rs_helper.helper.html" class="btn btn-neutral float-left" title="helper package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

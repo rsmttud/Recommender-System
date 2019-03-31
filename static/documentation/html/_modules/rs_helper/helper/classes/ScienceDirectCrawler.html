@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rs_helper.helper.classes.ScienceDirectCrawler &mdash; Recommender-System 1.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Installation.html">Installation of RS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rs_helper.html">rs_helper package</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/rsmttud/Recommender-System">Github</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>rs_helper.helper.classes.ScienceDirectCrawler</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rs_helper.helper.classes.ScienceDirectCrawler</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">rs_helper.helper.classes.Crawler</span> <span class="k">import</span> <span class="n">Crawler</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="ScienceDirectCrawler"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler">[docs]</a><span class="k">class</span> <span class="nc">ScienceDirectCrawler</span><span class="p">(</span><span class="n">Crawler</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_be_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param query: String (Query that should be searched in science direct (https://dev.elsevier.com/tips/ScienceDirectSearchTips.htm))</span>
+<span class="sd">        :param out_dir: String (Directory where the resulting files should be stored)</span>
+<span class="sd">        :param to_be_num: int (Amount of articles to get crawled (Needs to be x times 100))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">out_path</span><span class="o">=</span><span class="n">out_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">to_be_num</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">to_be_num</span> <span class="o">&gt;</span> <span class="mi">6000</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of results must be 100*x and smaller than 6000&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;https://api.elsevier.com/content/search/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_abstract_url</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;https://api.elsevier.com/content/abstract/eid/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_article_url</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;https://api.elsevier.com/content/article/eid/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scope</span> <span class="o">=</span> <span class="s2">&quot;scidir&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span> <span class="o">+</span> <span class="s1">&#39;?query=&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">+</span> <span class="s1">&#39;&amp;count=100&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__load_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span> <span class="o">=</span> <span class="n">to_be_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_nums</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_res</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">=</span> <span class="n">out_dir</span>
+
+<div class="viewcode-block" id="ScienceDirectCrawler.find_nth"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.find_nth">[docs]</a>    <span class="k">def</span> <span class="nf">find_nth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">string</span><span class="p">,</span> <span class="n">substring</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the n-th occurrence of a needle in a string. (Used by ScienceDirect Crawler)</span>
+
+<span class="sd">        :param string: Haystack</span>
+<span class="sd">        :type string: str</span>
+<span class="sd">        :param substring: Needle</span>
+<span class="sd">        :type substring: str</span>
+<span class="sd">        :param n: Which occurrence</span>
+<span class="sd">        :type n: int</span>
+
+<span class="sd">        :return: Index of the occurrence</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">substring</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_nth</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">substring</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScienceDirectCrawler.crawl"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.crawl">[docs]</a>    <span class="k">def</span> <span class="nf">crawl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        General handler of crawling</span>
+<span class="sd">        </span>
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exec_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;failed&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">InterruptedError</span><span class="p">(</span><span class="s2">&quot;The server responded with status code: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_code</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__save_relevants_in_results</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_nums</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;total_results&quot;</span><span class="p">]</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_nums</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_nums</span> <span class="k">else</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span><span class="p">:</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_res</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_nums</span><span class="p">:</span>
+                <span class="c1"># print(&quot;Is: {} | To be: {}&quot;.format(self.num_res, self.total_nums))</span>
+                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;search-results&#39;</span><span class="p">][</span><span class="s1">&#39;link&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">el</span><span class="p">[</span><span class="s1">&#39;@ref&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;next&#39;</span><span class="p">:</span>
+                        <span class="n">next_url</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="s1">&#39;@href&#39;</span><span class="p">]</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exec_request</span><span class="p">(</span><span class="n">next_url</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;failed&quot;</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid request. Server responded with Statuscode 400 while crawling. &quot;</span>
+                                  <span class="s2">&quot;The found articles will be saved further on...&quot;</span><span class="p">)</span>
+                            <span class="k">break</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__save_relevants_in_results</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span><span class="p">:</span>
+                            <span class="k">break</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_be_num</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ScienceDirectCrawler.save_response"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_response">[docs]</a>    <span class="k">def</span> <span class="nf">save_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the server response to json</span>
+
+<span class="sd">        :param res: The server response</span>
+<span class="sd">        :type res: dict</span>
+
+<span class="sd">        :return void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;response_</span><span class="si">{}</span><span class="s2">.json&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_res</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__exec_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">URL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method actually makes the requests and handles the response of the server</span>
+
+<span class="sd">        :param URL: URL to request</span>
+<span class="sd">        :type URL: str</span>
+
+<span class="sd">        :return: Server response</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;X-ELS-APIKey&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;apikey&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="p">}</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">URL</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">status_code</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;failed&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__save_relevants_in_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exec_result</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method stores the relevant information of the server response in the instance results variable</span>
+
+<span class="sd">        :param exec_result: Server response of API request</span>
+<span class="sd">        :type exec_result: dict</span>
+<span class="sd">        :param total: Should the total result num be setted</span>
+<span class="sd">        :type total: bool</span>
+
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_res</span>
+        <span class="c1"># print(&quot;Current index: {}&quot;.format(current_idx))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_res</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">exec_result</span><span class="p">[</span><span class="s1">&#39;search-results&#39;</span><span class="p">][</span><span class="s1">&#39;entry&#39;</span><span class="p">])</span>
+        <span class="c1"># print(&quot;[Before saving in results dict] Number of current results: {}&quot;.format(self.num_res))</span>
+        <span class="k">if</span> <span class="n">total</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;total_results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exec_result</span><span class="p">[</span><span class="s1">&#39;search-results&#39;</span><span class="p">][</span><span class="s1">&#39;opensearch:totalResults&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exec_result</span><span class="p">[</span><span class="s1">&#39;search-results&#39;</span><span class="p">][</span><span class="s1">&#39;entry&#39;</span><span class="p">]):</span>
+            <span class="n">date_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__split_date</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;prism:coverDate&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;$&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;authors&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">authors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__convert_authors</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">authors</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;eid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s1">&#39;eid&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__prepare_title</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;dc:title&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">authors</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s1">&#39;prism:coverDate&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;$&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">][</span><span class="n">current_idx</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__get_article_and_abstract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes calls to science direct to receive the article and abstracts based on the article eid number.</span>
+<span class="sd">        </span>
+<span class="sd">        :param eid: the eid number to call </span>
+<span class="sd">        :type eid: str</span>
+
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eid_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_article_url</span><span class="o">+</span><span class="n">eid</span>
+        <span class="n">eid_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exec_request</span><span class="p">(</span><span class="n">eid_url</span><span class="p">)</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">abstr</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">eid_response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s2">&quot;failed&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eid_response</span><span class="p">[</span><span class="s1">&#39;full-text-retrieval-response&#39;</span><span class="p">][</span><span class="s1">&#39;originalText&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_introduction_index</span><span class="p">(</span><span class="n">eid_response</span><span class="p">[</span><span class="s1">&#39;full-text-retrieval-response&#39;</span><span class="p">][</span><span class="s1">&#39;originalText&#39;</span><span class="p">])</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">eid_response</span><span class="p">[</span><span class="s1">&#39;full-text-retrieval-response&#39;</span><span class="p">][</span><span class="s1">&#39;originalText&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eid_response</span><span class="p">[</span><span class="s1">&#39;full-text-retrieval-response&#39;</span><span class="p">][</span><span class="s1">&#39;coredata&#39;</span><span class="p">][</span><span class="s1">&#39;dc:description&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">abstr</span> <span class="o">=</span> <span class="n">eid_response</span><span class="p">[</span><span class="s1">&#39;full-text-retrieval-response&#39;</span><span class="p">][</span><span class="s1">&#39;coredata&#39;</span><span class="p">][</span><span class="s1">&#39;dc:description&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">abstr</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">abstr</span>
+
+    <span class="k">def</span> <span class="nf">__get_introduction_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method sould return the index of the SECOND occurrence of &quot;1 Introduction&quot; or &quot;1. Introduction&quot; or ...</span>
+
+<span class="sd">        :param text: The text to be searched</span>
+<span class="sd">        :type text: str</span>
+
+<span class="sd">        :return: the position of the string</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1 Introduction&quot;</span><span class="p">,</span> <span class="s2">&quot;1. Introduction&quot;</span><span class="p">,</span> <span class="s2">&quot;1 INTRODUCTION&quot;</span><span class="p">,</span> <span class="s2">&quot;1. INTRODUCTION&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_nth</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">idx</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__convert_authors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">author_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal function to get the author names of an article</span>
+
+<span class="sd">        :param author_dict: The raw dict from server with authors</span>
+<span class="sd">        :type author_dict: dict</span>
+
+<span class="sd">        :return: Formatted authors</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;author&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">author_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">author_dict</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">author_dict</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="s2">&quot;given-name&quot;</span> <span class="ow">in</span> <span class="n">author_dict</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="s2">&quot;surname&quot;</span> <span class="ow">in</span> <span class="n">author_dict</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">res</span> <span class="o">+=</span> <span class="n">author_dict</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;given-name&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">author_dict</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;surname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">author_dict</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">def</span> <span class="nf">__split_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method splits the date in month, day, year</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parts</span>
+
+    <span class="k">def</span> <span class="nf">__load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads configuration file in which the necessary APIKey is stored</span>
+
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config.json&quot;</span><span class="p">)</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">config_file</span>
+
+    <span class="k">def</span> <span class="nf">__prepare_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cuts the inputtitle to 130 characters maximum</span>
+
+<span class="sd">        :param input: the title to cut </span>
+<span class="sd">        :type input: str</span>
+
+<span class="sd">        :return: the cutted string </span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^A-Za-z| ]+&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">input</span><span class="p">)[:</span><span class="mi">130</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ScienceDirectCrawler.save_to_file"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves all results to files in the supplied output directory</span>
+
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">abs_errors</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">art_errors</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">])):</span>
+            <span class="n">paper</span><span class="p">,</span> <span class="n">abstract</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_article_and_abstract</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;eid&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">abstract</span><span class="p">:</span>
+                <span class="n">abstract_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s2">&quot;[</span><span class="si">{}</span><span class="s2">] Abstract_</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">abstract_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">abstract</span><span class="p">)</span>
+                <span class="n">abstract_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">abs_errors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">paper</span><span class="p">:</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s2">&quot;[</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">paper</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">art_errors</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not saved/found: </span><span class="si">{}</span><span class="s2"> abstracts, </span><span class="si">{}</span><span class="s2"> articles&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abs_errors</span><span class="p">,</span> <span class="n">art_errors</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ScienceDirectCrawler.save_to_dataframe"><a class="viewcode-back" href="../../../../rs_helper.helper.classes.html#rs_helper.helper.classes.ScienceDirectCrawler.ScienceDirectCrawler.save_to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the results to a pandas dataframe</span>
+
+<span class="sd">        :return: The final datafram </span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">titles</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">months</span><span class="p">,</span> <span class="n">days</span><span class="p">,</span> <span class="n">authors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;documents&quot;</span><span class="p">]:</span>
+            <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+            <span class="n">years</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">])</span>
+            <span class="n">months</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">])</span>
+            <span class="n">days</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
+            <span class="n">authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;authors&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">titles</span><span class="p">,</span> <span class="s2">&quot;years&quot;</span><span class="p">:</span> <span class="n">years</span><span class="p">,</span> <span class="s2">&quot;months&quot;</span><span class="p">:</span> <span class="n">months</span><span class="p">,</span> <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="n">authors</span><span class="p">})</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    queries = [&quot;Title-Abstr-Key%28Clustering+AND+data%29+AND+Title%28Clustering%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Clustering+is%29+AND+Title%28Clustering%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Classification+is%29+AND+Title%28Classification+OR+Prediction%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Classification+AND+Prediction%29+AND+Title%28Classification+OR+Prediction%29&quot;, </span>
+<span class="sd">               &quot;Title-Abstr-Key%28Sequence+Analysis+is%29+AND+Title%28Sequence%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Sequence+Analysis+AND+data%29+AND+Title%28Sequence%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Sequence+Analytics+AND+data%29+AND+Title%28Sequence%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Association+rule+AND+data%29+AND+Title%28Association%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Association+rule+mining+is%29+AND+Title%28Association%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Sequential+Pattern%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Frequent+Pattern%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Regression+is%29+AND+Title%28Prediction%29&quot;,</span>
+<span class="sd">               &quot;Title-Abstr-Key%28Regression+AND+data%29+AND+Title%28Prediction%29&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Title-Abstr-Key%28Regression+is%29+AND+Title%28Prediction%29&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;Title-Abstr-Key%28Regression+AND+data%29+AND+Title%28Prediction%29&quot;</span><span class="p">]</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regression is&quot;</span><span class="p">,</span> <span class="s2">&quot;regression&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">dirs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="n">crawler</span> <span class="o">=</span> <span class="n">ScienceDirectCrawler</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">q</span><span class="p">,</span>
+                                       <span class="n">to_be_num</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span>
+                                       <span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;out/</span><span class="si">{}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">crawl</span><span class="p">()</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">save_to_file</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">save_to_dataframe</span><span class="p">()</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">pickle_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

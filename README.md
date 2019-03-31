@@ -12,9 +12,9 @@ the other hand the domain expert has an first point of reference for a more comp
 
 ## Documentation
 A detailed description about all the classes, functions, interfaces and the project structure you'll find in the 
-<a target= "_blank" href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation/index.html">documentation</a> of the project.
+<a target= "_blank" href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation//html/index.html">documentation</a> of the project.
 
-You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/index.html`` and open the file in your browser. Otherwise you can also use the link in the footer of the application.
+You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/Documentation.html`` and open the file in your browser. Otherwise you can also use the link in the footer of the application.
 
 
 ### Notes an pre Requirements
@@ -40,11 +40,30 @@ __Other Approaches:__
 3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)
 
 ## Installation with the bash files
-Depending on which operating system you are working you only need to run those files in your terminal. 
+Depending on which operating system you are working you only need to run those files in your terminal. Copy those files
+outside of the directory where the rs_export.tar and the Recommender-System directory is stored - the folder structure 
+needs to look like followed: 
 
-__Windows__:
+
+```
+- Dockerfile
+- .dockerignore
+- rs_export.tar
+- install.bat [or install.sh]
+- Recommender-System
+    - data
+    - models
+    - ...
+```
+
+__Windows__:  
+- installation.bat
 
 __Linux/Mac__:
+- installation.sh
+
+
+In addition you can run and stop the corresponding container by using the _run_ and _stop_ bash files.
 
 ## Using the Docker Container
 The docker consists of all necessary files, libraries and dependencies to start the software - so you don't need to install them. 
@@ -52,7 +71,6 @@ Before you start, make sure that you have installed docker (https://docs.docker.
 
 1. Follow the steps as described here: <a href="https://docs.docker.com/docker-for-windows/install/">docker installation</a> to install Docker. 
 2. Open the terminal and load the docker image: ```docker load --input [PATH TO rs_export.tar] ```  
-![](static/img/git/start_docker.gif)  5
 3. Run the docker ```docker run rs``` (_If it doesn't work go to step 4_) 
 4. (Optional) Create a docker container with the name "rs" and run it on port 80: ```docker run --name rs  -p 80:80 rs```
 
@@ -108,7 +126,5 @@ The directory structure need to be as followed:
 2. Build the image (__This may take a while!__): ```docker build ./ -t rs```  
 ![](static/img/git/build_docker.gif)  
 3. Check if docker installed the container: ``docker ps -a`` (If not execute step 5)  
-![](static/img/git/check_docker.gif)  
 4. Now you can start and run/stop the docker as usual  
-![](static/img/git/run_docker.gif)  
 5. Build the container and test it (if necessary): ``docker run --name rs  -p 80:80 rs``  

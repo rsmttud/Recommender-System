@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation of RS &mdash; Recommender-System 1.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="General Information" href="General Information.html" />
+    <link rel="prev" title="Welcome to the Recommender-System Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #00535a" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Recommender-System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation of RS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-of-docker-image-via-batch-shell-files-recommended">Installation of docker image via batch/shell files (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-of-docker-image-via-command-line">Installation of docker image via command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-via-pip-conda">Installation via pip / conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-useful-docker-commands">Other useful docker commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="General Information.html">General Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rs_helper.html">rs_helper package</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/rsmttud/Recommender-System">Github</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Recommender-System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation of RS</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation-of-rs">
+<h1>Installation of RS<a class="headerlink" href="#installation-of-rs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Docker version: 18.09.2</li>
+<li>Python version: 3.6.7</li>
+</ul>
+</div>
+<div class="section" id="installation-of-docker-image-via-batch-shell-files-recommended">
+<h2>Installation of docker image via batch/shell files (recommended)<a class="headerlink" href="#installation-of-docker-image-via-batch-shell-files-recommended" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Follow the steps as described here: <a class="reference external" href="https://docs.docker.com/docker-for-windows/install/">docker installation</a> to install Docker.</p>
+</li>
+<li><p class="first">Make sure the files listed are in the same directory:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>rs_export.tar</em></li>
+<li><em>install.{bat, sh}</em></li>
+<li><em>run.{bat, sh}</em></li>
+<li><em>stop{bat, sh}</em></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Run the <strong>install.bat</strong> and wait for the process to finish</p>
+</li>
+<li><p class="first">Go to <strong>localhost:80</strong> in Google Chrome</p>
+</li>
+<li><p class="first">To stop the docker again run <strong>stop.bat</strong></p>
+</li>
+<li><p class="first">Steps 3 is only for first installation. In future you simply can run <strong>run.bat</strong></p>
+</li>
+</ol>
+<img alt="_images/rs.gif" src="_images/rs.gif" />
+</div>
+<div class="section" id="installation-of-docker-image-via-command-line">
+<h2>Installation of docker image via command line<a class="headerlink" href="#installation-of-docker-image-via-command-line" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Follow the steps as described here: <a class="reference external" href="https://docs.docker.com/docker-for-windows/install/">docker installation</a> to install Docker.</li>
+<li>Open Terminal / Command Prompt and load the image via</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">load</span> <span class="o">--</span><span class="nb">input</span> <span class="p">[</span><span class="n">PATH</span> <span class="n">TO</span> <span class="n">rs_export</span><span class="o">.</span><span class="n">tar</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Create docker container via</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">rs</span> <span class="o">-</span><span class="n">p</span> <span class="mi">80</span><span class="p">:</span><span class="mi">80</span> <span class="n">rs</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Run the docker via</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="n">rs</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-via-pip-conda">
+<h2>Installation via pip / conda<a class="headerlink" href="#installation-via-pip-conda" title="Permalink to this headline">¶</a></h2>
+<p>If you don’t prefer to use a docker container, you can also install the software to your local python environment. We recommend to create a new environment via <em>venv</em> or <em>conda</em>. All required packages are listed in the <em>requirements.txt</em> file. Please make sure that you use at least <em>Python 3.6.7</em></p>
+<ol class="arabic simple">
+<li>Update pip</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Install requirements with:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="p">[</span><span class="n">PATH</span> <span class="n">TO</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Install <em>pke-package</em>:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">boudinfl</span><span class="o">/</span><span class="n">pke</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Download all nltk packages in your environment from terminal/command prompt:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Run the application by using:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="p">[</span><span class="n">PATH</span> <span class="n">TO</span> <span class="n">app</span><span class="o">.</span><span class="n">py</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="other-useful-docker-commands">
+<h2>Other useful docker commands<a class="headerlink" href="#other-useful-docker-commands" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Stop a running container:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">stop</span> <span class="p">[</span><span class="n">NAME</span> <span class="n">OF</span> <span class="n">CONTAINER</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Start docker container:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">start</span> <span class="p">[</span><span class="n">NAME</span> <span class="n">OF</span> <span class="n">CONTAINER</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>List all containers:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>List all docker images:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">images</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Delete a docker container:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">rm</span> <span class="p">[</span><span class="n">CONTAINER</span> <span class="n">NAME</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>Delete a docker image:</li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">image</span> <span class="n">rm</span> <span class="p">[</span><span class="n">IMAGE</span> <span class="n">NAME</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If anything goes wrong please contact:</p>
+<ul class="simple">
+<li>Richard Horn (<a class="reference external" href="mailto:richard&#46;horn94&#37;&#52;&#48;yahoo&#46;de">richard<span>&#46;</span>horn94<span>&#64;</span>yahoo<span>&#46;</span>de</a>)</li>
+<li>Daniel Höschele (<a class="reference external" href="mailto:dhoeschele&#37;&#52;&#48;outlook&#46;com">dhoeschele<span>&#64;</span>outlook<span>&#46;</span>com</a>)</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="General Information.html" class="btn btn-neutral float-right" title="General Information" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the Recommender-System Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Daniel Höschele, Richard Horn
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
