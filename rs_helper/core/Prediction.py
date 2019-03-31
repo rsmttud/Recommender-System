@@ -2,7 +2,6 @@ from typing import List, Tuple
 from math import log
 
 
-# TODO needs a review
 class Prediction:
     """
     Class to store the final prediction of pipelines

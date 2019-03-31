@@ -14,10 +14,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from rs_helper.core.distributed_models import EmbeddingModel
 from rs_helper.core.distributed_models import DAN
 
-# SOMETHING IS TOTALLY OFF WITH THE DAN CLASS
 
-
-# TODO Obsolete!
+# OBSOLETE
 def kd_plot(embedding_model: EmbeddingModel,
             text: List[str],
             labels: List[Any],
@@ -116,10 +114,6 @@ def scatter_plot(embedding_model: EmbeddingModel,
         plt.savefig(os.path.join(save_dir, "scatter.png"))
         plt.savefig(os.path.join(save_dir, "scatter.svg"))
 
-    # TODO Remove this later
-
-    # plt.savefig(os.path.join("output_scatter/png/", "{}.png".format(str(ax_title))))
-    # plt.savefig(os.path.join("output_scatter/svg/", "{}.svg".format(str(ax_title))))
     return ax_1
 
 

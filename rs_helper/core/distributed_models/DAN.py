@@ -91,7 +91,6 @@ class DAN(EmbeddingModel):
         # self.last_dan_layer = dense_dan_layers[-1].name
 
         # Classifier
-        # TODO Activation Function
         classifier_layers = self.create_classifier_layer(dense_dan_layers[-1], classifier_shape, classifier_act)
 
         logits = tf.layers.dense(inputs=classifier_layers[-1],
@@ -171,7 +170,6 @@ class DAN(EmbeddingModel):
                             "dropout": str(wdrop_prob),
                             "path": os.path.abspath(os.path.join(save_path, model_name))})
 
-        # TODO don't use a DataFrame here
         # Bundle the Data together in a DataFrame
         df = pd.DataFrame.from_dict({"text": text, "labels": labels})
         # Create One-Hot-Encodings for Available Classes
@@ -227,7 +225,6 @@ class DAN(EmbeddingModel):
             graph_def = graph.as_graph_def(add_shapes=True)
             tf.train.write_graph(graph_def, ".", os.path.join(save_path, model_name + ".pbtxt"), True)
 
-            # TODO Wrap in a function
             input_graph_path = os.path.join(save_path, model_name + ".pbtxt")
             checkpoint_path = os.path.join(save_path, model_name + ".ckpt")
             input_saver_def_path = ""
@@ -271,7 +268,6 @@ class DAN(EmbeddingModel):
             sess.close()
             return dan_embeddings
 
-    # TODO Implement a general method
     def inference_batches(self, text: List[List[str]]) -> np.ndarray:
         """
         Method takes a list containing a list with tokenized words.
