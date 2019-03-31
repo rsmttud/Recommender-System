@@ -56,33 +56,31 @@ function set_pattern_mining_table(entities, table_length = 4) {
 }
 
 function set_clustering_table(entities) {
-    if (entities.length >= 1) {
-        let columns = ["Entity", "C<sub>1</sub>", "C<sub>2</sub>", "...", "C<sub>n</sub>"];
-        if (columns.length > 0) {
-            $("#data-structure-table").append("<thead><tr></tr></thead>");
-            columns.forEach(function (column, index) {
-
-                $("#data-structure-table tr").append("<th>" + column + "</th>")
-            });
-
-            //Table Body
-            let range = n => Array.from(Array(4).keys()); // range function
-            $("#data-structure-table").append("<tbody></tbody>");
-
-            entities.forEach(function (entity, index) {
-                let id = "#" + index + "-tr";
-                $("#data-structure-table tbody").append("<tr id =\"" + index + "-tr" + "\">");
-                $("#data-structure-table tbody").find(id).append("<td>" + entity + "</td>");
-                range(columns.length).forEach(function () {
-                    $("#data-structure-table tbody").find(id).append("<td>...</td>");
-                })
-            });
-
-        }
-    } else {
-        $("#data-structure-table").append("<p>Sorry a recommendation for the data structure is only" +
-            " possible with extracted entities.</p>");
+    if (entities.length < 1) {
+        entities = ["Group"]
     }
+    let columns = ["Entity", "C<sub>1</sub>", "C<sub>2</sub>", "...", "C<sub>n</sub>"];
+
+    $("#data-structure-table").append("<thead><tr></tr></thead>");
+    columns.forEach(function (column, index) {
+
+        $("#data-structure-table tr").append("<th>" + column + "</th>")
+    });
+
+    //Table Body
+    let range = n => Array.from(Array(4).keys()); // range function
+    $("#data-structure-table").append("<tbody></tbody>");
+    entities = [entities[0] + "<sub>A</sub>", entities[0]+"<sub>B</sub>", entities[0] + "<sub>C</sub>", "...", entities[0]+"<sub>N</sub>"];
+        entities.forEach(function (entity, index) {
+            let id = "#" + index + "-tr";
+            $("#data-structure-table tbody").append("<tr id =\"" + index + "-tr" + "\">");
+            $("#data-structure-table tbody").find(id).append("<td>" + entity + "</td>");
+            range(columns.length).forEach(function () {
+                $("#data-structure-table tbody").find(id).append("<td>...</td>");
+            })
+        });
+
+
 }
 
 function set_regression_table(entities, table_length = 4) {
