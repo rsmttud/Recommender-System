@@ -26,6 +26,8 @@ You can also open the documentation by  downloading the project and navigate you
 - The docker container as well as the _requirements.txt_ are build on TensorFlow 1.13.0 without(!) GPU support
 - If you want GPU support you need to build your own docker image and change the _requirements.txt_
 - All squared brackets [] in the following code __are placeholder__ and not part of the command!
+- You need to download the <a href ="https://drive.google.com/drive/folders/1wag4iuSkjn2tgzCYdzVbGB4-rkQdeUge?usp=sharing">FastText-Modell</a>
+    an include it in the models folder of the project if you want to install the project via pip. 
 
 ## Installation
 
