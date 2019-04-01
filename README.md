@@ -22,6 +22,7 @@ You can also open the documentation by  downloading the project and navigate you
 #### Pre Requirements
 - Docker version: 18.09.2
 - Python version: 3.6.7
+- The Docker container: <a href="https://drive.google.com/file/d/18ko3PpT8OYNRWbGQE9_k9THosr03hVME/view?usp=sharing">rs_export.tar</a> (~11GB)
 #### Notes
 - The docker container as well as the _requirements.txt_ are build on TensorFlow 1.13.0 without(!) GPU support
 - If you want GPU support you need to build your own docker image and change the _requirements.txt_
@@ -38,8 +39,11 @@ __Recommended Approach:__
 (_We don't guarantee that these will work on every platform!_)
 
 __Other Approaches:__   
-2. You can use the docker image (<a href = "">rs_export.tar</a>) to load the image and run the container.
-3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)
+2. You can use the docker image (<a href = "https://drive.google.com/file/d/18ko3PpT8OYNRWbGQE9_k9THosr03hVME/view?usp=sharing">rs_export.tar</a>) to load the image and run the container.  
+3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)  
+
+In both approaches you need to __download the <a href="https://drive.google.com/drive/folders/1wag4iuSkjn2tgzCYdzVbGB4-rkQdeUge?usp=sharing">FastText model directory</a>__ and copy it in the ``Recommender-System/Models`` 
+directory!
 
 ## Installation with the batch/shell files (__Recommended__)
 Depending on which operating system you are working you only need to run those files in your terminal. Copy those files
