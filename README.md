@@ -81,7 +81,16 @@ Before you start, make sure that you have installed docker (https://docs.docker.
 3. Run the docker ```docker run rs``` (_If it doesn't work go to step 4_) 
 4. (Optional) Create a docker container with the name "rs" and run it on port 80: ```docker run --name rs  -p 80:80 rs```
 
-### Installation via pip (or conda)
+### Some Other Use Full Commands
+1. Stop a running container: ```docker stop [NAME OF CONTAINER]``` 
+2. Start the docker container again: ```docker start rs```
+3. List all containers ``docker ps -a``
+4. List all images ``docker images``
+5. Delete a container ``docker rm [CONTAINER NAME]``
+6. Delete a docker image ``docker image rm [IMAGE NAME]``
+
+
+## Installation via pip (or conda)
 If you don't prefer to use a docker container, you can also install the software to your local python environment. 
 We recommend to create a new environment via venv or conda. All required packages are listed in the requirements.txt file. 
 __Please make sure that you use at least Python 3.6.7__
@@ -98,15 +107,6 @@ __Please make sure that you use at least Python 3.6.7__
     * Type ``nltk.download("all")``
     * Exit python with: ``exit()``
 6. Now you can run the app in you python environment by using following command: ``python [PATH TO app.py]``
-
-
-#### Some Other Use Full Commands
-1. Stop a running container: ```docker stop [NAME OF CONTAINER]``` 
-2. Start the docker container again: ```docker start rs```
-3. List all containers ``docker ps -a``
-4. List all images ``docker images``
-5. Delete a container ``docker rm [CONTAINER NAME]``
-6. Delete a docker image ``docker image rm [IMAGE NAME]``
 
 
 ## Start the Application
