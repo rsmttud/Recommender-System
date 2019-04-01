@@ -43,7 +43,7 @@ __Other Approaches:__
 3. You can also set up a python environment and run the program via _app.py_ (_Only recommended for development_)  
 
 In both approaches you need to __download the <a href="https://drive.google.com/drive/folders/1wag4iuSkjn2tgzCYdzVbGB4-rkQdeUge?usp=sharing">FastText model directory</a>__ and copy it in the ``Recommender-System/Models`` 
-directory!
+directory! So it needs to look like that: ``Recommender-System/models/FastText/1/*``
 
 ## Installation with the batch/shell files (__Recommended__)
 Depending on which operating system you are working you only need to run those files in your terminal. Copy those files
