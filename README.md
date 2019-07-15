@@ -10,10 +10,9 @@ the other hand the domain expert has an first point of reference for a more comp
 
 
 ## Documentation
-A detailed description about all the classes, functions, interfaces and the project structure you'll find in the 
-<a target= "_blank" href="http://wwwpub.zih.tu-dresden.de/~s4945549/documentation//html/index.html">documentation</a> of the project.
+A detailed description about all the classes, functions, interfaces and the project structure you'll find in the documentation of the project.
 
-You can also open the documentation by  downloading the project and navigate yourself to ``static/documentation/Documentation.html`` and open the file in your browser. Otherwise you can also use the link in the footer of the application.
+You can open the documentation by downloading the project and navigate yourself to ``static/documentation/Documentation.html`` and open the file in your browser. Otherwise you can also use the link in the footer of the application.
 
 
 ### Notes an pre Requirements
