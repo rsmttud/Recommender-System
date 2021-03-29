@@ -76,7 +76,7 @@ prompt-toolkit==2.0.8
 protobuf==3.6.1
 public==2018.11.20
 py-translator==2.1.9
-Pygments==2.3.1
+Pygments==2.7.4
 pyparsing==2.3.1
 python-dateutil==2.8.0
 python-slugify==1.2.6
