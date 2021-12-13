@@ -49,7 +49,7 @@ Keras-Preprocessing==1.0.9
 kiwisolver==1.0.1
 langdetect==1.0.7
 lesscpy==0.13.0
-lxml==4.2.5
+lxml==4.6.5
 Markdown==3.0.1
 MarkupSafe==1.1.0
 matplotlib==3.0.2
