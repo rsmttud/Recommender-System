@@ -73,7 +73,7 @@ post==2018.11.20
 preshed==2.0.1
 prometheus-client==0.5.0
 prompt-toolkit==2.0.8
-protobuf==3.6.1
+protobuf==3.18.3
 public==2018.11.20
 py-translator==2.1.9
 Pygments==2.3.1
